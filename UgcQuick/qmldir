@@ -1,0 +1,2 @@
+module UgcQuick
+UgcText 1.0 ./controls/UgcText.qml

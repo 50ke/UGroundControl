@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/">
+        <file>map.html</file>
+        <file>Main.qml</file>
+        <file>UgcQuick/qmldir</file>
+        <file>UgcQuick/controls/UgcText.qml</file>
+    </qresource>
+</RCC>
