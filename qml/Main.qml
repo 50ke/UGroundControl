@@ -22,7 +22,7 @@ Window {
     WebEngineView {
         anchors.fill: parent
         // url: "https://www.baidu.com"
-        url: "qrc:/map.html"
+        url: "qrc:/resources/map.html"
         // webChannel: WebChannel{
         //     id: webChannel
         //     registeredObjects: [myObject]

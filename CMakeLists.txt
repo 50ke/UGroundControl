@@ -19,14 +19,14 @@ aux_source_directory(src SRC_LIST)
 qt_standard_project_setup(REQUIRES 6.5)
 
 qt_add_executable(appUGroundControl
-    main.cpp ${SRC_LIST} UGroundControl.qrc
+    src/main.cpp ${SRC_LIST} UGroundControl.qrc
 )
 
 qt_add_qml_module(appUGroundControl
     URI UGroundControl
     VERSION 1.0
     QML_FILES
-        Main.qml
+        qml/Main.qml
         RESOURCES UGroundControl.qrc
         QML_FILES
         QML_FILES UgcQuick/controls/UgcText.qml
