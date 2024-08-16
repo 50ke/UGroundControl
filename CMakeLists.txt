@@ -1,5 +1,8 @@
 cmake_minimum_required(VERSION 3.16)
 
+set(CMAKE_TOOLCHAIN_FILE "D:/dev/vcpkg/scripts/buildsystems/vcpkg.cmake")
+set(VCPKG_TARGET_ARCHITECTURE x64)
+
 project(UGroundControl VERSION 0.1 LANGUAGES CXX)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
@@ -11,10 +14,10 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(QML_IMPORT_PATH ${CMAKE_SOURCE_DIR} ${CMAKE_BINARY_DIR} CACHE STRING "" FORCE)
 
 find_package(Qt6 REQUIRED COMPONENTS Quick WebEngineQuick)
+find_package(fmt CONFIG REQUIRED)
 
 include_directories(src)
 aux_source_directory(src SRC_LIST)
-
 
 qt_standard_project_setup(REQUIRES 6.5)
 
@@ -30,6 +33,7 @@ qt_add_qml_module(appUGroundControl
         RESOURCES UGroundControl.qrc
         QML_FILES
         QML_FILES UgcQuick/controls/UgcText.qml
+        RESOURCES
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
@@ -47,6 +51,7 @@ target_link_libraries(appUGroundControl
     PRIVATE
     Qt6::Quick
     Qt6::WebEngineQuick
+    fmt::fmt
 )
 
 include(GNUInstallDirs)

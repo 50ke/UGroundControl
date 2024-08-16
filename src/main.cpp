@@ -1,9 +1,10 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QtWebEngineQuick>
-
+#include <fmt/format.h>
 int main(int argc, char *argv[])
 {
+    fmt::println("---------{}-----------", "abcdfdf");
     QCoreApplication::setAttribute(Qt::AA_ShareOpenGLContexts);
     QtWebEngineQuick::initialize();
     QGuiApplication app(argc, argv);

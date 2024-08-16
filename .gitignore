@@ -39,3 +39,6 @@ CMakeLists.txt.user
 
 # jetbrains
 .idea/
+
+# vcpkg
+vcpkg_installed/
