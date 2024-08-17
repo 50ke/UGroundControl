@@ -34,6 +34,8 @@ qt_add_qml_module(appUGroundControl
         QML_FILES
         QML_FILES UgcQuick/controls/UgcText.qml
         RESOURCES
+        QML_FILES qml/Header.qml
+        QML_FILES qml/Body.qml
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
