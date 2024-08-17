@@ -6,6 +6,7 @@ import QtQuick.Dialogs
 import QtLocation
 import QtPositioning
 
+import UgcQuick 1.0
 import "../component"
 
 Item {
@@ -29,6 +30,23 @@ Item {
         map.copyrightsVisible: false
         map.onZoomLevelChanged: {
             console.log("地图比例尺: " + map.zoomLevel)
+        }
+
+        // 版权信息
+        Rectangle{
+            id: copyrightId
+            width: copyrightTextId.implicitWidth
+            height: 15
+            color: "#303133"
+            opacity: 0.7
+            anchors.left: parent.left
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: 2
+            UgcText{
+                id: copyrightTextId
+                anchors.verticalCenter: parent.verticalCenter
+                text: "Map © 武汉大学 | Data © 泸州航道局 | Zoom %1 | Center %2,%3".arg(mapViewId.map.zoomLevel).arg(mapViewId.map.center.longitude).arg(mapViewId.map.center.latitude)
+            }
         }
     }
 }

@@ -6,14 +6,17 @@
         <file>qml/Main.qml</file>
         <file>resources/icons/battery.svg</file>
         <file>resources/icons/boats.svg</file>
+        <file>resources/icons/config.svg</file>
         <file>resources/icons/lidar.svg</file>
         <file>resources/icons/location.svg</file>
         <file>resources/icons/monitoring.svg</file>
         <file>resources/icons/network.svg</file>
+        <file>resources/icons/plan.svg</file>
         <file>resources/icons/radio.svg</file>
         <file>resources/icons/satellite.svg</file>
         <file>resources/icons/setting.svg</file>
         <file>resources/icons/ugc.png</file>
+        <file>resources/icons/usv.svg</file>
         <file>resources/map.html</file>
     </qresource>
 </RCC>

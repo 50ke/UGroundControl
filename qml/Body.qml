@@ -16,7 +16,7 @@ Rectangle{
             anchors.leftMargin: 20
             anchors.top: parent.top
             anchors.topMargin: 20
-            height: 300
+            height: 400
             width: 50
         }
     }

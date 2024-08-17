@@ -40,6 +40,7 @@ qt_add_qml_module(appUGroundControl
         QML_FILES qml/map/NativeMap.qml
         QML_FILES qml/map/BaiduWebMap.qml
         QML_FILES qml/component/ToolBox.qml
+        QML_FILES qml/component/Lidar.qml
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.

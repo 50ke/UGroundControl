@@ -21,11 +21,24 @@ Rectangle {
             oIconSource: "qrc:/resources/icons/location.svg"
         }
         UgcButton{
+            oText: "规划"
+            width: parent.width
+            oTextFont.pointSize: 10
+            display: AbstractButton.TextUnderIcon
+            oIconSource: "qrc:/resources/icons/plan.svg"
+        }
+        UgcButton{
             oText: "雷达"
             width: parent.width
             oTextFont.pointSize: 10
             display: AbstractButton.TextUnderIcon
             oIconSource: "qrc:/resources/icons/lidar.svg"
+            onClicked: {
+                var component = Qt.createComponent("Lidar.qml")
+                if (component.status === Component.Ready) {
+                    var object = component.createObject(parent)
+                }
+            }
         }
         UgcButton{
             oText: "视频"
@@ -33,6 +46,13 @@ Rectangle {
             oTextFont.pointSize: 10
             display: AbstractButton.TextUnderIcon
             oIconSource: "qrc:/resources/icons/monitoring.svg"
+        }
+        UgcButton{
+            oText: "配置"
+            width: parent.width
+            oTextFont.pointSize: 10
+            display: AbstractButton.TextUnderIcon
+            oIconSource: "qrc:/resources/icons/config.svg"
         }
         UgcButton{
             oText: "USV"
