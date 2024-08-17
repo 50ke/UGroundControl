@@ -34,10 +34,7 @@ Rectangle {
             display: AbstractButton.TextUnderIcon
             oIconSource: "qrc:/resources/icons/lidar.svg"
             onClicked: {
-                var component = Qt.createComponent("Lidar.qml")
-                if (component.status === Component.Ready) {
-                    var object = component.createObject(parent)
-                }
+                createComponent("Lidar")
             }
         }
         UgcButton{
@@ -67,6 +64,17 @@ Rectangle {
             oTextFont.pointSize: 10
             display: AbstractButton.TextUnderIcon
             oIconSource: "qrc:/resources/icons/setting.svg"
+        }
+    }
+
+    function createComponent(name){
+        var component
+        if(name === "Lidar"){
+            component = Qt.createComponent("Lidar.qml")
+            component.createObject(parent);
+        }else if(name === "Camera"){
+            component = Qt.createComponent("Camera.qml")
+            component.createObject(parent);
         }
     }
 }
