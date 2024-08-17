@@ -1,17 +1,19 @@
 <RCC>
     <qresource prefix="/">
-        <file>UgcQuick/qmldir</file>
+        <file>UgcQuick/controls/UgcButton.qml</file>
         <file>UgcQuick/controls/UgcText.qml</file>
+        <file>UgcQuick/qmldir</file>
         <file>qml/Main.qml</file>
-        <file>resources/map.html</file>
-        <file>resources/icons/satellite.svg</file>
-        <file>resources/icons/radio.svg</file>
-        <file>resources/icons/network.svg</file>
         <file>resources/icons/battery.svg</file>
-        <file>resources/icons/location.svg</file>
-        <file>resources/icons/setting.svg</file>
+        <file>resources/icons/boats.svg</file>
         <file>resources/icons/lidar.svg</file>
+        <file>resources/icons/location.svg</file>
         <file>resources/icons/monitoring.svg</file>
+        <file>resources/icons/network.svg</file>
+        <file>resources/icons/radio.svg</file>
+        <file>resources/icons/satellite.svg</file>
+        <file>resources/icons/setting.svg</file>
         <file>resources/icons/ugc.png</file>
+        <file>resources/map.html</file>
     </qresource>
 </RCC>

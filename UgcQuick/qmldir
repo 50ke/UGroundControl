@@ -1,2 +1,3 @@
 module UgcQuick
 UgcText 1.0 ./controls/UgcText.qml
+UgcButton 1.0 ./controls/UgcButton.qml

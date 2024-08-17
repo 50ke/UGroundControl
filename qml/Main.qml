@@ -20,10 +20,9 @@ Window {
             width: parent.width
             height: 40
         }
-        Rectangle{
+        Body{
             width: parent.width
             height: parent.height - 40
-            color: "green"
         }
     }
 }
