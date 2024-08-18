@@ -47,6 +47,13 @@ Window {
                 oTipText: "仅支持GeoJson自定义图层"
                 oButtonText: "导入"
             }
+            UgcInputMixBox{
+                oBoxWidth: 100
+                oBoxHeight: 30
+                oTitleText: "电子航道图层"
+                oTipText: "支持GeoJson、MVT自定义图层"
+                oSelectList: ["GeoJson","MVT","WMS", "WMTS", "TMS"]
+            }
             UgcInputBox{
                 oTitleText: "航道航标数据"
                 oTipText: "航道航标数据获取Api接口，数据返回需要满足规定格式"

@@ -5,6 +5,7 @@
         <file>UgcQuick/controls/UgcImportFileBox.qml</file>
         <file>UgcQuick/controls/UgcInputBox.qml</file>
         <file>UgcQuick/controls/UgcInputComboBox.qml</file>
+        <file>UgcQuick/controls/UgcInputMixBox.qml</file>
         <file>UgcQuick/controls/UgcText.qml</file>
         <file>UgcQuick/qmldir</file>
         <file>qml/Main.qml</file>
