@@ -3,9 +3,12 @@
         <file>UgcQuick/controls/UgcButton.qml</file>
         <file>UgcQuick/controls/UgcComboBox.qml</file>
         <file>UgcQuick/controls/UgcInputBox.qml</file>
+        <file>UgcQuick/controls/UgcInputComboBox.qml</file>
         <file>UgcQuick/controls/UgcText.qml</file>
         <file>UgcQuick/qmldir</file>
         <file>qml/Main.qml</file>
+        <file>resources/icons/angle-down.svg</file>
+        <file>resources/icons/angle-up.svg</file>
         <file>resources/icons/battery.svg</file>
         <file>resources/icons/boats.svg</file>
         <file>resources/icons/config.svg</file>

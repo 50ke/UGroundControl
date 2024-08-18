@@ -3,3 +3,4 @@ UgcText 1.0 ./controls/UgcText.qml
 UgcButton 1.0 ./controls/UgcButton.qml
 UgcInputBox 1.0 ./controls/UgcInputBox.qml
 UgcComboBox 1.0 ./controls/UgcComboBox.qml
+UgcInputComboBox 1.0 ./controls/UgcInputComboBox.qml
