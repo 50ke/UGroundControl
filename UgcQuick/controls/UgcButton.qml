@@ -6,7 +6,7 @@ import QtQuick.Layouts
 RoundButton {
     property string oText: "Default"
     property string oIconSource
-    property font oTextFont: ({family: "宋体", pointSize: 12, weight: Font.DemiBold})
+    property font oTextFont: ({family: "Helvetica", pointSize: 12, weight: Font.DemiBold})
     property color oNormalTextColor: "#FFFFFF"
     property color oPressedTextColor: "#FFFFFF"
     property color oHoveredTextColor: "#FFFFFF"

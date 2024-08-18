@@ -1,6 +1,8 @@
 <RCC>
     <qresource prefix="/">
         <file>UgcQuick/controls/UgcButton.qml</file>
+        <file>UgcQuick/controls/UgcComboBox.qml</file>
+        <file>UgcQuick/controls/UgcInputBox.qml</file>
         <file>UgcQuick/controls/UgcText.qml</file>
         <file>UgcQuick/qmldir</file>
         <file>qml/Main.qml</file>
@@ -15,6 +17,7 @@
         <file>resources/icons/radio.svg</file>
         <file>resources/icons/satellite.svg</file>
         <file>resources/icons/setting.svg</file>
+        <file>resources/icons/tip.svg</file>
         <file>resources/icons/ugc.png</file>
         <file>resources/icons/usv.svg</file>
         <file>resources/map.html</file>

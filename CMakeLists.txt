@@ -13,7 +13,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(QML_IMPORT_PATH ${CMAKE_SOURCE_DIR} ${CMAKE_BINARY_DIR} CACHE STRING "" FORCE)
 
-find_package(Qt6 REQUIRED COMPONENTS Quick WebEngineQuick)
+find_package(Qt6 REQUIRED COMPONENTS Quick QuickControls2 WebEngineQuick)
 find_package(fmt CONFIG REQUIRED)
 
 include_directories(src)
@@ -34,6 +34,8 @@ qt_add_qml_module(appUGroundControl
         QML_FILES
         QML_FILES UgcQuick/controls/UgcText.qml
         QML_FILES UgcQuick/controls/UgcButton.qml
+        QML_FILES UgcQuick/controls/UgcInputBox.qml
+        QML_FILES UgcQuick/controls/UgcComboBox.qml
         RESOURCES
         QML_FILES qml/Header.qml
         QML_FILES qml/Body.qml
@@ -41,6 +43,7 @@ qt_add_qml_module(appUGroundControl
         QML_FILES qml/map/BaiduWebMap.qml
         QML_FILES qml/component/ToolBox.qml
         QML_FILES qml/component/Lidar.qml
+        QML_FILES qml/component/Setting.qml
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
@@ -57,6 +60,7 @@ set_target_properties(appUGroundControl PROPERTIES
 target_link_libraries(appUGroundControl
     PRIVATE
     Qt6::Quick
+    Qt6::QuickControls2
     Qt6::WebEngineQuick
     fmt::fmt
 )

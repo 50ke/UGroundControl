@@ -64,6 +64,9 @@ Rectangle {
             oTextFont.pointSize: 10
             display: AbstractButton.TextUnderIcon
             oIconSource: "qrc:/resources/icons/setting.svg"
+            onClicked: {
+                createComponent("Setting")
+            }
         }
     }
 
@@ -74,6 +77,9 @@ Rectangle {
             component.createObject(parent);
         }else if(name === "Camera"){
             component = Qt.createComponent("Camera.qml")
+            component.createObject(parent);
+        }else if(name === "Setting"){
+            component = Qt.createComponent("Setting.qml")
             component.createObject(parent);
         }
     }

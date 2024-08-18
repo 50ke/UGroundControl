@@ -1,7 +1,7 @@
 import QtQuick 2.15
 
 Text{
-    property font oTextFont: ({family: "宋体", pointSize: 12, weight: Font.DemiBold})
+    property font oTextFont: ({family: "Helvetica", pointSize: 12, weight: Font.DemiBold})
     property string oText: "Default"
 
     color: "#FFFFFF"
