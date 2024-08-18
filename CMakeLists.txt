@@ -37,6 +37,7 @@ qt_add_qml_module(appUGroundControl
         QML_FILES UgcQuick/controls/UgcInputBox.qml
         QML_FILES UgcQuick/controls/UgcComboBox.qml
         QML_FILES UgcQuick/controls/UgcInputComboBox.qml
+        QML_FILES UgcQuick/controls/UgcImportFileBox.qml
         RESOURCES
         QML_FILES qml/Header.qml
         QML_FILES qml/Body.qml

@@ -2,6 +2,7 @@
     <qresource prefix="/">
         <file>UgcQuick/controls/UgcButton.qml</file>
         <file>UgcQuick/controls/UgcComboBox.qml</file>
+        <file>UgcQuick/controls/UgcImportFileBox.qml</file>
         <file>UgcQuick/controls/UgcInputBox.qml</file>
         <file>UgcQuick/controls/UgcInputComboBox.qml</file>
         <file>UgcQuick/controls/UgcText.qml</file>
@@ -12,6 +13,8 @@
         <file>resources/icons/battery.svg</file>
         <file>resources/icons/boats.svg</file>
         <file>resources/icons/config.svg</file>
+        <file>resources/icons/export.svg</file>
+        <file>resources/icons/import.svg</file>
         <file>resources/icons/lidar.svg</file>
         <file>resources/icons/location.svg</file>
         <file>resources/icons/monitoring.svg</file>
