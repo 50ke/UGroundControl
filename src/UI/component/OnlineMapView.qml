@@ -6,13 +6,12 @@ import QtQuick.Dialogs
 import QtLocation
 import QtPositioning
 
-import UgcQuick 1.0
-import "../component"
+import QmlControls 1.0
 
 Item {
     property var centerCoordination: {
-            "longitude": 105.763,
-            "latitude": 28.916
+        "longitude": 114.347231,
+        "latitude": 30.574839
     }
     width: parent.width
     height: parent.height
@@ -32,6 +31,15 @@ Item {
             console.log("地图比例尺: " + map.zoomLevel)
         }
 
+        ToolBoxBar{
+            anchors.left: parent.left
+            anchors.leftMargin: 20
+            anchors.top: parent.top
+            anchors.topMargin: 20
+            height: 400
+            width: 50
+        }
+
         // 版权信息
         Rectangle{
             id: copyrightId
@@ -42,10 +50,10 @@ Item {
             anchors.left: parent.left
             anchors.bottom: parent.bottom
             anchors.bottomMargin: 2
-            UgcText{
+            UGCText{
                 id: copyrightTextId
                 anchors.verticalCenter: parent.verticalCenter
-                text: "Map © 武汉大学 | Data © 泸州航道局 | Zoom %1 | Center %2,%3".arg(mapViewId.map.zoomLevel).arg(mapViewId.map.center.longitude).arg(mapViewId.map.center.latitude)
+                text: "在线地图 | Map © 武汉大学 | Data © 泸州航道局 | Zoom %1 | Center %2,%3".arg(mapViewId.map.zoomLevel).arg(mapViewId.map.center.longitude).arg(mapViewId.map.center.latitude)
             }
         }
     }

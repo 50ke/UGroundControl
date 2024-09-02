@@ -1,0 +1,9 @@
+{
+    "Keys": ["ugc_map"],
+    "Provider": "ugc_map",
+    "Version": 100,
+    "Experimental": false,
+    "Features": [
+        "OnlineMappingFeature"
+    ]
+}

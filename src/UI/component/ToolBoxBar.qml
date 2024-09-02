@@ -3,7 +3,7 @@ import QtQuick.Window
 import QtQuick.Controls
 import QtQuick.Layouts
 
-import UgcQuick 1.0
+import QmlControls 1.0
 
 Rectangle {
     width: parent.width
@@ -13,21 +13,21 @@ Rectangle {
         spacing: 1
         width: parent.width
         anchors.horizontalCenter: parent.horizontalCenter
-        UgcButton{
+        UGCButton{
             oText: "位置"
             width: parent.width
             oTextFont.pointSize: 10
             display: AbstractButton.TextUnderIcon
             oIconSource: "qrc:/resources/icons/location.svg"
         }
-        UgcButton{
+        UGCButton{
             oText: "规划"
             width: parent.width
             oTextFont.pointSize: 10
             display: AbstractButton.TextUnderIcon
             oIconSource: "qrc:/resources/icons/plan.svg"
         }
-        UgcButton{
+        UGCButton{
             oText: "雷达"
             width: parent.width
             oTextFont.pointSize: 10
@@ -37,28 +37,31 @@ Rectangle {
                 createComponent("Lidar")
             }
         }
-        UgcButton{
+        UGCButton{
             oText: "视频"
             width: parent.width
             oTextFont.pointSize: 10
             display: AbstractButton.TextUnderIcon
             oIconSource: "qrc:/resources/icons/monitoring.svg"
+            onClicked: {
+                createComponent("Video")
+            }
         }
-        UgcButton{
+        UGCButton{
             oText: "配置"
             width: parent.width
             oTextFont.pointSize: 10
             display: AbstractButton.TextUnderIcon
             oIconSource: "qrc:/resources/icons/config.svg"
         }
-        UgcButton{
+        UGCButton{
             oText: "USV"
             width: parent.width
             oTextFont.pointSize: 10
             display: AbstractButton.TextUnderIcon
             oIconSource: "qrc:/resources/icons/boats.svg"
         }
-        UgcButton{
+        UGCButton{
             oText: "设置"
             width: parent.width
             oTextFont.pointSize: 10
@@ -73,13 +76,13 @@ Rectangle {
     function createComponent(name){
         var component
         if(name === "Lidar"){
-            component = Qt.createComponent("Lidar.qml")
+            component = Qt.createComponent("qrc:/src/UI/Component/LidarView.qml")
             component.createObject(parent);
-        }else if(name === "Camera"){
-            component = Qt.createComponent("Camera.qml")
+        }else if(name === "Video"){
+            component = Qt.createComponent("qrc:/src/UI/Component/VideoView.qml")
             component.createObject(parent);
         }else if(name === "Setting"){
-            component = Qt.createComponent("Setting.qml")
+            component = Qt.createComponent("qrc:/src/UI/SettingWindow.qml")
             component.createObject(parent);
         }
     }

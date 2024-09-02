@@ -4,7 +4,7 @@ import QtQuick.Controls
 import QtQuick.Layouts
 import QtQuick.Dialogs
 
-import UgcQuick 1.0
+import QmlControls 1.0
 
 Item {
     property string oTitleText: "title"
@@ -19,18 +19,18 @@ Item {
         leftPadding: 10
         anchors.fill: parent
         anchors.verticalCenter: parent.verticalCenter
-        UgcText{
+        UGCText{
             anchors.verticalCenter: parent.verticalCenter
             oText: oTitleText
             oTextFont.pointSize: 10
         }
-        UgcText{
+        UGCText{
             id: fileId
             oText: ""
             anchors.verticalCenter: parent.verticalCenter
             oTextFont.pointSize: 8
         }
-        UgcButton{
+        UGCButton{
             width: 60
             height: 20
             topPadding: 2
@@ -69,7 +69,7 @@ Item {
                     tooltipText.visible = false
                 }
             }
-            UgcText {
+            UGCText {
                 id: tooltipText
                 oText: oTipText
                 visible: false

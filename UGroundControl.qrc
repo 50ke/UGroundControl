@@ -1,14 +1,5 @@
 <RCC>
     <qresource prefix="/">
-        <file>UgcQuick/controls/UgcButton.qml</file>
-        <file>UgcQuick/controls/UgcComboBox.qml</file>
-        <file>UgcQuick/controls/UgcImportFileBox.qml</file>
-        <file>UgcQuick/controls/UgcInputBox.qml</file>
-        <file>UgcQuick/controls/UgcInputComboBox.qml</file>
-        <file>UgcQuick/controls/UgcInputMixBox.qml</file>
-        <file>UgcQuick/controls/UgcText.qml</file>
-        <file>UgcQuick/qmldir</file>
-        <file>qml/Main.qml</file>
         <file>resources/icons/angle-down.svg</file>
         <file>resources/icons/angle-up.svg</file>
         <file>resources/icons/battery.svg</file>
@@ -28,5 +19,21 @@
         <file>resources/icons/ugc.png</file>
         <file>resources/icons/usv.svg</file>
         <file>resources/map.html</file>
+        <file>src/QmlControls/UGCButton.qml</file>
+        <file>src/QmlControls/UGCComboBox.qml</file>
+        <file>src/QmlControls/UGCImportFileBox.qml</file>
+        <file>src/QmlControls/UGCInputBox.qml</file>
+        <file>src/QmlControls/UGCInputComboBox.qml</file>
+        <file>src/QmlControls/UGCInputMixBox.qml</file>
+        <file>src/QmlControls/UGCText.qml</file>
+        <file>src/QmlControls/qmldir</file>
+        <file>src/UI/Component/LidarView.qml</file>
+        <file>src/UI/Component/OfflineMapView.qml</file>
+        <file>src/UI/Component/OnlineMapView.qml</file>
+        <file>src/UI/Component/StatusBar.qml</file>
+        <file>src/UI/Component/ToolBoxBar.qml</file>
+        <file>src/UI/Component/VideoView.qml</file>
+        <file>src/UI/MainWindow.qml</file>
+        <file>src/UI/SettingWindow.qml</file>
     </qresource>
 </RCC>

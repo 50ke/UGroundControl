@@ -2,10 +2,9 @@ import QtQuick
 import QtQuick.Window
 import QtQuick.Controls
 import QtQuick.Layouts
-import QtWebEngine
-import QtWebChannel
-
-import UgcQuick 1.0
+import QtLocation
+import QtPositioning
+import "./Component"
 
 Window {
     width: 1000
@@ -16,13 +15,16 @@ Window {
 
     Column{
         anchors.fill: parent
-        Header{
+        StatusBar{
+            id: headerId
             width: parent.width
             height: 40
         }
-        Body{
+        Loader {
+            id: bodyId
             width: parent.width
-            height: parent.height - 40
+            height: parent.height - headerId.height
+            source: "qrc:/src/UI/Component/OfflineMapView.qml"
         }
     }
 }

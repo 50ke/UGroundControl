@@ -3,13 +3,14 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
-import UgcQuick 1.0
+import QmlControls 1.0
 
 Item {
     property string oTitleText: "title"
     property string oTipText: ""
-    property string oPlaceholderText: ""
-
+    property var oSelectList: ["#1", "#2"]
+    property int oBoxWidth: 100
+    property int oBoxHeight: 30
 
     height: 40
     width: parent.width
@@ -18,23 +19,32 @@ Item {
         leftPadding: 10
         anchors.fill: parent
         anchors.verticalCenter: parent.verticalCenter
-        UgcText{
+        UGCText{
             anchors.verticalCenter: parent.verticalCenter
             oText: oTitleText
             oTextFont.pointSize: 10
         }
-        TextField{
-            id: control
-            width: 200
-            height: 30
-            verticalAlignment: Text.AlignVCenter
+        Row{
+            spacing: 3
             anchors.verticalCenter: parent.verticalCenter
-            placeholderText: oPlaceholderText
-            background: Rectangle {
-                radius: 2
-                implicitWidth: 200
-                implicitHeight: 30
-                border.color: control.focus ? "#409eff" : (control.hovered ? "#c0c4cc" : "#dcdfe6")
+            UGCComboBox{
+                width: oBoxWidth
+                height: oBoxHeight
+                anchors.verticalCenter: parent.verticalCenter
+                oModel: oSelectList
+            }
+            TextField{
+                id: control
+                width: 200
+                height: 30
+                verticalAlignment: Text.AlignVCenter
+                anchors.verticalCenter: parent.verticalCenter
+                background: Rectangle {
+                    radius: 2
+                    implicitWidth: 200
+                    implicitHeight: 30
+                    border.color: control.focus ? "#409eff" : (control.hovered ? "#c0c4cc" : "#dcdfe6")
+                }
             }
         }
         Image {
@@ -51,7 +61,7 @@ Item {
                     tooltipText.visible = false
                 }
             }
-            UgcText {
+            UGCText {
                 id: tooltipText
                 oText: oTipText
                 visible: false
@@ -63,6 +73,3 @@ Item {
         }
     }
 }
-
-
-

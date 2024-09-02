@@ -3,7 +3,7 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
-import UgcQuick 1.0
+import QmlControls 1.0
 
 Item {
     property string oTitleText: "title"
@@ -19,12 +19,12 @@ Item {
         leftPadding: 10
         anchors.fill: parent
         anchors.verticalCenter: parent.verticalCenter
-        UgcText{
+        UGCText{
             anchors.verticalCenter: parent.verticalCenter
             oText: oTitleText
             oTextFont.pointSize: 10
         }
-        UgcComboBox{
+        UGCComboBox{
             width: oBoxWidth
             height: oBoxHeight
             anchors.verticalCenter: parent.verticalCenter
@@ -44,7 +44,7 @@ Item {
                     tooltipText.visible = false
                 }
             }
-            UgcText {
+            UGCText {
                 id: tooltipText
                 oText: oTipText
                 visible: false

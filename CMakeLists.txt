@@ -1,8 +1,14 @@
 cmake_minimum_required(VERSION 3.16)
 
+#######################################################
+#                vcpkg配置(必须置于project之前声明)
+#######################################################
 set(CMAKE_TOOLCHAIN_FILE "D:/dev/vcpkg/scripts/buildsystems/vcpkg.cmake")
 set(VCPKG_TARGET_ARCHITECTURE x64)
 
+#######################################################
+#                项目信息
+#######################################################
 project(UGroundControl VERSION 0.1 LANGUAGES CXX)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
@@ -11,13 +17,13 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(QML_IMPORT_PATH ${CMAKE_SOURCE_DIR} ${CMAKE_BINARY_DIR} CACHE STRING "" FORCE)
+set(QML_IMPORT_PATH ${CMAKE_SOURCE_DIR} ${CMAKE_SOURCE_DIR}/src ${CMAKE_BINARY_DIR} CACHE STRING "" FORCE)
 
 find_package(Qt6 REQUIRED COMPONENTS Quick QuickControls2 WebEngineQuick)
+find_package(Qt6 REQUIRED Core Location Network Positioning Qml Sql)
 find_package(fmt CONFIG REQUIRED)
 
-include_directories(src)
-aux_source_directory(src SRC_LIST)
+add_subdirectory(src/QtLocationPlugin)
 
 qt_standard_project_setup(REQUIRES 6.5)
 
@@ -25,28 +31,29 @@ qt_add_executable(appUGroundControl
     src/main.cpp ${SRC_LIST} UGroundControl.qrc
 )
 
+#######################################################
+#                QML文件
+#######################################################
 qt_add_qml_module(appUGroundControl
     URI UGroundControl
     VERSION 1.0
-    QML_FILES
-        qml/Main.qml
-        RESOURCES UGroundControl.qrc
-        QML_FILES
-        QML_FILES UgcQuick/controls/UgcText.qml
-        QML_FILES UgcQuick/controls/UgcButton.qml
-        QML_FILES UgcQuick/controls/UgcInputBox.qml
-        QML_FILES UgcQuick/controls/UgcComboBox.qml
-        QML_FILES UgcQuick/controls/UgcInputComboBox.qml
-        QML_FILES UgcQuick/controls/UgcImportFileBox.qml
-        QML_FILES UgcQuick/controls/UgcInputMixBox.qml
-        RESOURCES
-        QML_FILES qml/Header.qml
-        QML_FILES qml/Body.qml
-        QML_FILES qml/map/NativeMap.qml
-        QML_FILES qml/map/BaiduWebMap.qml
-        QML_FILES qml/component/ToolBox.qml
-        QML_FILES qml/component/Lidar.qml
-        QML_FILES qml/component/Setting.qml
+    QML_FILES src/UI/MainWindow.qml
+    QML_FILES src/UI/SettingWindow.qml
+    QML_FILES src/UI/Component/StatusBar.qml
+    QML_FILES src/UI/Component/ToolBoxBar.qml
+    QML_FILES src/UI/Component/OnlineMapView.qml
+    QML_FILES src/UI/Component/OfflineMapView.qml
+    QML_FILES src/UI/Component/LidarView.qml
+    QML_FILES src/UI/Component/VideoView.qml
+
+    QML_FILES src/QmlControls/UGCText.qml
+    QML_FILES src/QmlControls/UGCButton.qml
+    QML_FILES src/QmlControls/UGCInputBox.qml
+    QML_FILES src/QmlControls/UGCComboBox.qml
+    QML_FILES src/QmlControls/UGCInputComboBox.qml
+    QML_FILES src/QmlControls/UGCImportFileBox.qml
+    QML_FILES src/QmlControls/UGCInputMixBox.qml
+    RESOURCES UGroundControl.qrc
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
@@ -62,12 +69,23 @@ set_target_properties(appUGroundControl PROPERTIES
 
 target_link_libraries(appUGroundControl
     PRIVATE
+    UGCLocation
     Qt6::Quick
+    Qt6::Core
+    Qt6::Location
+    Qt6::LocationPrivate
+    Qt6::Positioning
+    Qt6::PositioningPrivate
+    Qt6::Sql
+    Qt6::Network
     Qt6::QuickControls2
     Qt6::WebEngineQuick
     fmt::fmt
 )
 
+#######################################################
+#		Install Configuration
+#######################################################
 include(GNUInstallDirs)
 install(TARGETS appUGroundControl
     BUNDLE DESTINATION .

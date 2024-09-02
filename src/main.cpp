@@ -17,8 +17,8 @@ int main(int argc, char *argv[])
         &app,
         []() { QCoreApplication::exit(-1); },
         Qt::QueuedConnection);
-    engine.addImportPath("qrc:/");
-    engine.loadFromModule("UGroundControl", "Main");
+    engine.addImportPath("qrc:/src");
+    engine.loadFromModule("UGroundControl", "MainWindow");
 
     return app.exec();
 }
