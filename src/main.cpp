@@ -3,9 +3,12 @@
 #include <QtWebEngineQuick>
 #include <QQuickStyle>
 #include <fmt/format.h>
+#include <UGCApplication.h>
 int main(int argc, char *argv[])
 {
-    fmt::println("---------{}-----------", "abcdfdf");
+    fmt::println("---------{}-----------", "Initializing UGroundControl");
+    UGC::UGCApplication application;
+
     QQuickStyle::setStyle("Basic");
     QCoreApplication::setAttribute(Qt::AA_ShareOpenGLContexts);
     QtWebEngineQuick::initialize();

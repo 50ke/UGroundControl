@@ -5,8 +5,8 @@ import QtQuick.Layouts
 import QmlControls 1.0
 
 Window {
-    width: 560
-    height: 400
+    width: 680
+    height: 480
     minimumWidth: 400
     minimumHeight: 320
     visible: true
@@ -30,17 +30,12 @@ Window {
                 oTipText: "暂时支持mqtt、udp、tcp、websocket！"
                 oPlaceholderText: "例如：mqtt://127.0.0.1:2345"
             }
-            UGCInputBox{
-                oTitleText: "状态维护服务"
-                oTipText: "注册、注销等服务"
-                oPlaceholderText: "例如：https://127.0.0.1:2346"
-            }
-            UGCInputComboBox{
-                oBoxWidth: 200
+            UGCInputMixBox{
+                oBoxWidth: 100
                 oBoxHeight: 30
                 oTitleText: "基础地图类型"
-                oTipText: "基础地图服务"
-                oSelectList: ["原生地图（离线）","百度地图（在线）"]
+                oTipText: "离线地图-本地目录，在线地图-在线API"
+                oSelectList: ["离线地图","在线地图"]
             }
             UGCImportFileBox{
                 oTitleText: "电子航道图层"
@@ -50,29 +45,30 @@ Window {
             UGCInputMixBox{
                 oBoxWidth: 100
                 oBoxHeight: 30
-                oTitleText: "电子航道图层"
-                oTipText: "支持GeoJson、MVT自定义图层"
-                oSelectList: ["GeoJson","MVT","WMS", "WMTS", "TMS"]
-            }
-            UGCInputBox{
                 oTitleText: "航道航标数据"
-                oTipText: "航道航标数据获取Api接口，数据返回需要满足规定格式"
-                oPlaceholderText: "例如：https://127.0.0.1:2346/mark-boats"
+                oTipText: "本地数据-本地目录，在线数据-在线API"
+                oSelectList: ["本地数据","在线数据"]
             }
-            UGCInputBox{
+            UGCInputMixBox{
+                oBoxWidth: 100
+                oBoxHeight: 30
                 oTitleText: "航道水深数据"
-                oTipText: "航道水深数据获取Api接口，数据返回需要满足规定格式"
-                oPlaceholderText: "例如：https://127.0.0.1:2346/water-depth"
+                oTipText: "本地数据-本地目录，在线数据-在线API"
+                oSelectList: ["本地数据","在线数据"]
             }
-            UGCInputBox{
+            UGCInputMixBox{
+                oBoxWidth: 100
+                oBoxHeight: 30
                 oTitleText: "航道行船数据"
-                oTipText: "航道AIS数据获取Api接口，数据返回需要满足规定格式"
-                oPlaceholderText: "例如：https://127.0.0.1:2346/ais"
+                oTipText: "本地数据-本地目录，在线数据-在线API"
+                oSelectList: ["本地数据","在线数据"]
             }
-            UGCInputBox{
+            UGCInputMixBox{
+                oBoxWidth: 100
+                oBoxHeight: 30
                 oTitleText: "航道建筑数据"
-                oTipText: "航道建筑数据获取Api接口，数据返回需要满足规定格式"
-                oPlaceholderText: "例如：https://127.0.0.1:2346/building"
+                oTipText: "本地数据-本地目录，在线数据-在线API"
+                oSelectList: ["本地数据","在线数据"]
             }
         }
     }

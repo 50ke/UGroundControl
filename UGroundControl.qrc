@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/">
+        <file>UGroundControl.json</file>
         <file>resources/icons/angle-down.svg</file>
         <file>resources/icons/angle-up.svg</file>
         <file>resources/icons/battery.svg</file>
@@ -18,7 +19,6 @@
         <file>resources/icons/tip.svg</file>
         <file>resources/icons/ugc.png</file>
         <file>resources/icons/usv.svg</file>
-        <file>resources/map.html</file>
         <file>src/QmlControls/UGCButton.qml</file>
         <file>src/QmlControls/UGCComboBox.qml</file>
         <file>src/QmlControls/UGCImportFileBox.qml</file>

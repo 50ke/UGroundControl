@@ -23,12 +23,16 @@ find_package(Qt6 REQUIRED COMPONENTS Quick QuickControls2 WebEngineQuick)
 find_package(Qt6 REQUIRED Core Location Network Positioning Qml Sql)
 find_package(fmt CONFIG REQUIRED)
 
+add_subdirectory(src/Common)
 add_subdirectory(src/QtLocationPlugin)
+add_subdirectory(src/SettingManager)
+
 
 qt_standard_project_setup(REQUIRES 6.5)
 
 qt_add_executable(appUGroundControl
-    src/main.cpp ${SRC_LIST} UGroundControl.qrc
+    src/main.cpp
+    UGroundControl.qrc
 )
 
 #######################################################
@@ -54,6 +58,7 @@ qt_add_qml_module(appUGroundControl
     QML_FILES src/QmlControls/UGCImportFileBox.qml
     QML_FILES src/QmlControls/UGCInputMixBox.qml
     RESOURCES UGroundControl.qrc
+    RESOURCES UGroundControl.json
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
@@ -69,7 +74,6 @@ set_target_properties(appUGroundControl PROPERTIES
 
 target_link_libraries(appUGroundControl
     PRIVATE
-    UGCLocation
     Qt6::Quick
     Qt6::Core
     Qt6::Location
@@ -81,6 +85,9 @@ target_link_libraries(appUGroundControl
     Qt6::QuickControls2
     Qt6::WebEngineQuick
     fmt::fmt
+
+    UGCLocation
+    SettingManager
 )
 
 #######################################################
