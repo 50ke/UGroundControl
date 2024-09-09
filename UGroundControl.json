@@ -1,6 +1,6 @@
 {
     "serialPort": "COM1",
-    "networkProtocol": "tcp",
+    "networkProtocol": "ws",
     "networkAddress": "127.0.0.1:8080",
     "baseMapType": "offline",
     "baseMapPath": "D:\\workspace\\map\\base",
@@ -13,5 +13,5 @@
     "waterwayAisLayerType": "offline",
     "waterwayAisLayerPath": "D:\\workspace\\map\\waterway-layer.json",
     "waterwayBuildingLayerType": "offline",
-    "waterwayBuildingLayerPath": "D:\\workspace\\map\\waterway-layer.json",
+    "waterwayBuildingLayerPath": "D:\\workspace\\map\\waterway-layer.json"
 }

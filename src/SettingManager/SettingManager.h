@@ -2,6 +2,11 @@
 #define SETTINGMANAGER_H
 
 #include <QObject>
+#include <QFile>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QJsonArray>
+
 #include <UGCContext.h>
 #include <UGCApplication.h>
 
@@ -24,6 +29,10 @@ struct Setting{
     QString waterwayBuildingLayerType;
     QString waterwayBuildingLayerPath;
 };
+
+void serialize(const QJsonObject &jsonObject, Setting &setting);
+
+void deserialize(QJsonObject &jsonObject, const Setting &setting);
 
 class SettingManager : public UGCContext
 {
@@ -50,7 +59,7 @@ public:
 //     void loadSetting();
 
 private:
-    std::unique_ptr<Setting> mSettingUniquePtr;
+    Setting mSetting;
 };
 
 }

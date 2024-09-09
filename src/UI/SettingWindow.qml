@@ -25,10 +25,12 @@ Window {
                 oTipText: "填写串口名称！"
                 oPlaceholderText: "例如：COM1"
             }
-            UGCInputBox{
+            UGCInputMixBox{
+                oBoxWidth: 100
+                oBoxHeight: 30
                 oTitleText: "网络通信服务"
-                oTipText: "暂时支持mqtt、udp、tcp、websocket！"
-                oPlaceholderText: "例如：mqtt://127.0.0.1:2345"
+                oTipText: "websocket、mqtt"
+                oSelectList: ["ws","mqtt"]
             }
             UGCInputMixBox{
                 oBoxWidth: 100
