@@ -14,6 +14,7 @@ int main(int argc, char *argv[])
     QtWebEngineQuick::initialize();
     QGuiApplication app(argc, argv);
     QQmlApplicationEngine engine;
+    application.init(engine.rootContext());
     QObject::connect(
         &engine,
         &QQmlApplicationEngine::objectCreationFailed,

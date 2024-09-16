@@ -1,17 +1,11 @@
 {
+    "systemId": 1,
     "serialPort": "COM1",
-    "networkProtocol": "ws",
-    "networkAddress": "127.0.0.1:8080",
-    "baseMapType": "offline",
-    "baseMapPath": "D:\\workspace\\map\\base",
-    "waterwayLayerType": "GeoJson",
-    "waterwayLayerPath": "D:\\workspace\\map\\waterway-layer.json",
-    "navigationMarkShipLayerType": "offline",
-    "navigationMarkShipLayerPath": "D:\\workspace\\map\\waterway-layer.json",
-    "waterwayDepthLayerType": "offline",
-    "waterwayDepthLayerPath": "D:\\workspace\\map\\waterway-layer.json",
-    "waterwayAisLayerType": "offline",
-    "waterwayAisLayerPath": "D:\\workspace\\map\\waterway-layer.json",
-    "waterwayBuildingLayerType": "offline",
-    "waterwayBuildingLayerPath": "D:\\workspace\\map\\waterway-layer.json"
+    "networkServer": "mqtt://127.0.0.1:8080",
+    "baseMap": "D:\\workspace\\map\\base",
+    "waterwayLayer": "D:\\workspace\\map\\waterway-layer.json",
+    "navigationMarkShipLayer": "D:\\workspace\\map\\waterway-layer.json",
+    "waterwayDepthLayer": "D:\\workspace\\map\\waterway-layer.json",
+    "waterwayAisLayer": "D:\\workspace\\map\\waterway-layer.json",
+    "waterwayBuildingLayer": "D:\\workspace\\map\\waterway-layer.json"
 }

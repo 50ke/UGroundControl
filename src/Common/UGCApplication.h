@@ -2,6 +2,7 @@
 #define UGCAPPLICATION_H
 
 #include <QObject>
+#include <QQmlContext>
 
 namespace UGC {
 
@@ -16,7 +17,9 @@ class UGCApplication : public QObject
     Q_OBJECT
 public:
     UGCApplication();
+    void init(QQmlContext *context);
     SettingManager *settingManager(){ return mSettingManagerPtr; }
+
 
 private:
     SettingManager *mSettingManagerPtr;

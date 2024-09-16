@@ -21,56 +21,59 @@ Window {
             width: parent.width
             height: parent.height
             UGCInputBox{
+                oEnabled: false
+                oTitleText: "系统设备序列"
+                oTipText: "系统设备序列！"
+                oPlaceholderText: "-1"
+                oText: settingManager.systemId
+            }
+            UGCInputBox{
                 oTitleText: "电台通信串口"
                 oTipText: "填写串口名称！"
                 oPlaceholderText: "例如：COM1"
+                oText: settingManager.serialPort
             }
-            UGCInputMixBox{
-                oBoxWidth: 100
-                oBoxHeight: 30
+            UGCInputBox{
                 oTitleText: "网络通信服务"
-                oTipText: "websocket、mqtt"
-                oSelectList: ["ws","mqtt"]
+                oTipText: "填写网络服务器地址！"
+                oPlaceholderText: "例如：mqtt://127.0.0.1:8080"
+                oText: settingManager.networkServer
             }
-            UGCInputMixBox{
-                oBoxWidth: 100
-                oBoxHeight: 30
-                oTitleText: "基础地图类型"
-                oTipText: "离线地图-本地目录，在线地图-在线API"
-                oSelectList: ["离线地图","在线地图"]
+            UGCInputBox{
+                oTitleText: "基础地图服务"
+                oTipText: "填写本地路径或在线地址！"
+                oPlaceholderText: "例如：http://127.0.0.1:8089/osm"
+                oText: settingManager.baseMap
             }
-            UGCImportFileBox{
+            UGCInputBox{
                 oTitleText: "电子航道图层"
-                oTipText: "仅支持GeoJson自定义图层"
-                oButtonText: "导入"
+                oTipText: "仅支持GeoJson自定义图层！"
+                oPlaceholderText: "例如：D://waterway.geojson"
+                oText: settingManager.waterwayLayer
             }
-            UGCInputMixBox{
-                oBoxWidth: 100
-                oBoxHeight: 30
+            UGCInputBox{
                 oTitleText: "航道航标数据"
-                oTipText: "本地数据-本地目录，在线数据-在线API"
-                oSelectList: ["本地数据","在线数据"]
+                oTipText: "填写本地路径或在线地址！"
+                oPlaceholderText: "例如：http://127.0.0.1:8089/api"
+                oText: settingManager.navigationMarkShipLayer
             }
-            UGCInputMixBox{
-                oBoxWidth: 100
-                oBoxHeight: 30
+            UGCInputBox{
                 oTitleText: "航道水深数据"
-                oTipText: "本地数据-本地目录，在线数据-在线API"
-                oSelectList: ["本地数据","在线数据"]
+                oTipText: "填写本地路径或在线地址！"
+                oPlaceholderText: "例如：http://127.0.0.1:8089/api"
+                oText: settingManager.waterwayDepthLayer
             }
-            UGCInputMixBox{
-                oBoxWidth: 100
-                oBoxHeight: 30
+            UGCInputBox{
                 oTitleText: "航道行船数据"
-                oTipText: "本地数据-本地目录，在线数据-在线API"
-                oSelectList: ["本地数据","在线数据"]
+                oTipText: "填写本地路径或在线地址！"
+                oPlaceholderText: "例如：http://127.0.0.1:8089/api"
+                oText: settingManager.waterwayAisLayer
             }
-            UGCInputMixBox{
-                oBoxWidth: 100
-                oBoxHeight: 30
+            UGCInputBox{
                 oTitleText: "航道建筑数据"
-                oTipText: "本地数据-本地目录，在线数据-在线API"
-                oSelectList: ["本地数据","在线数据"]
+                oTipText: "填写本地路径或在线地址！"
+                oPlaceholderText: "例如：http://127.0.0.1:8089/api"
+                oText: settingManager.waterwayBuildingLayer
             }
         }
     }

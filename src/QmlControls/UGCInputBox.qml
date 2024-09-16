@@ -6,10 +6,11 @@ import QtQuick.Layouts
 import QmlControls 1.0
 
 Item {
+    property bool oEnabled: true
     property string oTitleText: "title"
     property string oTipText: ""
     property string oPlaceholderText: ""
-
+    property string oText: ""
 
     height: 40
     width: parent.width
@@ -27,8 +28,10 @@ Item {
             id: control
             width: 200
             height: 30
+            enabled: oEnabled
             verticalAlignment: Text.AlignVCenter
             anchors.verticalCenter: parent.verticalCenter
+            text: oText
             placeholderText: oPlaceholderText
             background: Rectangle {
                 radius: 2
