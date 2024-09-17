@@ -48,6 +48,7 @@ public:
     void setWaterwayBuildingLayer (const QString &waterwayBuildingLayer);
 
     explicit SettingManager(UGCApplication *app);
+    Q_INVOKABLE bool save(const QVariantMap newSetting);
 
 signals:
     void systemIdChanged();

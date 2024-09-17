@@ -1,7 +1,7 @@
 #include "SettingManager.h"
 
 UGC::SettingManager::SettingManager(UGCApplication *app) : UGCContext{app}{
-    QFile file(QStringLiteral(":/UGroundControl.json"));
+    QFile file("UGroundControl.json");
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
         throw std::runtime_error("Cannot read UGroundControl.json");
     }
@@ -23,37 +23,91 @@ UGC::SettingManager::SettingManager(UGCApplication *app) : UGCContext{app}{
 }
 
 void UGC::SettingManager::setSystemId(const int &systemId){
-    mSystemId = systemId;
+    if(systemId != mSystemId){
+        mSystemId = systemId;
+        emit systemIdChanged();
+    }
 }
 
 void UGC::SettingManager::setSerialPort(const QString &serialPort){
-    mSerialPort = serialPort;
+    if(serialPort != mSerialPort){
+        mSerialPort = serialPort;
+        emit serialPortChanged();
+    }
 }
 
 void UGC::SettingManager::setNetworkServer(const QString &networkServer){
-    mNetworkServer = networkServer;
+    if(networkServer != mNetworkServer){
+         mNetworkServer = networkServer;
+        emit networkServerChanged();
+    }
 }
 
 void UGC::SettingManager::setBaseMap(const QString &baseMap){
-    mBaseMap = baseMap;
+    if(baseMap != mBaseMap){
+        mBaseMap = baseMap;
+        emit baseMapChanged();
+    }
 }
 
 void UGC::SettingManager::setWaterwayLayer(const QString &waterwayLayer){
-    mWaterwayLayer = mWaterwayLayer;
+    if(waterwayLayer != mWaterwayLayer){
+        mWaterwayLayer = waterwayLayer;
+        emit waterwayLayerChanged();
+    }
 }
 
 void UGC::SettingManager::setNavigationMarkShipLayer(const QString &navigationMarkShipLayer){
-    mNavigationMarkShipLayer = navigationMarkShipLayer;
+    if(navigationMarkShipLayer != mNavigationMarkShipLayer){
+        mNavigationMarkShipLayer = navigationMarkShipLayer;
+        emit navigationMarkShipLayerChanged();
+    }
 }
 
 void UGC::SettingManager::setWaterwayDepthLayer(const QString &waterwayDepthLayer){
-    mWaterwayDepthLayer = waterwayDepthLayer;
+    if(waterwayDepthLayer != mWaterwayDepthLayer){
+        mWaterwayDepthLayer = waterwayDepthLayer;
+        emit waterwayDepthLayerChanged();
+    }
 }
 
 void UGC::SettingManager::setWaterwayAisLayer(const QString &waterwayAisLayer){
-    mWaterwayAisLayer = waterwayAisLayer;
+    if(waterwayAisLayer != mWaterwayAisLayer){
+        mWaterwayAisLayer = waterwayAisLayer;
+        emit waterwayAisLayerChanged();
+    }
 }
 
 void UGC::SettingManager::setWaterwayBuildingLayer(const QString &waterwayBuildingLayer){
-    mWaterwayBuildingLayer = waterwayBuildingLayer;
+    if(waterwayBuildingLayer != mWaterwayBuildingLayer){
+        mWaterwayBuildingLayer = waterwayBuildingLayer;
+        emit waterwayBuildingLayerChanged();
+    }
+}
+
+bool UGC::SettingManager::save(const QVariantMap newSetting){
+    QFile file("UGroundControl.json");
+    try{
+        setSerialPort(newSetting.value("serialPort").toString());
+        setNetworkServer(newSetting.value("networkServer").toString());
+        setBaseMap(newSetting.value("baseMap").toString());
+        setWaterwayLayer(newSetting.value("waterwayLayer").toString());
+        setNavigationMarkShipLayer(newSetting.value("navigationMarkShipLayer").toString());
+        setWaterwayDepthLayer(newSetting.value("waterwayDepthLayer").toString());
+        setWaterwayAisLayer(newSetting.value("waterwayAisLayer").toString());
+        setWaterwayBuildingLayer(newSetting.value("waterwayBuildingLayer").toString());
+        // 保存
+        QJsonObject jsonObject = QJsonObject::fromVariantMap(newSetting);
+        jsonObject["systemId"] = mSystemId;
+        QJsonDocument jsonDocument(jsonObject);
+        if (file.open(QIODevice::WriteOnly | QIODevice::Text)){
+            QString jsonString = jsonDocument.toJson();
+            file.write(jsonString.toUtf8());
+            file.close();
+            return true;
+        }
+    } catch (const std::exception& ex) {
+        qCritical() << "Setting Manager Save Error:" << ex.what();
+    }
+    return false;
 }

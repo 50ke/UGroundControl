@@ -36,6 +36,11 @@ qt_add_executable(appUGroundControl
 )
 
 #######################################################
+#                JSON文件
+#######################################################
+configure_file(UGroundControl.json ${CMAKE_CURRENT_BINARY_DIR}/UGroundControl.json COPYONLY)
+
+#######################################################
 #                QML文件
 #######################################################
 qt_add_qml_module(appUGroundControl
@@ -57,8 +62,8 @@ qt_add_qml_module(appUGroundControl
     QML_FILES src/QmlControls/UGCInputComboBox.qml
     QML_FILES src/QmlControls/UGCImportFileBox.qml
     QML_FILES src/QmlControls/UGCInputMixBox.qml
+    QML_FILES src/QmlControls/UGCPadding.qml
     RESOURCES UGroundControl.qrc
-    RESOURCES UGroundControl.json
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.

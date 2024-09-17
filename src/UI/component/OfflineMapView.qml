@@ -19,7 +19,7 @@ Item {
         id: mapViewId
         map.plugin: Plugin {
             name: "ugc_map"
-            PluginParameter { name: "mapPath"; value: "D:/workspace/GaodeMap" }
+            PluginParameter { name: "mapPath"; value: "D:/workspace/GisProject/GaodeMap" }
         }
         anchors.fill: parent
         map.zoomLevel: 10

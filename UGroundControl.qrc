@@ -5,16 +5,22 @@
         <file>resources/icons/angle-up.svg</file>
         <file>resources/icons/battery.svg</file>
         <file>resources/icons/boats.svg</file>
+        <file>resources/icons/cancel.svg</file>
         <file>resources/icons/config.svg</file>
         <file>resources/icons/export.svg</file>
         <file>resources/icons/import.svg</file>
         <file>resources/icons/lidar.svg</file>
         <file>resources/icons/location.svg</file>
+        <file>resources/icons/message_error.svg</file>
+        <file>resources/icons/message_info.svg</file>
+        <file>resources/icons/message_success.svg</file>
+        <file>resources/icons/message_warn.svg</file>
         <file>resources/icons/monitoring.svg</file>
         <file>resources/icons/network.svg</file>
         <file>resources/icons/plan.svg</file>
         <file>resources/icons/radio.svg</file>
         <file>resources/icons/satellite.svg</file>
+        <file>resources/icons/save.svg</file>
         <file>resources/icons/setting.svg</file>
         <file>resources/icons/tip.svg</file>
         <file>resources/icons/ugc.png</file>
@@ -25,6 +31,7 @@
         <file>src/QmlControls/UGCInputBox.qml</file>
         <file>src/QmlControls/UGCInputComboBox.qml</file>
         <file>src/QmlControls/UGCInputMixBox.qml</file>
+        <file>src/QmlControls/UGCPadding.qml</file>
         <file>src/QmlControls/UGCText.qml</file>
         <file>src/QmlControls/qmldir</file>
         <file>src/UI/Component/LidarView.qml</file>

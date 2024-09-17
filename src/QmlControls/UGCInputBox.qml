@@ -65,6 +65,10 @@ Item {
             }
         }
     }
+
+    function getText(){
+        return control.text
+    }
 }
 
 
