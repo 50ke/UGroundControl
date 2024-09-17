@@ -26,7 +26,7 @@ find_package(fmt CONFIG REQUIRED)
 add_subdirectory(src/Common)
 add_subdirectory(src/QtLocationPlugin)
 add_subdirectory(src/SettingManager)
-
+add_subdirectory(src/LinkManager)
 
 qt_standard_project_setup(REQUIRES 6.5)
 

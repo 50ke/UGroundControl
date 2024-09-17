@@ -7,6 +7,7 @@
 namespace UGC {
 
 class SettingManager;
+class LinkManager;
 
 /**
  * 该类用于启动初始化
@@ -19,11 +20,11 @@ public:
     UGCApplication();
     void init(QQmlContext *context);
     SettingManager *settingManager(){ return mSettingManagerPtr; }
-
+    LinkManager *linkManager(){ return mLinkManagerPtr; }
 
 private:
     SettingManager *mSettingManagerPtr;
-
+    LinkManager *mLinkManagerPtr;
 };
 
 }

@@ -11,6 +11,7 @@ target_link_libraries(Common
         Qt6::Quick
         Qt6::Core
         SettingManager
+        LinkManager
 )
 
 target_include_directories(Common PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})

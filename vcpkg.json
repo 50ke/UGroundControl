@@ -9,7 +9,8 @@
   "name": "ugc",
   "version": "1.0.0",
   "dependencies": [
+    "boost-json",
     "fmt",
-    "boost-json"
+    "paho-mqttpp3"
   ]
 }

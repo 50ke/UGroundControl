@@ -1,7 +1,7 @@
 {
     "systemId": 1,
     "serialPort": "COM1",
-    "networkServer": "mqtt://127.0.0.1:8080",
+    "networkServer": "mqtt://110.187.226.202:1883",
     "baseMap": "D:\\workspace\\map\\base",
     "waterwayLayer": "D:\\workspace\\map\\waterway-layer.json",
     "navigationMarkShipLayer": "D:\\workspace\\map\\waterway-layer.json",
