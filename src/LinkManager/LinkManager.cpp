@@ -19,6 +19,10 @@ void UGC::LinkManager::start(){
     mMqttLinkWorkThread.start();
 }
 
+void UGC::LinkManager::sendMessage(const QString &message){
+    mMqttLink->publish(message);
+}
+
 void UGC::LinkManager::handleReceivedMessage(const QString &message){
     qDebug() << "LinkManager received msg:" << message;
 }

@@ -19,6 +19,7 @@ public:
     explicit LinkManager(UGCApplication *app);
     ~LinkManager();
     void start();
+    void sendMessage(const QString &message);
 
 public slots:
     void handleReceivedMessage(const QString &message);

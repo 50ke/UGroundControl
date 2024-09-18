@@ -10,4 +10,5 @@ UGC::UGCApplication::UGCApplication(){
 void UGC::UGCApplication::init(QQmlContext *context){
     context->setContextProperty("settingManager", mSettingManagerPtr);
     mLinkManagerPtr->start();
+    mLinkManagerPtr->sendMessage("I AM UGC.");
 }
