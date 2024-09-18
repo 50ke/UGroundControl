@@ -16,18 +16,20 @@ class MqttLink : public QObject
     Q_OBJECT
 
 public:
-    MqttLink(std::string serverAddr, std::string subTopic, std::string pubTopic);
-    void stop();
-    void sendMessage(std::string payload);
+    MqttLink(const QString &serverAddr, const QString &subTopic, const QString &pubTopic);
+    void publish(const QString &message);
+
+signals:
+    void receivedMessage(const QString &message);
 
 public slots:
-    void doWork();
+    void subscribe();
 
 private:
     bool mStartup{true};
-    std::string mServerAddr{};
-    std::string mSubTopic{};
-    std::string mPubTopic{};
+    QString mServerAddr{};
+    QString mSubTopic{};
+    QString mPubTopic{};
     mqtt::connect_options mConnectOptions;
     mqtt::async_client_ptr mAsyncMqttClientPtr = nullptr;
 };

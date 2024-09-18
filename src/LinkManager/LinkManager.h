@@ -17,9 +17,14 @@ class LinkManager : public UGCContext
     Q_OBJECT
 public:
     explicit LinkManager(UGCApplication *app);
+    ~LinkManager();
     void start();
 
+public slots:
+    void handleReceivedMessage(const QString &message);
+
 private:
+    QThread mMqttLinkWorkThread;
     MqttLink *mMqttLink = nullptr;
 };
 
