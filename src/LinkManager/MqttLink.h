@@ -8,6 +8,7 @@
 #include <QJsonArray>
 #include <memory>
 #include <mqtt/async_client.h>
+#include <common/mavlink.h>
 
 namespace UGC {
 
@@ -17,10 +18,10 @@ class MqttLink : public QObject
 
 public:
     MqttLink(const QString &serverAddr, const QString &subTopic, const QString &pubTopic);
-    void publish(const QString &message);
+    void publish(const mavlink_message_t &message);
 
 signals:
-    void receivedMessage(const QString &message);
+    void receivedMessage(const mavlink_message_t &message);
 
 public slots:
     void subscribe();

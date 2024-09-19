@@ -16,12 +16,14 @@ UGC::MqttLink::MqttLink(const QString &serverAddr, const QString &subTopic, cons
     }
 }
 
-void UGC::MqttLink::publish(const QString &message){
+void UGC::MqttLink::publish(const mavlink_message_t &message){
     try{
         if(!mAsyncMqttClientPtr->is_connected()){
             mAsyncMqttClientPtr->connect(mConnectOptions)->wait();
         }
-        mqtt::message_ptr pubmsg = mqtt::make_message(mPubTopic.toStdString(), message.toStdString(), 1, false);
+        uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
+        const int len = mavlink_msg_to_send_buffer(buffer, &message);
+        mqtt::message_ptr pubmsg = mqtt::make_message(mPubTopic.toStdString(), buffer, len, 1, false);
         mAsyncMqttClientPtr->publish(pubmsg)->wait();
     } catch (const std::exception& ex) {
         qCritical() << "MQTT Send Message Error:" << ex.what();
@@ -33,7 +35,16 @@ void UGC::MqttLink::subscribe(){
         mAsyncMqttClientPtr->subscribe(mSubTopic.toStdString(), 1)->wait();
         while (mStartup) {
             auto msg = mAsyncMqttClientPtr->consume_message();
-            emit receivedMessage(QString::fromStdString(msg->to_string()));
+            std::string payload = msg->to_string();
+            // 解析mavlink消息
+            std::vector<uint8_t> buffer(payload.begin(), payload.end());
+            mavlink_status_t status_t;
+            mavlink_message_t message_t;
+            for (int i = 0; i < buffer.size(); i++){
+                if (mavlink_parse_char(MAVLINK_COMM_0, buffer[i], &message_t, &status_t)){
+                    emit receivedMessage(message_t);
+                }
+            }
         }
     } catch (const std::exception& ex) {
         qCritical() << "MQTT Do Work Error:" << ex.what();

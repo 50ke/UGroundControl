@@ -10,6 +10,7 @@ target_link_libraries(LinkManager
         PahoMqttCpp::paho-mqttpp3
         Common
         SettingManager
+        MavlinkProtocol
 )
 
 target_include_directories(LinkManager PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})

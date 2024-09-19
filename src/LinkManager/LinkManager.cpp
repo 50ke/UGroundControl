@@ -19,10 +19,10 @@ void UGC::LinkManager::start(){
     mMqttLinkWorkThread.start();
 }
 
-void UGC::LinkManager::sendMessage(const QString &message){
+void UGC::LinkManager::sendMessage(const mavlink_message_t &message){
     mMqttLink->publish(message);
 }
 
-void UGC::LinkManager::handleReceivedMessage(const QString &message){
-    qDebug() << "LinkManager received msg:" << message;
+void UGC::LinkManager::handleReceivedMessage(const mavlink_message_t &message){
+    qDebug() << "LinkManager received msg:" << message.sysid;
 }

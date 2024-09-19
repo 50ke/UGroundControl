@@ -23,6 +23,7 @@ find_package(Qt6 REQUIRED COMPONENTS Quick QuickControls2 WebEngineQuick)
 find_package(Qt6 REQUIRED Core Location Network Positioning Qml Sql)
 find_package(fmt CONFIG REQUIRED)
 
+add_subdirectory(src/MavlinkProtocol)
 add_subdirectory(src/Common)
 add_subdirectory(src/QtLocationPlugin)
 add_subdirectory(src/SettingManager)
