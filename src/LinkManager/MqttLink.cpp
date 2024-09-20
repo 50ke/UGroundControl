@@ -1,7 +1,7 @@
 #include "MqttLink.h"
 
-UGC::MqttLink::MqttLink(const QString &serverAddr, const QString &subTopic, const QString &pubTopic)
-    : mServerAddr(serverAddr), mSubTopic(subTopic), mPubTopic(pubTopic){
+UGC::MqttLink::MqttLink(const QString &serverAddr)
+    : mServerAddr(serverAddr){
     try{
         mConnectOptions = mqtt::connect_options_builder()
         .keep_alive_interval(std::chrono::seconds(10))
@@ -21,9 +21,10 @@ void UGC::MqttLink::publish(const mavlink_message_t &message){
         if(!mAsyncMqttClientPtr->is_connected()){
             mAsyncMqttClientPtr->connect(mConnectOptions)->wait();
         }
+        std::string topic = message.msgid == 0 ? "COMMON" : ("USV/" + message.sysid);
         uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
         const int len = mavlink_msg_to_send_buffer(buffer, &message);
-        mqtt::message_ptr pubmsg = mqtt::make_message(mPubTopic.toStdString(), buffer, len, 1, false);
+        mqtt::message_ptr pubmsg = mqtt::make_message(topic, buffer, len, 1, false);
         mAsyncMqttClientPtr->publish(pubmsg)->wait();
     } catch (const std::exception& ex) {
         qCritical() << "MQTT Send Message Error:" << ex.what();

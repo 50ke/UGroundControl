@@ -3,7 +3,7 @@
 
 UGC::LinkManager::LinkManager(UGCApplication *app) : UGCContext{app}{
     QString networkServer = this->mApp->settingManager()->networkServer();
-    mMqttLink = new MqttLink(networkServer, QString::fromStdString("subTopic"), QString::fromStdString("pubTopic"));
+    mMqttLink = new MqttLink(networkServer);
 }
 
 UGC::LinkManager::~LinkManager(){

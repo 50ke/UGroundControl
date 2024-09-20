@@ -17,20 +17,19 @@ class MqttLink : public QObject
     Q_OBJECT
 
 public:
-    MqttLink(const QString &serverAddr, const QString &subTopic, const QString &pubTopic);
+    explicit MqttLink(const QString &serverAddr);
     void publish(const mavlink_message_t &message);
-
-signals:
-    void receivedMessage(const mavlink_message_t &message);
 
 public slots:
     void subscribe();
 
+signals:
+    void receivedMessage(const mavlink_message_t &message);
+
 private:
     bool mStartup{true};
     QString mServerAddr{};
-    QString mSubTopic{};
-    QString mPubTopic{};
+    QString mSubTopic{"COMMON"};
     mqtt::connect_options mConnectOptions;
     mqtt::async_client_ptr mAsyncMqttClientPtr = nullptr;
 };
