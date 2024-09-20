@@ -9,6 +9,7 @@ target_link_libraries(SettingManager
         Qt6::Core
         Boost::json
         Common
+        MavlinkProtocol
 )
 
 target_include_directories(SettingManager PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})

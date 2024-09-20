@@ -8,6 +8,7 @@ namespace UGC {
 
 class SettingManager;
 class LinkManager;
+class VehicleManager;
 
 /**
  * 该类用于启动初始化
@@ -21,10 +22,12 @@ public:
     void init(QQmlContext *context);
     SettingManager *settingManager(){ return mSettingManagerPtr; }
     LinkManager *linkManager(){ return mLinkManagerPtr; }
+    VehicleManager *vehicleManager(){ return mVehicleManagerPtr; }
 
 private:
     SettingManager *mSettingManagerPtr;
     LinkManager *mLinkManagerPtr;
+    VehicleManager *mVehicleManagerPtr;
 };
 
 }

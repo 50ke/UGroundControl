@@ -23,11 +23,17 @@ find_package(Qt6 REQUIRED COMPONENTS Quick QuickControls2 WebEngineQuick)
 find_package(Qt6 REQUIRED Core Location Network Positioning Qml Sql)
 find_package(fmt CONFIG REQUIRED)
 
-add_subdirectory(src/MavlinkProtocol)
 add_subdirectory(src/Common)
+add_subdirectory(src/LidarManager)
+add_subdirectory(src/LinkManager)
+add_subdirectory(src/LogManager)
+add_subdirectory(src/MapManager)
+add_subdirectory(src/MavlinkProtocol)
+add_subdirectory(src/MissionManager)
 add_subdirectory(src/QtLocationPlugin)
 add_subdirectory(src/SettingManager)
-add_subdirectory(src/LinkManager)
+add_subdirectory(src/VehicleManager)
+add_subdirectory(src/VideoManager)
 
 qt_standard_project_setup(REQUIRES 6.5)
 
@@ -65,6 +71,14 @@ qt_add_qml_module(appUGroundControl
     QML_FILES src/QmlControls/UGCInputMixBox.qml
     QML_FILES src/QmlControls/UGCPadding.qml
     RESOURCES UGroundControl.qrc
+    SOURCES src/VehicleManager/Vehicle.h src/VehicleManager/Vehicle.cpp
+    SOURCES src/VehicleManager/VehicleManager.h src/VehicleManager/VehicleManager.cpp
+    SOURCES src/VehicleManager/VehicleSetup.h src/VehicleManager/VehicleSetup.cpp
+    SOURCES src/LidarManager/LidarManager.h src/LidarManager/LidarManager.cpp
+    SOURCES src/LogManager/LogManager.h src/LogManager/LogManager.cpp
+    SOURCES src/MapManager/MapManager.h src/MapManager/MapManager.cpp
+    SOURCES src/MissionManager/MissionManager.h src/MissionManager/MissionManager.cpp
+    SOURCES src/VideoManager/VideoManager.h src/VideoManager/VideoManager.cpp
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.

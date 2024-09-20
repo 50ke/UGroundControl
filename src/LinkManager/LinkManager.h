@@ -24,6 +24,9 @@ public:
 public slots:
     void handleReceivedMessage(const mavlink_message_t &message);
 
+signals:
+    void receivedSystemInformation(const mavlink_usv_system_information_t &message);
+
 private:
     QThread mMqttLinkWorkThread;
     MqttLink *mMqttLink = nullptr;
