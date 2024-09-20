@@ -16,12 +16,12 @@ UGC::MqttLink::MqttLink(const QString &serverAddr)
     }
 }
 
-void UGC::MqttLink::publish(const mavlink_message_t &message){
+void UGC::MqttLink::publish(int targetSystemId, const mavlink_message_t &message){
     try{
         if(!mAsyncMqttClientPtr->is_connected()){
             mAsyncMqttClientPtr->connect(mConnectOptions)->wait();
         }
-        std::string topic = message.msgid == 0 ? "COMMON" : ("USV/" + message.sysid);
+        std::string topic = targetSystemId == 0 ? "COMMON" : ("USV/" + targetSystemId);
         uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
         const int len = mavlink_msg_to_send_buffer(buffer, &message);
         mqtt::message_ptr pubmsg = mqtt::make_message(topic, buffer, len, 1, false);
@@ -34,16 +34,18 @@ void UGC::MqttLink::publish(const mavlink_message_t &message){
 void UGC::MqttLink::subscribe(){
     try{
         mAsyncMqttClientPtr->subscribe(mSubTopic.toStdString(), 1)->wait();
+        mqtt::const_message_ptr msg;
         while (mStartup) {
-            auto msg = mAsyncMqttClientPtr->consume_message();
-            std::string payload = msg->to_string();
-            // 解析mavlink消息
-            std::vector<uint8_t> buffer(payload.begin(), payload.end());
-            mavlink_status_t status_t;
-            mavlink_message_t message_t;
-            for (int i = 0; i < buffer.size(); i++){
-                if (mavlink_parse_char(MAVLINK_COMM_0, buffer[i], &message_t, &status_t)){
-                    emit receivedMessage(message_t);
+            if(mAsyncMqttClientPtr->try_consume_message(&msg) && msg != nullptr){
+                std::string payload = msg->to_string();
+                // 解析mavlink消息
+                std::vector<uint8_t> buffer(payload.begin(), payload.end());
+                mavlink_status_t status_t;
+                mavlink_message_t message_t;
+                for (int i = 0; i < buffer.size(); i++){
+                    if (mavlink_parse_char(MAVLINK_COMM_0, buffer[i], &message_t, &status_t)){
+                        emit receivedMessage(message_t);
+                    }
                 }
             }
         }

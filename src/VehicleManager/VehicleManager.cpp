@@ -17,6 +17,7 @@ void UGC::VehicleManager::handleMessage(const mavlink_message_t &message){
         Vehicle vehicle{vehicleSystemId, name, longitude, latitude, UGC::VehicleType::survey};
         mVehicles.insert(vehicleSystemId, vehicle);
         emit vehiclesChanged(mVehicles.values());
+        qDebug() << "VehicleManager Received Message: " << message.msgid;
     }else if(message.msgid == MAVLINK_MSG_ID_USV_CONNECT_RESPONSE){
         mavlink_usv_connect_response_t connect_response;
         mavlink_msg_usv_connect_response_decode(&message, &connect_response);
@@ -43,11 +44,11 @@ void UGC::VehicleManager::handleMessage(const mavlink_message_t &message){
 void UGC::VehicleManager::connectVehicle(int systemId){
     mavlink_message_t message;
     mavlink_msg_usv_connect_request_pack_chan(this->mApp->settingManager()->systemId(), 0, MAVLINK_COMM_0, &message, systemId);
-    this->mApp->linkManager()->sendMessage(message);
+    this->mApp->linkManager()->sendMessage(systemId, message);
 }
 
 void UGC::VehicleManager::disconnectVehicle(int systemId){
     mavlink_message_t message;
     mavlink_msg_usv_disconnect_request_pack_chan(this->mApp->settingManager()->systemId(), 0, MAVLINK_COMM_0, &message, systemId);
-    this->mApp->linkManager()->sendMessage(message);
+    this->mApp->linkManager()->sendMessage(systemId, message);
 }

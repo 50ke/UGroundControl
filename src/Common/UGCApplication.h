@@ -9,6 +9,7 @@ namespace UGC {
 class SettingManager;
 class LinkManager;
 class VehicleManager;
+class MockManager;
 
 /**
  * 该类用于启动初始化
@@ -23,11 +24,13 @@ public:
     SettingManager *settingManager(){ return mSettingManagerPtr; }
     LinkManager *linkManager(){ return mLinkManagerPtr; }
     VehicleManager *vehicleManager(){ return mVehicleManagerPtr; }
+    MockManager *mockManager(){ return mMockManagerPtr; }
 
 private:
     SettingManager *mSettingManagerPtr;
     LinkManager *mLinkManagerPtr;
     VehicleManager *mVehicleManagerPtr;
+    MockManager *mMockManagerPtr;
 };
 
 }

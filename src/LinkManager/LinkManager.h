@@ -19,7 +19,7 @@ public:
     explicit LinkManager(UGCApplication *app);
     ~LinkManager();
     void start();
-    void sendMessage(const mavlink_message_t &message);
+    void sendMessage(int targetSystemId, const mavlink_message_t &message);
 
 public slots:
     void handleReceivedMessage(const mavlink_message_t &message);

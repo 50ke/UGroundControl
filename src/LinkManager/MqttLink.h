@@ -18,7 +18,7 @@ class MqttLink : public QObject
 
 public:
     explicit MqttLink(const QString &serverAddr);
-    void publish(const mavlink_message_t &message);
+    void publish(int targetSystemId, const mavlink_message_t &message);
 
 public slots:
     void subscribe();
