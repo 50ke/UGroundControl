@@ -7,12 +7,28 @@
 #include <iostream>
 #include <memory>
 
-#include "Vehicle.h"
 #include <UGCContext.h>
 #include <UGCApplication.h>
 #include <common/mavlink.h>
 
 namespace UGC {
+
+class LinkManager;
+class SettingManager;
+
+enum class VehicleType{
+    navigation = 0, // 航标船
+    survey = 1 // 测量船
+};
+
+struct Vehicle
+{
+    int mSystemId;
+    QString mName;
+    float mLongitude;
+    float mLatitude;
+    VehicleType mType;
+};
 
 class VehicleManager : public UGCContext
 {
@@ -21,7 +37,7 @@ public:
     explicit VehicleManager(UGCApplication *app);
 
 public slots:
-    void updateVehicles(const mavlink_usv_system_information_t &system);
+    void handleMessage(const mavlink_message_t &message);
     void connectVehicle(int systemId);
     void disconnectVehicle(int systemId);
 
@@ -32,7 +48,7 @@ signals:
 
 private:
     QMap<int, Vehicle> mVehicles;
-    std::unique_ptr<Vehicle> mConnectedVehiclePtr = nullptr;
+    std::unique_ptr<Vehicle> mConnectedVehicleUniquePtr = nullptr;
 };
 
 }

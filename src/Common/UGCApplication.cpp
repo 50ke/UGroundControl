@@ -1,6 +1,7 @@
 #include "UGCApplication.h"
 #include <SettingManager.h>
 #include <LinkManager.h>
+#include <VehicleManager.h>
 
 UGC::UGCApplication::UGCApplication(){
     mSettingManagerPtr = new UGC::SettingManager(this);

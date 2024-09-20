@@ -2,7 +2,6 @@ find_package(Qt6 REQUIRED COMPONENTS Core Quick)
 find_package(boost_json REQUIRED CONFIG)
 
 qt_add_library(VehicleManager STATIC
-    Vehicle.h Vehicle.cpp
     VehicleSetup.h VehicleSetup.cpp
     VehicleManager.h VehicleManager.cpp
 )
@@ -14,6 +13,7 @@ target_link_libraries(VehicleManager
         Boost::json
         Common
         LinkManager
+        SettingManager
         MavlinkProtocol
 )
 

@@ -25,13 +25,5 @@ void UGC::LinkManager::sendMessage(const mavlink_message_t &message){
 
 void UGC::LinkManager::handleReceivedMessage(const mavlink_message_t &message){
     qDebug() << "LinkManager received msg:" << message.sysid;
-    switch (message.msgid) {
-    case MAVLINK_MSG_ID_USV_SYSTEM_INFORMATION:
-        mavlink_usv_system_information_t system_information;
-        mavlink_msg_usv_system_information_decode(&message, &system_information);
-        emit receivedSystemInformation(system_information);
-        break;
-    default:
-        break;
-    }
+    emit receivedMessage(message);
 }

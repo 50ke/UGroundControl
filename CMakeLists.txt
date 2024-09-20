@@ -71,7 +71,7 @@ qt_add_qml_module(appUGroundControl
     QML_FILES src/QmlControls/UGCInputMixBox.qml
     QML_FILES src/QmlControls/UGCPadding.qml
     RESOURCES UGroundControl.qrc
-    SOURCES src/VehicleManager/Vehicle.h src/VehicleManager/Vehicle.cpp
+    SOURCES
     SOURCES src/VehicleManager/VehicleManager.h src/VehicleManager/VehicleManager.cpp
     SOURCES src/VehicleManager/VehicleSetup.h src/VehicleManager/VehicleSetup.cpp
     SOURCES src/LidarManager/LidarManager.h src/LidarManager/LidarManager.cpp
