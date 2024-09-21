@@ -5,11 +5,12 @@
 UGC::MockManager::MockManager(UGCApplication *app) : UGCContext{app}{
     QString networkServer = this->mApp->settingManager()->networkServer();
     mVehicleMqttLink = new MqttLink(networkServer, "USV/" + QString::number(mVehicleSystemId), "usv-mqtt-client-id");
+    mHeartbeat = new Heartbeat(mVehicleMqttLink);
 }
 
 UGC::MockManager::~MockManager(){
-    mVehicleThread.quit();
-    mVehicleThread.wait();
+    mHeartbeatThread.quit();
+    mHeartbeatThread.wait();
 
     mMqttLinkWorkThread.quit();
     mMqttLinkWorkThread.wait();
@@ -22,17 +23,10 @@ void UGC::MockManager::start(){
     connect(mVehicleMqttLink, &MqttLink::receivedMessage, this, &MockManager::handleReceivedMessage);
     mMqttLinkWorkThread.start();
 
-    // mVehicleMqttLink->moveToThread(&mMqttLinkWorkThread);
-    // connect(&mMqttLinkWorkThread, &QThread::started, this, &MockManager::publishSystemInfo);
-    // connect(&mMqttLinkWorkThread, &QThread::finished, this, &QObject::deleteLater);
-    // connect(mVehicleMqttLink, &MqttLink::receivedMessage, this, &MockManager::handleReceivedMessage);
-
-    // mMqttLinkWorkThread.start();
-
-    // this->moveToThread(&mVehicleThread);
-    // connect(&mVehicleThread, &QThread::started, this, &MockManager::publishSystemInfo);
-    // connect(&mVehicleThread, &QThread::finished, this, &QObject::deleteLater);
-    // mVehicleThread.start();
+    mHeartbeat->moveToThread(&mHeartbeatThread);
+    connect(&mHeartbeatThread, &QThread::started, mHeartbeat, &Heartbeat::publishSystemInfo);
+    connect(&mHeartbeatThread, &QThread::finished, mHeartbeat, &QObject::deleteLater);
+    mHeartbeatThread.start();
 }
 
 void UGC::MockManager::publishSystemInfo(){
@@ -43,7 +37,7 @@ void UGC::MockManager::publishSystemInfo(){
 
         mavlink_msg_usv_system_information_pack_chan(3, 0, MAVLINK_COMM_0, &message, "USV03", 0, 34.34, 56.56);
         mVehicleMqttLink->publish(0, message);
-        QThread::msleep(30000);
+        QThread::msleep(5000);
     }
 }
 

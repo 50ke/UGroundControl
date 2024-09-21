@@ -6,6 +6,7 @@
 #include <UGCContext.h>
 #include <UGCApplication.h>
 #include <QTimer>
+#include "Heartbeat.h"
 
 #include <common/mavlink.h>
 
@@ -21,16 +22,17 @@ public:
     explicit MockManager(UGCApplication *app);
     ~MockManager();
     void start();
-    void publishSystemInfo();
 public slots:
     void handleReceivedMessage(const mavlink_message_t &message);
+    void publishSystemInfo();
 
 private:
     int mVehicleSystemId{2};
     QString mCommonTopic{"COMMON"};
-    QThread mVehicleThread;
+    QThread mHeartbeatThread;
     QThread mMqttLinkWorkThread;
     MqttLink *mVehicleMqttLink = nullptr;
+    Heartbeat *mHeartbeat = nullptr;
 };
 
 }

@@ -1,7 +1,7 @@
 find_package(Qt6 REQUIRED COMPONENTS Core Quick)
 find_package(boost_json REQUIRED CONFIG)
 
-qt_add_library(MockManager STATIC MockManager.h MockManager.cpp)
+qt_add_library(MockManager STATIC MockManager.h MockManager.cpp Heartbeat.h Heartbeat.cpp)
 
 target_link_libraries(MockManager
     PUBLIC
