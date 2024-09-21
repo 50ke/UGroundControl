@@ -42,5 +42,11 @@
         <file>src/UI/Component/VideoView.qml</file>
         <file>src/UI/MainWindow.qml</file>
         <file>src/UI/SettingWindow.qml</file>
+        <file>src/UI/Component/VehicleList.qml</file>
+        <file>resources/icons/connection.svg</file>
+        <file>resources/icons/lock.svg</file>
+        <file>resources/icons/unlock.svg</file>
+        <file>resources/icons/link.svg</file>
+        <file>resources/icons/unlink.svg</file>
     </qresource>
 </RCC>

@@ -23,6 +23,9 @@ void UGC::MockManager::publishSystemInfo(){
         mavlink_message_t message;
         mavlink_msg_usv_system_information_pack_chan(2, 0, MAVLINK_COMM_0, &message, "USV02", 0, 12.34, 56.78);
         this->mApp->linkManager()->sendMessage(0, message);
+
+        mavlink_msg_usv_system_information_pack_chan(3, 0, MAVLINK_COMM_0, &message, "USV03", 0, 34.34, 56.56);
+        this->mApp->linkManager()->sendMessage(0, message);
         QThread::msleep(3000);
     }
 }
