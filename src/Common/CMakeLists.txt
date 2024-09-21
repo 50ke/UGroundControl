@@ -14,6 +14,7 @@ target_link_libraries(Common
         LinkManager
         VehicleManager
         MockManager
+        LogManager
 )
 
 target_include_directories(Common PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})

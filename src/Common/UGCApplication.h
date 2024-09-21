@@ -10,6 +10,7 @@ class SettingManager;
 class LinkManager;
 class VehicleManager;
 class MockManager;
+class LogManager;
 
 /**
  * 该类用于启动初始化

@@ -3,8 +3,10 @@
 #include <LinkManager.h>
 #include <VehicleManager.h>
 #include <MockManager.h>
+#include <LogManager.h>
 
 UGC::UGCApplication::UGCApplication(){
+    LogManager::installHandler();
     mSettingManagerPtr = new UGC::SettingManager(this);
     mLinkManagerPtr = new UGC::LinkManager(this);
     mVehicleManagerPtr = new UGC::VehicleManager(this);
