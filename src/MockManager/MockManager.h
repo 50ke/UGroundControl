@@ -5,11 +5,14 @@
 #include <QThread>
 #include <UGCContext.h>
 #include <UGCApplication.h>
+#include <QTimer>
+
+#include <common/mavlink.h>
 
 namespace UGC {
 
-class LinkManager;
 class SettingManager;
+class MqttLink;
 
 class MockManager : public UGCContext
 {
@@ -19,9 +22,15 @@ public:
     ~MockManager();
     void start();
     void publishSystemInfo();
+public slots:
+    void handleReceivedMessage(const mavlink_message_t &message);
 
 private:
+    int mVehicleSystemId{2};
+    QString mCommonTopic{"COMMON"};
     QThread mVehicleThread;
+    QThread mMqttLinkWorkThread;
+    MqttLink *mVehicleMqttLink = nullptr;
 };
 
 }
