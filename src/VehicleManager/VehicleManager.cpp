@@ -8,15 +8,25 @@ UGC::VehicleManager::VehicleManager(UGCApplication *app) : UGCContext{app}{
 
 void UGC::VehicleManager::handleMessage(const mavlink_message_t &message){
     if(message.msgid == MAVLINK_MSG_ID_USV_SYSTEM_INFORMATION){
+        // 解析消息
         mavlink_usv_system_information_t system_information;
         mavlink_msg_usv_system_information_decode(&message, &system_information);
         int vehicleSystemId = message.sysid;
         QString name = QString::fromStdString(system_information.name);
         float longitude = system_information.lon;
         float latitude = system_information.lat;
-        Vehicle vehicle{vehicleSystemId, name, longitude, latitude, UGC::VehicleType::survey};
+        bool connected = system_information.connected;
+        bool owner = (mOwnerVehicleUniquePtr != nullptr && vehicleSystemId == mOwnerVehicleUniquePtr->systemId);
+        // 更新无人船列表
+        Vehicle vehicle{vehicleSystemId, name, longitude, latitude, UGC::VehicleType::survey, connected, owner};
         mVehicles.insert(vehicleSystemId, vehicle);
-        emit vehiclesChanged(mVehicles.values());
+        // 通知更新
+        QList<QVariantMap> res;
+        QList<Vehicle> list = mVehicles.values();
+        for (int i = 0; i < list.size(); ++i) {
+            res.append(list.value(i).toQVariantMap());
+        }
+        emit vehiclesChanged(res);
         qDebug() << "VehicleManager Received Message: " << message.msgid;
     }else if(message.msgid == MAVLINK_MSG_ID_USV_CONNECT_RESPONSE){
         mavlink_usv_connect_response_t connect_response;

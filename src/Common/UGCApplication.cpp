@@ -13,6 +13,7 @@ UGC::UGCApplication::UGCApplication(){
 
 void UGC::UGCApplication::init(QQmlContext *context){
     context->setContextProperty("settingManager", mSettingManagerPtr);
+    context->setContextProperty("vehicleManager", mVehicleManagerPtr);
     mLinkManagerPtr->start();
     mMockManagerPtr->start();
 }

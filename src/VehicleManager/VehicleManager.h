@@ -23,11 +23,25 @@ enum class VehicleType{
 
 struct Vehicle
 {
-    int mSystemId;
-    QString mName;
-    float mLongitude;
-    float mLatitude;
-    VehicleType mType;
+    int systemId;
+    QString name;
+    float longitude;
+    float latitude;
+    VehicleType type;
+    bool connected;
+    bool owner;
+
+    QVariantMap toQVariantMap(){
+        QVariantMap data;
+        data["systemId"] = this->systemId;
+        data["name"] = this->name;
+        data["longitude"] = this->longitude;
+        data["latitude"] = this->latitude;
+        data["type"] = static_cast<int>(this->type);
+        data["connected"] = this->connected;
+        data["owner"] = this->owner;
+        return data;
+    }
 };
 
 class VehicleManager : public UGCContext
@@ -42,13 +56,13 @@ public slots:
     void disconnectVehicle(int systemId);
 
 signals:
-    void vehiclesChanged(const QList<Vehicle> &vehicles);
+    void vehiclesChanged(const QList<QVariantMap> &vehicles);
     void connectVehicleCompleted(int systemId);
     void disconnectVehicleCompleted(int systemId);
 
 private:
     QMap<int, Vehicle> mVehicles;
-    std::unique_ptr<Vehicle> mConnectedVehicleUniquePtr = nullptr;
+    std::unique_ptr<Vehicle> mOwnerVehicleUniquePtr = nullptr;
 };
 
 }
