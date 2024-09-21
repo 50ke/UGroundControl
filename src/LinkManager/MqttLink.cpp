@@ -1,7 +1,7 @@
 #include "MqttLink.h"
 
-UGC::MqttLink::MqttLink(const QString &serverAddr)
-    : mServerAddr(serverAddr){
+UGC::MqttLink::MqttLink(const QString &serverAddr, int gcsSystemId)
+    : mServerAddr(serverAddr), mGcsTopic("GCS/" + gcsSystemId){
     try{
         mConnectOptions = mqtt::connect_options_builder()
         .keep_alive_interval(std::chrono::seconds(10))
@@ -19,9 +19,10 @@ UGC::MqttLink::MqttLink(const QString &serverAddr)
 void UGC::MqttLink::publish(int targetSystemId, const mavlink_message_t &message){
     try{
         if(!mAsyncMqttClientPtr->is_connected()){
+            qDebug() << "[Publish]MQTT LINK Disconnectd, try to reconnect...";
             mAsyncMqttClientPtr->connect(mConnectOptions)->wait();
         }
-        std::string topic = targetSystemId == 0 ? "COMMON" : ("USV/" + targetSystemId);
+        std::string topic = targetSystemId == 0 ? mCommonTopic.toStdString() : ("USV/" + targetSystemId);
         uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
         const int len = mavlink_msg_to_send_buffer(buffer, &message);
         mqtt::message_ptr pubmsg = mqtt::make_message(topic, buffer, len, 1, false);
@@ -33,9 +34,16 @@ void UGC::MqttLink::publish(int targetSystemId, const mavlink_message_t &message
 
 void UGC::MqttLink::subscribe(){
     try{
-        mAsyncMqttClientPtr->subscribe(mSubTopic.toStdString(), 1)->wait();
+        auto subTopics  = mqtt::string_collection::create({mCommonTopic.toStdString(), mGcsTopic.toStdString()});
+        const std::vector<int> qos{1, 1};
+        mAsyncMqttClientPtr->subscribe(subTopics, qos)->wait();
         mqtt::const_message_ptr msg;
         while (mStartup) {
+            if(!mAsyncMqttClientPtr->is_connected()){
+                qDebug() << "[Subscribe]MQTT LINK Disconnectd, try to reconnect...";
+                mAsyncMqttClientPtr->connect(mConnectOptions)->wait();
+                mAsyncMqttClientPtr->subscribe(subTopics, qos)->wait();
+            }
             if(mAsyncMqttClientPtr->try_consume_message(&msg) && msg != nullptr){
                 std::string payload = msg->to_string();
                 // 解析mavlink消息
@@ -50,6 +58,6 @@ void UGC::MqttLink::subscribe(){
             }
         }
     } catch (const std::exception& ex) {
-        qCritical() << "MQTT Do Work Error:" << ex.what();
+        qCritical() << "MQTT Subscribe Error:" << ex.what();
     }
 }

@@ -3,7 +3,8 @@
 
 UGC::LinkManager::LinkManager(UGCApplication *app) : UGCContext{app}{
     QString networkServer = this->mApp->settingManager()->networkServer();
-    mMqttLink = new MqttLink(networkServer);
+    int systemId = this->mApp->settingManager()->systemId();
+    mMqttLink = new MqttLink(networkServer, systemId);
 }
 
 UGC::LinkManager::~LinkManager(){

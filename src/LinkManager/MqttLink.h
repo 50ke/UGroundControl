@@ -17,7 +17,7 @@ class MqttLink : public QObject
     Q_OBJECT
 
 public:
-    explicit MqttLink(const QString &serverAddr);
+    explicit MqttLink(const QString &serverAddr, int gcsSystemId);
     void publish(int targetSystemId, const mavlink_message_t &message);
 
 public slots:
@@ -29,7 +29,8 @@ signals:
 private:
     bool mStartup{true};
     QString mServerAddr{};
-    QString mSubTopic{"COMMON"};
+    QString mCommonTopic{"COMMON"};
+    QString mGcsTopic{""};
     mqtt::connect_options mConnectOptions;
     mqtt::async_client_ptr mAsyncMqttClientPtr = nullptr;
 };

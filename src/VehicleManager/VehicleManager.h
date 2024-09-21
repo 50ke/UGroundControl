@@ -58,8 +58,8 @@ public slots:
 
 signals:
     void vehiclesChanged(const QList<QVariantMap> &vehicles);
-    void connectVehicleCompleted(int systemId);
-    void disconnectVehicleCompleted(int systemId);
+    void connectVehicleCompleted(int systemId, bool ack);
+    void disconnectVehicleCompleted(int systemId, bool ack);
 
 private:
     QMap<int, Vehicle> mVehicles;
