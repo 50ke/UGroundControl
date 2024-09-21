@@ -6,7 +6,7 @@ import QmlControls 1.0
 
 Rectangle {
     width: 200
-    height: 350
+    height: 120
     color: "#A8ABB2"
     ListView {
         id: listViewId

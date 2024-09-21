@@ -16,6 +16,15 @@ void UGC::Heartbeat::publishSystemInfo(){
 
         mavlink_msg_usv_system_information_pack_chan(3, 0, MAVLINK_COMM_0, &message, "USV03", mconnectedUsvSystemId == 3 ? 1 : 0, 34.34, 56.56);
         mVehicleMqttLink->publish(0, message);
+
+        mavlink_msg_usv_system_information_pack_chan(4, 0, MAVLINK_COMM_0, &message, "USV04", mconnectedUsvSystemId == 4 ? 1 : 0, 34.34, 56.56);
+        mVehicleMqttLink->publish(0, message);
+
+        mavlink_msg_usv_system_information_pack_chan(5, 0, MAVLINK_COMM_0, &message, "USV05", mconnectedUsvSystemId == 5 ? 1 : 0, 34.34, 56.56);
+        mVehicleMqttLink->publish(0, message);
+
+        mavlink_msg_usv_system_information_pack_chan(6, 0, MAVLINK_COMM_0, &message, "USV06", mconnectedUsvSystemId == 6 ? 1 : 0, 34.34, 56.56);
+        mVehicleMqttLink->publish(0, message);
         QThread::msleep(3000);
     }
 }
