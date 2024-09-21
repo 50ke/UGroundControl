@@ -52,8 +52,9 @@ public:
 
 public slots:
     void handleMessage(const mavlink_message_t &message);
-    void connectVehicle(int systemId);
-    void disconnectVehicle(int systemId);
+    Q_INVOKABLE void connectVehicle(int systemId);
+    Q_INVOKABLE void disconnectVehicle(int systemId);
+    Q_INVOKABLE void getVehicles();
 
 signals:
     void vehiclesChanged(const QList<QVariantMap> &vehicles);

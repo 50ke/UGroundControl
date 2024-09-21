@@ -52,13 +52,24 @@ void UGC::VehicleManager::handleMessage(const mavlink_message_t &message){
 }
 
 void UGC::VehicleManager::connectVehicle(int systemId){
+    qDebug() << "Connecting Vehicle: " << systemId;
     mavlink_message_t message;
     mavlink_msg_usv_connect_request_pack_chan(this->mApp->settingManager()->systemId(), 0, MAVLINK_COMM_0, &message, systemId);
     this->mApp->linkManager()->sendMessage(systemId, message);
 }
 
 void UGC::VehicleManager::disconnectVehicle(int systemId){
+    qDebug() << "Disconnecting Vehicle: " << systemId;
     mavlink_message_t message;
     mavlink_msg_usv_disconnect_request_pack_chan(this->mApp->settingManager()->systemId(), 0, MAVLINK_COMM_0, &message, systemId);
     this->mApp->linkManager()->sendMessage(systemId, message);
+}
+
+void UGC::VehicleManager::getVehicles(){
+    QList<QVariantMap> res;
+    QList<Vehicle> list = mVehicles.values();
+    for (int i = 0; i < list.size(); ++i) {
+        res.append(list.value(i).toQVariantMap());
+    }
+    emit vehiclesChanged(res);
 }

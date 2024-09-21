@@ -14,29 +14,13 @@ Rectangle {
         focus: true
         clip: true
         spacing: 1
-        model: ListModel {
-            ListElement {
-                systemId: 1
-                name: "USV01"
-                connected: 0
-            }
-            ListElement {
-                systemId: 2
-                name: "USV02"
-                connected: 0
-            }
-            ListElement {
-                systemId: 3
-                name: "USV03"
-                connected: 1
-            }
-        }
-        delegate: Rectangle{
+        model: ListModel {}
+        delegate: Rectangle {
             width: listViewId.width
             height: 40
             radius: 5
             color: "#303133"
-            Row{
+            Row {
                 spacing: 10
                 leftPadding: 5
                 anchors.verticalCenter: parent.verticalCenter
@@ -46,52 +30,52 @@ Rectangle {
                     anchors.verticalCenter: parent.verticalCenter
                     source: connected ? "qrc:/resources/icons/lock.svg" : "qrc:/resources/icons/unlock.svg"
                 }
-                UGCText{
+                UGCText {
                     anchors.verticalCenter: parent.verticalCenter
                     oText: name
                 }
-                UGCPadding{
+                UGCPadding {
                     width: 75
                 }
                 Image {
                     height: 16
                     width: 16
                     anchors.verticalCenter: parent.verticalCenter
-                    source: connected ? "qrc:/resources/icons/unlink.svg" : "qrc:/resources/icons/link.svg"
+                    source: owner ? "qrc:/resources/icons/unlink.svg" : "qrc:/resources/icons/link.svg"
+                    MouseArea {
+                        anchors.fill: parent
+                        onClicked: {
+                            if(owner){
+                                vehicleManager.disconnectVehicle(systemId)
+                            }else{
+                                vehicleManager.connectVehicle(systemId)
+                            }
+                        }
+                    }
                 }
             }
         }
     }
+
+    Connections {
+        target: vehicleManager
+        function onVehiclesChanged(vehicles) {
+            listViewId.model.clear()
+            for (var i = 0; i < vehicles.length; i++) {
+                listViewId.model.append({
+                                            "systemId": vehicles[i].systemId,
+                                            "name": vehicles[i].name,
+                                            "longitude": vehicles[i].longitude,
+                                            "latitude": vehicles[i].latitude,
+                                            "type": vehicles[i].type,
+                                            "connected": vehicles[i].connected,
+                                            "owner": vehicles[i].owner
+                                        })
+            }
+        }
+    }
+
+    Component.onCompleted: {
+        vehicleManager.getVehicles()
+    }
 }
-
-
-
-
-
-
-// Rectangle {
-//     width: 200
-//     height: 350
-//     color: "#303133"
-//     ScrollView {
-//         anchors.fill: parent
-//         ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
-//         ScrollBar.vertical.policy: ScrollBar.AlwaysOff
-//         Column {
-//             width: parent.width
-//             height: parent.height
-//             UGCText{
-//                 oText: "qqqqqqqq"
-//             }
-//             UGCText{
-//                 oText: "wwwwwwww"
-//             }
-//             UGCText{
-//                 oText: "eeeeeeee"
-//             }
-//             UGCText{
-//                 oText: "rrrrrrrr"
-//             }
-//         }
-//     }
-// }
