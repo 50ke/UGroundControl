@@ -16,6 +16,7 @@ Rectangle {
         spacing: 1
         model: ListModel {}
         delegate: Rectangle {
+            id: itemId
             width: listViewId.width
             height: 40
             radius: 5
@@ -42,17 +43,20 @@ Rectangle {
                     width: 16
                     anchors.verticalCenter: parent.verticalCenter
                     source: owner ? "qrc:/resources/icons/unlink.svg" : "qrc:/resources/icons/link.svg"
-                    MouseArea {
-                        anchors.fill: parent
-                        onClicked: {
-                            selectedSystemId = systemId
-                            selectedName = name
-                            selectedOwner = owner
-                            confirmationDialogId.open()
-
-                        }
-                    }
                 }
+            }
+
+            MouseArea {
+                anchors.fill: parent
+                onClicked: {
+                    selectedSystemId = systemId
+                    selectedName = name
+                    selectedOwner = owner
+                    confirmationDialogId.open()
+                }
+                hoverEnabled: true
+                onEntered: { itemId.color = "#606266"}
+                onExited: { itemId.color = "#303133"}
             }
         }
     }
