@@ -1,7 +1,7 @@
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
-
+import QtQuick.Dialogs
 import QmlControls 1.0
 
 Rectangle {
@@ -45,16 +45,34 @@ Rectangle {
                     MouseArea {
                         anchors.fill: parent
                         onClicked: {
-                            if(owner){
-                                vehicleManager.disconnectVehicle(systemId)
-                            }else{
-                                vehicleManager.connectVehicle(systemId)
-                            }
+                            selectedSystemId = systemId
+                            selectedName = name
+                            selectedOwner = owner
+                            confirmationDialogId.open()
+
                         }
                     }
                 }
             }
         }
+    }
+
+    // 操作确认弹窗
+    property int selectedSystemId: 0
+    property string selectedName: ""
+    property bool selectedOwner: false
+    MessageDialog {
+           id: confirmationDialogId
+           text: selectedOwner ? "确认是否断开%1".arg(selectedName) : "确认是否连接%1".arg(selectedName)
+           buttons: MessageDialog.Ok | MessageDialog.Cancel
+           onAccepted: {
+               if(selectedOwner){
+                   vehicleManager.disconnectVehicle(selectedSystemId)
+               }else{
+                   vehicleManager.connectVehicle(selectedSystemId)
+               }
+           }
+           onRejected: {}
     }
 
     Connections {
