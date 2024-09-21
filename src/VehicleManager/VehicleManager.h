@@ -63,7 +63,7 @@ signals:
 
 private:
     QMap<int, Vehicle> mVehicles;
-    std::unique_ptr<Vehicle> mOwnerVehicleUniquePtr = nullptr;
+    int mOwnerVehicleSystemId;
 };
 
 }

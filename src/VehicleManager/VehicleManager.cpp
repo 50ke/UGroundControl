@@ -16,7 +16,7 @@ void UGC::VehicleManager::handleMessage(const mavlink_message_t &message){
         float longitude = system_information.lon;
         float latitude = system_information.lat;
         bool connected = system_information.connected;
-        bool owner = (mOwnerVehicleUniquePtr != nullptr && vehicleSystemId == mOwnerVehicleUniquePtr->systemId);
+        bool owner = (vehicleSystemId == mOwnerVehicleSystemId);
         // 更新无人船列表
         Vehicle vehicle{vehicleSystemId, name, longitude, latitude, UGC::VehicleType::survey, connected, owner};
         mVehicles.insert(vehicleSystemId, vehicle);
@@ -34,6 +34,7 @@ void UGC::VehicleManager::handleMessage(const mavlink_message_t &message){
         int gcsSystemId = this->mApp->settingManager()->systemId();
         if(connect_response.target_system == gcsSystemId && connect_response.ack == 1){
             qDebug() << "Connect Vehicle Succeed: " << message.sysid;
+            mOwnerVehicleSystemId = message.sysid;
             emit connectVehicleCompleted(message.sysid);
         }else{
             qDebug() << "Connect Vehicle Failed: " << message.sysid;
@@ -44,6 +45,7 @@ void UGC::VehicleManager::handleMessage(const mavlink_message_t &message){
         int gcsSystemId = this->mApp->settingManager()->systemId();
         if(disconnect_response.target_system == gcsSystemId && disconnect_response.ack == 1){
             qDebug() << "Disconnect Vehicle Succeed: " << message.sysid;
+            mOwnerVehicleSystemId = 0;
             emit disconnectVehicleCompleted(message.sysid);
         }else{
             qDebug() << "Disconnect Vehicle Failed: " << message.sysid;
