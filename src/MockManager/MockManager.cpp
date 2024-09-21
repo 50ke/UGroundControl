@@ -42,5 +42,30 @@ void UGC::MockManager::publishSystemInfo(){
 }
 
 void UGC::MockManager::handleReceivedMessage(const mavlink_message_t &message){
+    if(message.msgid == MAVLINK_MSG_ID_USV_CONNECT_REQUEST){
+        if(mGcsSystemId != 0 && mGcsSystemId != message.sysid){
+            mavlink_message_t message_t;
+            mavlink_msg_usv_connect_response_pack_chan(mVehicleSystemId, 0, MAVLINK_COMM_0, &message_t, message.sysid, 0);
+            mVehicleMqttLink->publish("GCS/" + QString::number(message.sysid), message_t);
+        }else{
+            mGcsSystemId = message.sysid;
+            mavlink_message_t message_t;
+            mavlink_msg_usv_connect_response_pack_chan(mVehicleSystemId, 0, MAVLINK_COMM_0, &message_t, message.sysid, 1);
+            mVehicleMqttLink->publish("GCS/" + QString::number(message.sysid), message_t);
+            mHeartbeat->updateConnectedUsvSystemId(mVehicleSystemId);
+        }
+    }else if(message.msgid == MAVLINK_MSG_ID_USV_DISCONNECT_REQUEST){
+        if(mGcsSystemId != 0 && mGcsSystemId != message.sysid){
+            mavlink_message_t message_t;
+            mavlink_msg_usv_disconnect_response_pack_chan(mVehicleSystemId, 0, MAVLINK_COMM_0, &message_t, message.sysid, 0);
+            mVehicleMqttLink->publish("GCS/" + QString::number(message.sysid), message_t);
+        }else{
+            mGcsSystemId = message.sysid;
+            mavlink_message_t message_t;
+            mavlink_msg_usv_disconnect_response_pack_chan(mVehicleSystemId, 0, MAVLINK_COMM_0, &message_t, message.sysid, 1);
+            mVehicleMqttLink->publish("GCS/" + QString::number(message.sysid), message_t);
+            mHeartbeat->updateConnectedUsvSystemId(0);
+        }
+    }
     qDebug() << "USV received msg id: " << message.msgid;
 }

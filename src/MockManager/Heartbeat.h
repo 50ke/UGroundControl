@@ -19,10 +19,12 @@ class Heartbeat : public QObject
     Q_OBJECT
 public:
     explicit Heartbeat(MqttLink *mqttLink);
+    void updateConnectedUsvSystemId(int systemId);
 public slots:
     void publishSystemInfo();
 
 private:
+    int mconnectedUsvSystemId{0};
     MqttLink *mVehicleMqttLink = nullptr;
 };
 

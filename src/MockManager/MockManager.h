@@ -28,6 +28,7 @@ public slots:
 
 private:
     int mVehicleSystemId{2};
+    int mGcsSystemId{0};
     QString mCommonTopic{"COMMON"};
     QThread mHeartbeatThread;
     QThread mMqttLinkWorkThread;
