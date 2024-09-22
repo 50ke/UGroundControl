@@ -46,18 +46,25 @@ QString UGCQGeoTileFetcher::getUrl(const QGeoTileSpec &spec) const
     int y = spec.y();
     int zoom = spec.zoom();
 
-    QString path = QString("%1/osm_100-l-3-%2-%3-%4.%5")
-        .arg(mapUrl)
-        .arg(zoom)
-        .arg(x)
-        .arg(y)
-        .arg(format);
+    // QString path = QString("%1/osm_100-l-3-%2-%3-%4.%5")
+    //     .arg(mapUrl)
+    //     .arg(zoom)
+    //     .arg(x)
+    //     .arg(y)
+    //     .arg(format);
+
+    QString path = QString("%1/%2/%3/%4/tile.%5")
+                       .arg(mapUrl)
+                       .arg(zoom)
+                       .arg(x)
+                       .arg(y)
+                       .arg(format);
 
     QString localFilePath = QUrl(path).toLocalFile();
     QFile file(localFilePath);
     if (!file.exists()) {
         qDebug() << "瓦片不存在：" << path;
-        path = QString("%1/no-tile.%2")
+        path = QString("%1/notile.%2")
             .arg(mapUrl)
             .arg(format);
     }else{
