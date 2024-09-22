@@ -10,8 +10,8 @@ import QmlControls 1.0
 
 Item {
     property var centerCoordination: {
-        "longitude": 114.347231,
-        "latitude": 30.574839
+        "longitude": 105.456,
+        "latitude": 28.873113
     }
     width: parent.width
     height: parent.height
@@ -19,7 +19,7 @@ Item {
         id: mapViewId
         map.plugin: Plugin {
             name: "ugc_map"
-            PluginParameter { name: "mapPath"; value: "D:/workspace/GisProject/GaodeMap" }
+            PluginParameter { name: "mapPath"; value: "D:/workspace/GisProject/lzhdj" }
         }
         anchors.fill: parent
         map.zoomLevel: 10
