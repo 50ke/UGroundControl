@@ -22,6 +22,8 @@ Item {
             PluginParameter { name: "mapPath"; value: "D:/workspace/GisProject/lzhdj" }
         }
         anchors.fill: parent
+        map.layer.enabled: true
+        map.layer.samples: 8
         map.zoomLevel: 10
         map.minimumZoomLevel: 10
         map.maximumZoomLevel: 16

@@ -26,6 +26,9 @@ Rectangle {
             oTextFont.pointSize: 10
             display: AbstractButton.TextUnderIcon
             oIconSource: "qrc:/resources/icons/plan.svg"
+            onClicked: {
+                loaderId.source = (loaderId.source == "qrc:/src/UI/Component/MissionBoxBar.qml") ? "" : "qrc:/src/UI/Component/MissionBoxBar.qml"
+            }
         }
         UGCButton{
             oText: "雷达"
@@ -62,15 +65,7 @@ Rectangle {
             display: AbstractButton.TextUnderIcon
             oIconSource: "qrc:/resources/icons/boats.svg"
             onClicked: {
-                vehicleListLoaderId.source = (vehicleListLoaderId.source == "") ? "qrc:/src/UI/Component/VehicleList.qml" : ""
-            }
-
-            Loader{
-                id: vehicleListLoaderId
-                anchors.left: parent.right
-                anchors.leftMargin: 5
-                anchors.top: parent.top
-                source: ""
+                loaderId.source = (loaderId.source == "qrc:/src/UI/Component/VehicleList.qml") ? "" : "qrc:/src/UI/Component/VehicleList.qml"
             }
         }
         UGCButton{
@@ -83,6 +78,16 @@ Rectangle {
                 createComponent("Setting")
             }
         }
+    }
+
+    Loader{
+        id: loaderId
+        width: 300
+        anchors.left: parent.right
+        anchors.leftMargin: 5
+        anchors.top: parent.top
+        anchors.bottom: parent.bottom
+        source: ""
     }
 
     function createComponent(name){

@@ -5,12 +5,13 @@ import QtQuick.Dialogs
 import QmlControls 1.0
 
 Rectangle {
-    width: 200
-    height: 120
-    color: "#A8ABB2"
+    width: parent.width
+    height: parent.height
+    color: "#303133"
     ListView {
         id: listViewId
         anchors.fill: parent
+        anchors.margins: 5
         focus: true
         clip: true
         spacing: 1
@@ -20,8 +21,9 @@ Rectangle {
             width: listViewId.width
             height: 40
             radius: 5
-            color: "#303133"
+            color: "#606266"
             Row {
+                anchors.fill: parent
                 spacing: 10
                 leftPadding: 5
                 anchors.verticalCenter: parent.verticalCenter
@@ -36,7 +38,7 @@ Rectangle {
                     oText: name
                 }
                 UGCPadding {
-                    width: 75
+                    width: 165
                 }
                 Image {
                     height: 16
@@ -55,8 +57,8 @@ Rectangle {
                     confirmationDialogId.open()
                 }
                 hoverEnabled: true
-                onEntered: { itemId.color = "#606266"}
-                onExited: { itemId.color = "#303133"}
+                onEntered: { itemId.color = "#909399"}
+                onExited: { itemId.color = "#606266"}
             }
         }
     }
