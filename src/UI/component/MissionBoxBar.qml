@@ -1,13 +1,22 @@
 import QtQuick
+import QtQuick.Controls
+import QtQuick.Layouts
+import QtQuick.Dialogs
+import QmlControls 1.0
 
 Rectangle {
-    width: 200
-    height: 120
-    color: "#A8ABB2"
-    Rectangle {
-        color: "RED"
+    width: parent.width
+    height: parent.height
+    color: "#303133"
+    Column{
         anchors.fill: parent
         anchors.margins: 5
-
+        UGCText{
+            oText: "创建任务"
+        }
+        ToolSeparator {
+            width: parent.width
+            orientation: Qt.Horizontal
+        }
     }
 }

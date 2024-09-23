@@ -49,5 +49,6 @@
         <file>resources/icons/link.svg</file>
         <file>resources/icons/unlink.svg</file>
         <file>src/UI/Component/MissionBoxBar.qml</file>
+        <file>resources/icons/arrow.svg</file>
     </qresource>
 </RCC>
