@@ -13,8 +13,8 @@ void UGC::Heartbeat::publishSystemInfo(){
     float y = 105.458048;
     QRandomGenerator generator;
     while(true){
-        float lan = x + generator.bounded(10)*0.0001;
-        float lon = y + generator.bounded(10)*0.0001;
+        float lan = x + generator.bounded(10)*0.001;
+        float lon = y + generator.bounded(10)*0.001;
         mavlink_message_t message;
         mavlink_msg_usv_system_information_pack_chan(2, 0, MAVLINK_COMM_0, &message, "USV02", mconnectedUsvSystemId == 2 ? 1 : 0, lan, lon);
         mVehicleMqttLink->publish(0, message);

@@ -75,9 +75,10 @@ Item {
             delegate: MapQuickItem {
                 parent: mapViewId.map
                 coordinate: QtPositioning.coordinate(latitude, longitude)
-                anchorPoint.x: vehicleLocationIconId.width / 2
-                anchorPoint.y: vehicleLocationIconId.height / 2
+                anchorPoint.x: vehicleLocationId.width / 2
+                anchorPoint.y: vehicleLocationId.height / 2
                 sourceItem: Rectangle {
+                    id: vehicleLocationId
                     width: 32
                     height: 32
                     radius: 16
@@ -85,7 +86,6 @@ Item {
                     border.width: 3
                     border.color: owner ? "#F56C6C" : "#67C23A"
                     Image {
-                        id: vehicleLocationIconId
                         anchors.centerIn: parent
                         width: 16
                         height: 16
@@ -118,16 +118,22 @@ Item {
                 }
             }
         }
-        // 添加航标船到地图
-        // 添加AIS到地图
         // 添加无人船轨迹到地图
-
-        Component.onCompleted: {
-
-            // TODO
-            // vehicleLocationItemId.coordinate.latitude = centerCoordination.latitude
-            // vehicleLocationItemId.coordinate.longitude = centerCoordination.longitude
-            //vehicleLocationItemId.coordinate = QtPositioning.coordinate(centerCoordination.latitude, centerCoordination.longitude)
+        MapPolyline {
+            id: trajectoryItemId
+            parent: mapViewId.map
+            line.width: 3
+            line.color: "red"
+            smooth: true
+            opacity: 0.8
+            Connections {
+                target: vehicleManager
+                function onVehicleTrajectoryChanged(waypoint) {
+                    trajectoryItemId.addCoordinate(waypoint)
+                }
+            }
         }
+
+        Component.onCompleted: {}
     }
 }
