@@ -9,9 +9,14 @@ void UGC::Heartbeat::updateConnectedUsvSystemId(int systemId){
 }
 
 void UGC::Heartbeat::publishSystemInfo(){
+    float x = 28.873177;
+    float y = 105.458048;
+    QRandomGenerator generator;
     while(true){
+        float lan = x + generator.bounded(10)*0.0001;
+        float lon = y + generator.bounded(10)*0.0001;
         mavlink_message_t message;
-        mavlink_msg_usv_system_information_pack_chan(2, 0, MAVLINK_COMM_0, &message, "USV02", mconnectedUsvSystemId == 2 ? 1 : 0, 28.873177, 105.458048);
+        mavlink_msg_usv_system_information_pack_chan(2, 0, MAVLINK_COMM_0, &message, "USV02", mconnectedUsvSystemId == 2 ? 1 : 0, lan, lon);
         mVehicleMqttLink->publish(0, message);
 
         mavlink_msg_usv_system_information_pack_chan(3, 0, MAVLINK_COMM_0, &message, "USV03", mconnectedUsvSystemId == 3 ? 1 : 0, 28.863177, 105.458048);
@@ -25,6 +30,13 @@ void UGC::Heartbeat::publishSystemInfo(){
 
         mavlink_msg_usv_system_information_pack_chan(6, 0, MAVLINK_COMM_0, &message, "USV06", mconnectedUsvSystemId == 6 ? 1 : 0, 28.833177, 105.458048);
         mVehicleMqttLink->publish(0, message);
+
+        // float x = 28.833177 + generator.bounded(10)*0.01;
+        // float y = 105.458048f + generator.bounded(10)*0.01;
+        // std::vector<float> pos_x = {x};
+        // std::vector<float> pos_y = {y};
+        // mavlink_msg_trajectory_representation_bezier_pack_chan(2, 0, MAVLINK_COMM_0, &message, 1, 1, pos_x.data(), pos_y.data(), {0}, {0}, {0});
+        // mVehicleMqttLink->publish("GCS/1", message);
         QThread::msleep(3000);
     }
 }

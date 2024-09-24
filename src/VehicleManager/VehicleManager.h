@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QList>
+#include <QtPositioning/QGeoCoordinate>
 
 #include <iostream>
 #include <memory>
@@ -60,10 +61,12 @@ signals:
     void vehiclesChanged(const QList<QVariantMap> &vehicles);
     void connectVehicleCompleted(int systemId, bool ack);
     void disconnectVehicleCompleted(int systemId, bool ack);
+    void vehicleTrajectoryChanged(QGeoCoordinate waypoint);
 
 private:
     QMap<int, Vehicle> mVehicles;
     int mOwnerVehicleSystemId;
+    QList<QGeoCoordinate> mOwnerVehicleTrajectory;
 };
 
 }

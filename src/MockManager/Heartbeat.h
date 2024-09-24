@@ -6,6 +6,8 @@
 #include <UGCContext.h>
 #include <UGCApplication.h>
 #include <QTimer>
+#include <QRandomGenerator>
+
 
 #include <common/mavlink.h>
 

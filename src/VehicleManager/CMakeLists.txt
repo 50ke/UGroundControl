@@ -1,4 +1,4 @@
-find_package(Qt6 REQUIRED COMPONENTS Core Quick)
+find_package(Qt6 REQUIRED COMPONENTS Core Quick Positioning)
 find_package(boost_json REQUIRED CONFIG)
 
 qt_add_library(VehicleManager STATIC
@@ -10,6 +10,7 @@ target_link_libraries(VehicleManager
     PUBLIC
         Qt6::Quick
         Qt6::Core
+        Qt6::Positioning
         Boost::json
         Common
         LinkManager
