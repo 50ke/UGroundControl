@@ -91,7 +91,7 @@ Item {
                         height: 16
                         source: "qrc:/resources/icons/usv.svg"
                     }
-                    UGCText{
+                    UGCText {
                         id: vehicleNameId
                         anchors.bottom: parent.top
                         oText: name
@@ -132,6 +132,90 @@ Item {
                     trajectoryItemId.addCoordinate(waypoint)
                 }
             }
+        }
+        // 添加航点到地图
+        MapItemGroup {
+            id: missionItemId
+            parent: mapViewId.map
+            MapItemView {
+                id: missionPointItemId
+                parent: mapViewId.map
+                model: ListModel {}
+                delegate: MapQuickItem {
+                    parent: mapViewId.map
+                    coordinate: QtPositioning.coordinate(latitude, longitude)
+                    anchorPoint.x: missionPointId.width / 2
+                    anchorPoint.y: missionPointId.height / 2
+                    sourceItem: Rectangle {
+                        id: missionPointId
+                        width: 24
+                        height: 24
+                        radius: 12
+                        color: "#67C23A"
+                        UGCText {
+                            anchors.centerIn: parent
+                            anchors.margins: 4
+                            oText: model.index
+                        }
+                        MouseArea {
+                            anchors.fill: parent
+                            onDoubleClicked: {
+                                missionRouteItemId.path.splice(model.index, 1)
+                                missionPointItemId.model.remove(model.index, 1)
+
+                            }
+                        }
+                    }
+                    DragHandler {
+                        id: waypointDragHandlerId
+                        acceptedButtons: Qt.RightButton
+                        onGrabChanged: (transition, eventPoint) => {
+                            if (transition === 2) {
+                                var selectedPoint = mapViewId.map.toCoordinate(eventPoint.position)
+                                console.log("拖拽地图获取坐标点经度: %1, 纬度: %2, 事件：%3".arg(selectedPoint.longitude).arg(selectedPoint.latitude).arg(transition))
+                                missionPointItemId.model.set(model.index, {"latitude": selectedPoint.latitude,"longitude": selectedPoint.longitude})
+                                missionRouteItemId.path[model.index] = selectedPoint
+                            }
+                        }
+                    }
+                }
+            }
+
+            MapPolyline {
+                id: missionRouteItemId
+                parent: mapViewId.map
+                line.width: 2
+                line.color: "#F56C6C"
+                smooth: true
+                path: missionPoints
+            }
+        }
+        // 地图鼠标操作
+        TapHandler {
+            id: tapHandlerId
+            acceptedButtons: Qt.LeftButton | Qt.RightButton
+            onSingleTapped: (eventPoint, button) => {
+                                if (button === Qt.LeftButton) {
+                                    var selectedPoint = mapViewId.map.toCoordinate(
+                                        tapHandlerId.point.position)
+                                    console.log(
+                                        "点击地图获取坐标点经度: %1, 纬度: %2".arg(
+                                            selectedPoint.longitude).arg(
+                                            selectedPoint.latitude))
+                                    missionPointItemId.model.append({
+                                                                        "latitude": selectedPoint.latitude,
+                                                                        "longitude": selectedPoint.longitude
+                                                                    })
+                                    missionRouteItemId.addCoordinate(
+                                        selectedPoint)
+                                }
+                            }
+            onDoubleTapped: (eventPoint, button) => {
+                                if (button === Qt.RightButton) {
+                                    missionPointItemId.model.clear()
+                                    missionRouteItemId.path = []
+                                }
+                            }
         }
 
         Component.onCompleted: {}
