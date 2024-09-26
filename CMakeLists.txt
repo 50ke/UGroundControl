@@ -64,6 +64,7 @@ qt_add_qml_module(appUGroundControl
     QML_FILES src/UI/Component/VideoView.qml
     QML_FILES src/UI/Component/VehicleList.qml
     QML_FILES src/UI/Component/MissionBoxBar.qml
+    QML_FILES src/UI/Component/ParameterView.qml
 
     QML_FILES src/QmlControls/UGCText.qml
     QML_FILES src/QmlControls/UGCButton.qml
@@ -73,6 +74,7 @@ qt_add_qml_module(appUGroundControl
     QML_FILES src/QmlControls/UGCImportFileBox.qml
     QML_FILES src/QmlControls/UGCInputMixBox.qml
     QML_FILES src/QmlControls/UGCPadding.qml
+    QML_FILES src/QmlControls/UGCParamSetBox.qml
     RESOURCES UGroundControl.qrc
 )
 

@@ -1,0 +1,79 @@
+import QtCore
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Layouts
+
+import QmlControls 1.0
+
+Item {
+    property bool oEnabled: true
+    property string oTitleText: "title"
+    property string oText: ""
+
+    height: parent.height
+    width: parent.width
+    Row {
+        spacing: 10
+        leftPadding: 10
+        anchors.fill: parent
+        anchors.verticalCenter: parent.verticalCenter
+        UGCText{
+            anchors.verticalCenter: parent.verticalCenter
+            oText: oTitleText
+            oTextFont.pointSize: 10
+        }
+        TextField{
+            id: control
+            width: 150
+            height: 30
+            enabled: oEnabled
+            verticalAlignment: Text.AlignVCenter
+            anchors.verticalCenter: parent.verticalCenter
+            text: oText
+            background: Rectangle {
+                radius: 2
+                implicitWidth: 150
+                implicitHeight: 30
+                border.color: control.focus ? "#409eff" : (control.hovered ? "#c0c4cc" : "#dcdfe6")
+            }
+        }
+        Image {
+            id: downloadId
+            height: 16
+            width: 16
+            anchors.verticalCenter: parent.verticalCenter
+            source: "qrc:/resources/icons/download-fill.svg"
+            MouseArea {
+                anchors.fill: parent
+                hoverEnabled: true
+                onEntered: {
+                    downloadId.source = "qrc:/resources/icons/download.svg"
+                }
+                onExited: {
+                    downloadId.source = "qrc:/resources/icons/download-fill.svg"
+                }
+            }
+        }
+        Image {
+            id: uploadId
+            height: 16
+            width: 16
+            anchors.verticalCenter: parent.verticalCenter
+            source: "qrc:/resources/icons/upload-fill.svg"
+            MouseArea {
+                anchors.fill: parent
+                hoverEnabled: true
+                onEntered: {
+                    uploadId.source = "qrc:/resources/icons/upload.svg"
+                }
+                onExited: {
+                    uploadId.source = "qrc:/resources/icons/upload-fill.svg"
+                }
+            }
+        }
+    }
+
+    function getText(){
+        return control.text
+    }
+}

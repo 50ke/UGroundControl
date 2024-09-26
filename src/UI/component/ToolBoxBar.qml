@@ -56,6 +56,9 @@ Rectangle {
             oTextFont.pointSize: 10
             display: AbstractButton.TextUnderIcon
             oIconSource: "qrc:/resources/icons/config.svg"
+            onClicked: {
+                loaderId.source = (loaderId.source == "qrc:/src/UI/Component/ParameterView.qml") ? "" : "qrc:/src/UI/Component/ParameterView.qml"
+            }
         }
         UGCButton{
             id: vehicleBtnId

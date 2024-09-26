@@ -187,7 +187,7 @@ Item {
                 line.width: 2
                 line.color: "#F56C6C"
                 smooth: true
-                path: missionPoints
+                path: []
             }
         }
         // 地图鼠标操作

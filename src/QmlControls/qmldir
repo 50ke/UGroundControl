@@ -8,3 +8,4 @@ UGCInputComboBox 1.0 UGCInputComboBox.qml
 UGCImportFileBox 1.0 UGCImportFileBox.qml
 UGCInputMixBox 1.0 UGCInputMixBox.qml
 UGCPadding 1.0 UGCPadding.qml
+UGCParamSetBox 1.0 UGCParamSetBox.qml
