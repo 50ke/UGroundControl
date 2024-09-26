@@ -7,6 +7,7 @@
 #include <QJsonObject>
 #include <QJsonArray>
 #include <memory>
+#include <QThread>
 #include <mqtt/async_client.h>
 #include <common/mavlink.h>
 

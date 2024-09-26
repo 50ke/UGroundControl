@@ -90,6 +90,7 @@ void UGC::MqttLink::subscribe(){
                     }
                 }
             }
+            QThread::msleep(500);
         }
     } catch (const std::exception& ex) {
         qCritical() << "MQTT Subscribe Error:" << ex.what();
