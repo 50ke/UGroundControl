@@ -14,7 +14,7 @@ Item {
     width: parent.width
     Row {
         spacing: 10
-        leftPadding: 10
+        leftPadding: 5
         anchors.fill: parent
         anchors.verticalCenter: parent.verticalCenter
         UGCText{
