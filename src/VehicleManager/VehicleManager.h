@@ -53,19 +53,23 @@ public:
 
 public slots:
     void handleMessage(const UsvLink::MessagePacket &message);
+    void clear();
     Q_INVOKABLE void connectVehicle(int systemId);
     Q_INVOKABLE void disconnectVehicle(int systemId);
     Q_INVOKABLE void getVehicles();
+    Q_INVOKABLE QList<QVariantMap> readVehicleParams();
 
 signals:
     void vehiclesChanged(const QList<QVariantMap> &vehicles);
     void connectVehicleCompleted(int systemId, bool ack);
     void disconnectVehicleCompleted(int systemId, bool ack);
     void vehicleTrajectoryChanged(QGeoCoordinate waypoint);
+    void readVehicleParamsCompleted(QList<QVariantMap> params);
 
 private:
     QMap<int, Vehicle> mVehicles;
     int mOwnerVehicleSystemId;
+    QList<QVariantMap> mOwnerVehicleParams;
     QList<QGeoCoordinate> mOwnerVehicleTrajectory;
 };
 

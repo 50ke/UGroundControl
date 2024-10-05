@@ -74,5 +74,38 @@ void UGC::MockManager::handleReceivedMessage(const UsvLink::MessagePacket &messa
         packet.set_msg_link(UsvLink::MsgLink::MSG_LINK_MQTT);
         packet.set_allocated_disconnect_response(disconnectResponse);
         mVehicleMqttLink->publish("GCS/" + QString::number(message.system_id()), packet);
+    }else if(message.msg_id() == UsvLink::MsgId::MSG_ID_PARAM_READ_REQUEST){
+        UsvLink::ParamItem paramItem1;
+        paramItem1.set_allocated_param_id(new std::string("PID"));
+        paramItem1.set_param_value(45);
+        paramItem1.set_param_index(0);
+
+        UsvLink::ParamItem paramItem2;
+        paramItem2.set_allocated_param_id(new std::string("最大速度(km/h)"));
+        paramItem2.set_param_value(30);
+        paramItem2.set_param_index(1);
+
+        UsvLink::ParamItem paramItem3;
+        paramItem3.set_allocated_param_id(new std::string("盘旋半径(m)"));
+        paramItem3.set_param_value(1.5);
+        paramItem3.set_param_index(2);
+
+        UsvLink::ParamReadResponse *paramReadResponse = new UsvLink::ParamReadResponse();
+        paramReadResponse->set_ack(1);
+        paramReadResponse->add_param_items()->CopyFrom(paramItem1);
+        paramReadResponse->add_param_items()->CopyFrom(paramItem2);
+        paramReadResponse->add_param_items()->CopyFrom(paramItem3);
+
+        UsvLink::MessagePacket packet;
+        packet.set_msg_id(UsvLink::MsgId::MSG_ID_PARAM_READ_RESPONSE);
+        packet.set_system_id(mVehicleSystemId);
+        packet.set_component_id(0);
+        packet.set_target_system_id(message.system_id());
+        packet.set_target_component_id(0);
+        packet.set_time_ms(QDateTime::currentMSecsSinceEpoch());
+        packet.set_msg_src(UsvLink::MsgSrc::MSG_SRC_USV);
+        packet.set_msg_link(UsvLink::MsgLink::MSG_LINK_MQTT);
+        packet.set_allocated_param_read_response(paramReadResponse);
+        mVehicleMqttLink->publish("GCS/" + QString::number(message.system_id()), packet);
     }
 }
