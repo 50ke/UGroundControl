@@ -24,7 +24,7 @@ Item {
         }
         TextField{
             id: control
-            width: 150
+            width: 60
             height: 30
             enabled: oEnabled
             verticalAlignment: Text.AlignVCenter
@@ -32,7 +32,7 @@ Item {
             text: oText
             background: Rectangle {
                 radius: 2
-                implicitWidth: 150
+                implicitWidth: 60
                 implicitHeight: 30
                 border.color: control.focus ? "#409eff" : (control.hovered ? "#c0c4cc" : "#dcdfe6")
             }
@@ -46,6 +46,9 @@ Item {
             MouseArea {
                 anchors.fill: parent
                 hoverEnabled: true
+                onClicked: {
+                    vehicleManager.readVehicleParam(oTitleText)
+                }
                 onEntered: {
                     downloadId.source = "qrc:/resources/icons/download.svg"
                 }
@@ -63,6 +66,9 @@ Item {
             MouseArea {
                 anchors.fill: parent
                 hoverEnabled: true
+                onClicked: {
+                    vehicleManager.writeVehicleParam(oTitleText, control.text)
+                }
                 onEntered: {
                     uploadId.source = "qrc:/resources/icons/upload.svg"
                 }

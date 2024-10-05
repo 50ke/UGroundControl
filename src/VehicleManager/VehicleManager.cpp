@@ -78,9 +78,17 @@ void UGC::VehicleManager::handleMessage(const UsvLink::MessagePacket &message){
                 {"paramValue", param.param_value()},
                 {"paramIndex", param.param_index()},
             };
-            mOwnerVehicleParams.append(paramItem);
+            mOwnerVehicleParams.insert(QString::fromStdString(param.param_id()), paramItem);
         }
-        emit readVehicleParamsCompleted(mOwnerVehicleParams);
+        emit readVehicleParamsCompleted(mOwnerVehicleParams.values());
+    }else if(message.msg_id() == UsvLink::MsgId::MSG_ID_PARAM_WRITE_RESPONSE){
+        UsvLink::ParamWriteResponse paramWriteResponse = message.param_write_response();
+        if(paramWriteResponse.ack()){
+            qDebug() << "[VehicleManager]Param Write Success.";
+            requestVehicleParams();
+        }else{
+            qDebug() << "[VehicleManager]Param Write Failed.";
+        }
     }
 }
 
@@ -88,6 +96,25 @@ void UGC::VehicleManager::clear(){
     mOwnerVehicleSystemId = 0;
     mOwnerVehicleParams.clear();
     mOwnerVehicleTrajectory.clear();
+}
+
+void UGC::VehicleManager::requestVehicleParams(){
+    UsvLink::ParamReadRequest *payload = new UsvLink::ParamReadRequest();
+    payload->set_allocated_param_id(new std::string(""));
+    payload->set_param_index(-1);
+
+    UsvLink::MessagePacket packet;
+    packet.set_msg_id(UsvLink::MsgId::MSG_ID_PARAM_READ_REQUEST);
+    packet.set_system_id(this->mApp->settingManager()->systemId());
+    packet.set_component_id(0);
+    packet.set_target_system_id(mOwnerVehicleSystemId);
+    packet.set_target_component_id(0);
+    packet.set_time_ms(QDateTime::currentMSecsSinceEpoch());
+    packet.set_msg_src(UsvLink::MsgSrc::MSG_SRC_GCS);
+    packet.set_msg_link(UsvLink::MsgLink::MSG_LINK_MQTT);
+    packet.set_allocated_param_read_request(payload);
+
+    this->mApp->linkManager()->sendMessage(mOwnerVehicleSystemId, packet);
 }
 
 void UGC::VehicleManager::connectVehicle(int systemId){
@@ -141,7 +168,7 @@ QList<QVariantMap> UGC::VehicleManager::readVehicleParams(){
         return QList<QVariantMap>();
     }
     if(!mOwnerVehicleParams.empty()){
-        return mOwnerVehicleParams;
+        return mOwnerVehicleParams.values();
     }
 
     UsvLink::ParamReadRequest *payload = new UsvLink::ParamReadRequest();
@@ -161,4 +188,62 @@ QList<QVariantMap> UGC::VehicleManager::readVehicleParams(){
 
     this->mApp->linkManager()->sendMessage(mOwnerVehicleSystemId, packet);
     return QList<QVariantMap>();
+}
+
+void UGC::VehicleManager::readVehicleParam(QString paramId){
+    qDebug() << "[VehicleManager]Requesting to Read Single Param for Vehicle" << mOwnerVehicleSystemId;
+    if(mOwnerVehicleSystemId == 0){
+        return;
+    }
+    if(!mOwnerVehicleParams.contains(paramId)){
+        return;
+    }
+    QVariantMap paramItem = mOwnerVehicleParams.value(paramId);
+
+    UsvLink::ParamReadRequest *payload = new UsvLink::ParamReadRequest();
+    payload->set_allocated_param_id(new std::string(paramId.toStdString()));
+    payload->set_param_index(paramItem["paramIndex"].toInt());
+
+    UsvLink::MessagePacket packet;
+    packet.set_msg_id(UsvLink::MsgId::MSG_ID_PARAM_READ_REQUEST);
+    packet.set_system_id(this->mApp->settingManager()->systemId());
+    packet.set_component_id(0);
+    packet.set_target_system_id(mOwnerVehicleSystemId);
+    packet.set_target_component_id(0);
+    packet.set_time_ms(QDateTime::currentMSecsSinceEpoch());
+    packet.set_msg_src(UsvLink::MsgSrc::MSG_SRC_GCS);
+    packet.set_msg_link(UsvLink::MsgLink::MSG_LINK_MQTT);
+    packet.set_allocated_param_read_request(payload);
+
+    this->mApp->linkManager()->sendMessage(mOwnerVehicleSystemId, packet);
+}
+
+void UGC::VehicleManager::writeVehicleParam(QString paramId, float paramValue){
+    if(mOwnerVehicleSystemId == 0){
+        return;
+    }
+    if(!mOwnerVehicleParams.contains(paramId)){
+        return;
+    }
+    QVariantMap paramItemMap = mOwnerVehicleParams.value(paramId);
+    // 封装参数
+    UsvLink::ParamItem paramItem;
+    paramItem.set_allocated_param_id(new std::string(paramId.toStdString()));
+    paramItem.set_param_value(paramValue);
+    paramItem.set_param_index(paramItemMap["paramIndex"].toInt());
+    // 发送参数写请求
+    UsvLink::ParamWriteRequest *payload = new UsvLink::ParamWriteRequest();
+    payload->add_param_items()->CopyFrom(paramItem);
+    UsvLink::MessagePacket packet;
+    packet.set_msg_id(UsvLink::MsgId::MSG_ID_PARAM_WRITE_REQUEST);
+    packet.set_system_id(this->mApp->settingManager()->systemId());
+    packet.set_component_id(0);
+    packet.set_target_system_id(mOwnerVehicleSystemId);
+    packet.set_target_component_id(0);
+    packet.set_time_ms(QDateTime::currentMSecsSinceEpoch());
+    packet.set_msg_src(UsvLink::MsgSrc::MSG_SRC_GCS);
+    packet.set_msg_link(UsvLink::MsgLink::MSG_LINK_MQTT);
+    packet.set_allocated_param_write_request(payload);
+
+    this->mApp->linkManager()->sendMessage(mOwnerVehicleSystemId, packet);
 }

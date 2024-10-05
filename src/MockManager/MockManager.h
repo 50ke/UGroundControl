@@ -35,6 +35,10 @@ private:
     QThread mMqttLinkWorkThread;
     MqttLink *mVehicleMqttLink = nullptr;
     Heartbeat *mHeartbeat = nullptr;
+
+    UsvLink::ParamItem paramItem1;
+    UsvLink::ParamItem paramItem2;
+    UsvLink::ParamItem paramItem3;
 };
 
 }
