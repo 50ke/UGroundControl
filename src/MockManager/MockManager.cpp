@@ -30,7 +30,7 @@ void UGC::MockManager::start(){
 }
 
 void UGC::MockManager::handleReceivedMessage(const UsvLink::MessagePacket &message){
-    qDebug() << "[MockManager]USV Received Message ID" << message.system_id();
+    qDebug().noquote() << "[MockManager]USV Received Message ID" << UsvLink::MsgId_Name(message.msg_id());
     if(message.msg_id() == UsvLink::MsgId::MSG_ID_CONNECT_REQUEST){
         if(mGcsSystemId == 0){
             mGcsSystemId = message.system_id();
