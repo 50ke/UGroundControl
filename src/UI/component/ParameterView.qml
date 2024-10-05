@@ -27,7 +27,7 @@ Rectangle {
             spacing: 10
             model: ListModel {}
             delegate: Rectangle{
-                width: parent.width
+                width: listViewId.width
                 height: 30
                 color: "transparent"
                 UGCParamSetBox{
