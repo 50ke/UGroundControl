@@ -68,7 +68,7 @@ void UGC::LogModel::threadsafeLog(const QString message)
     setData(index(line), message, Qt::DisplayRole);
 
     if (mLogFile.fileName().isEmpty()) {
-        qDebug() << mLogFile.fileName().isEmpty();
+        // qDebug() << mLogFile.fileName().isEmpty();
         QString saveDirPath = "";
         QDir saveDir(saveDirPath);
         QString saveFilePath = saveDir.absoluteFilePath(QStringLiteral("UGroundControl.log"));

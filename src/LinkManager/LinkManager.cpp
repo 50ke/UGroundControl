@@ -25,6 +25,6 @@ void UGC::LinkManager::sendMessage(int targetSystemId, const UsvLink::MessagePac
 }
 
 void UGC::LinkManager::handleReceivedMessage(const UsvLink::MessagePacket &message){
-    qDebug() << "LinkManager Received Msg ID: " << message.msg_id() << "From System ID: " << message.system_id();
+    qDebug() << "LinkManager Received Message: " << message.SerializeAsString();
     emit receivedMessage(message);
 }
