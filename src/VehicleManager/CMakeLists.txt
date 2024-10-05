@@ -15,7 +15,7 @@ target_link_libraries(VehicleManager
         Common
         LinkManager
         SettingManager
-        MavlinkProtocol
+        LinkProtocol
 )
 
 target_include_directories(VehicleManager PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})

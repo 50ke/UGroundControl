@@ -1,16 +1,77 @@
 #include "MqttLink.h"
 
+/********************** ActionListener **********************/
+UGC::ActionListener::ActionListener(const std::string& name) : mName(name) {}
+
+void UGC::ActionListener::on_failure(const mqtt::token &tok){
+    qDebug() << mName << " failure.";
+}
+
+void UGC::ActionListener::on_success(const mqtt::token &tok){
+    qDebug() << mName << " success.";
+}
+
+/********************** MqttLinkCallback **********************/
+UGC::MqttLinkCallback::MqttLinkCallback() : mSubActionListener("MQTT Subscription"){}
+
+UGC::MqttLinkCallback::MqttLinkCallback(const std::string &gcsSubTopic, mqtt::async_client_ptr cli, mqtt::connect_options connOpts)
+    : mGcsTopic(gcsSubTopic), mMqttClientPtr(cli), mConnectOptions(connOpts), mSubActionListener("MQTT Subscription"){}
+
+void UGC::MqttLinkCallback::reconnect(){
+    std::this_thread::sleep_for(std::chrono::milliseconds(2500));
+    try {
+        mMqttClientPtr->connect(mConnectOptions, nullptr, *this);
+    }catch (const mqtt::exception& exc) {
+        qCritical() << "Reconnect Error: " << exc.what();
+    }
+}
+
+void UGC::MqttLinkCallback::on_failure(const mqtt::token &tok){
+    qWarning() << "Connection attempt failed.";
+    if(++mRetryNum > mMaxRetryNum){
+        exit(1);
+    }
+    reconnect();
+}
+
+void UGC::MqttLinkCallback::on_success(const mqtt::token &tok){}
+
+void UGC::MqttLinkCallback::connected(const std::string &cause){
+    qInfo() << "Connection success.";
+    auto subTopics  = mqtt::string_collection::create({mCommonTopic, mGcsTopic});
+    const std::vector<int> qos{1, 1};
+    mMqttClientPtr->subscribe(subTopics, qos, nullptr, mSubActionListener);
+}
+
+void UGC::MqttLinkCallback::connection_lost(const std::string &cause){
+    if(cause.empty()){
+        qWarning() << "Connection lost.";
+    }else{
+        qWarning() << "Connection lost, cause: " << cause;
+    }
+    qInfo() << "Reconnecting...";
+    mRetryNum = 0;
+    reconnect();
+}
+
+void UGC::MqttLinkCallback::message_arrived(mqtt::const_message_ptr msg){
+    qInfo() << "Mqtt Message arrived: " << msg->to_string();
+    emit messageArrived(msg->to_string());
+}
+
+void UGC::MqttLinkCallback::delivery_complete(mqtt::delivery_token_ptr token){}
+
+/********************** MqttLink **********************/
 UGC::MqttLink::MqttLink(const QString &serverAddr, int gcsSystemId)
     : mServerAddr(serverAddr), mGcsTopic("GCS/" + QString::number(gcsSystemId)){
     try{
+        QString gcsSubTopic = "GCS/" + QString::number(gcsSystemId);
         mConnectOptions = mqtt::connect_options_builder()
-        .keep_alive_interval(std::chrono::seconds(10))
-            .automatic_reconnect(std::chrono::seconds(5), std::chrono::seconds(10))
             .clean_session(true)
             .finalize();
         mAsyncMqttClientPtr = std::make_shared<mqtt::async_client>(serverAddr.toStdString(), mClientId.toStdString());
-        mAsyncMqttClientPtr->start_consuming();
-        mAsyncMqttClientPtr->connect(mConnectOptions)->wait();
+        mMqttLinkCallback = new MqttLinkCallback(gcsSubTopic.toStdString(), mAsyncMqttClientPtr, mConnectOptions);
+        connect(mMqttLinkCallback, &MqttLinkCallback::messageArrived, this, &MqttLink::subscribedMessage);
     } catch (const std::exception& ex) {
         qCritical() << "MQTT INIT Error:" << ex.what();
     }
@@ -20,79 +81,60 @@ UGC::MqttLink::MqttLink(const QString &serverAddr, const QString &subTopic, cons
     : mServerAddr(serverAddr), mGcsTopic(subTopic), mClientId(clientId){
     try{
         mConnectOptions = mqtt::connect_options_builder()
-        .keep_alive_interval(std::chrono::seconds(10))
-            .automatic_reconnect(std::chrono::seconds(5), std::chrono::seconds(10))
             .clean_session(true)
             .finalize();
         mAsyncMqttClientPtr = std::make_shared<mqtt::async_client>(serverAddr.toStdString(), clientId.toStdString());
-        mAsyncMqttClientPtr->start_consuming();
-        mAsyncMqttClientPtr->connect(mConnectOptions)->wait();
+        mMqttLinkCallback = new MqttLinkCallback(subTopic.toStdString(), mAsyncMqttClientPtr, mConnectOptions);
+        connect(mMqttLinkCallback, &MqttLinkCallback::messageArrived, this, &MqttLink::subscribedMessage);
     } catch (const std::exception& ex) {
         qCritical() << "MQTT INIT Error:" << ex.what();
     }
 }
 
-void UGC::MqttLink::publish(int targetSystemId, const mavlink_message_t &message){
+void UGC::MqttLink::subscribedMessage(const std::string &payload){
+    UsvLink::MessagePacket packet;
+    packet.ParseFromString(payload);
+    emit receivedMessage(packet);
+}
+
+void UGC::MqttLink::publish(int targetSystemId, const UsvLink::MessagePacket &message){
     try{
         if(!mAsyncMqttClientPtr->is_connected()){
             qDebug() << "[Publish]MQTT LINK Disconnectd, try to reconnect...";
-            mAsyncMqttClientPtr->connect(mConnectOptions)->wait();
+            mAsyncMqttClientPtr->connect(mConnectOptions, nullptr, *mMqttLinkCallback);
         }
         QString pubTopic = "USV/" + QString::number(targetSystemId);
         std::string topic = targetSystemId == 0 ? mCommonTopic.toStdString() : pubTopic.toStdString();
-        uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
-        const int len = mavlink_msg_to_send_buffer(buffer, &message);
-        mqtt::message_ptr pubmsg = mqtt::make_message(topic, buffer, len, 1, false);
+
+        std::vector<uint8_t> buf(message.ByteSizeLong());
+        message.SerializeToArray(buf.data(), buf.capacity());
+
+        mqtt::message_ptr pubmsg = mqtt::make_message(topic, buf.data(), buf.size(), 1, false);
         mAsyncMqttClientPtr->publish(pubmsg)->wait();
     } catch (const std::exception& ex) {
         qCritical() << "MQTT Send Message Error:" << ex.what();
     }
 }
 
-void UGC::MqttLink::publish(const QString &pubTopic, const mavlink_message_t &message){
+void UGC::MqttLink::publish(const QString &pubTopic, const UsvLink::MessagePacket &message){
     try{
         if(!mAsyncMqttClientPtr->is_connected()){
             qDebug() << "[Publish]MQTT LINK Disconnectd, try to reconnect...";
-            mAsyncMqttClientPtr->connect(mConnectOptions)->wait();
+            mAsyncMqttClientPtr->connect(mConnectOptions, nullptr, *mMqttLinkCallback);
         }
         std::string topic = pubTopic.toStdString();
-        uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
-        const int len = mavlink_msg_to_send_buffer(buffer, &message);
-        mqtt::message_ptr pubmsg = mqtt::make_message(topic, buffer, len, 1, false);
+
+        std::vector<uint8_t> buf(message.ByteSizeLong());
+        message.SerializeToArray(buf.data(), buf.capacity());
+
+        mqtt::message_ptr pubmsg = mqtt::make_message(topic, buf.data(), buf.size(), 1, false);
         mAsyncMqttClientPtr->publish(pubmsg)->wait();
     } catch (const std::exception& ex) {
         qCritical() << "MQTT Send Message Error:" << ex.what();
     }
 }
 
-void UGC::MqttLink::subscribe(){
-    try{
-        auto subTopics  = mqtt::string_collection::create({mCommonTopic.toStdString(), mGcsTopic.toStdString()});
-        const std::vector<int> qos{1, 1};
-        mAsyncMqttClientPtr->subscribe(subTopics, qos)->wait();
-        mqtt::const_message_ptr msg;
-        while (mStartup) {
-            if(!mAsyncMqttClientPtr->is_connected()){
-                qDebug() << "[Subscribe]MQTT LINK Disconnectd, try to reconnect...";
-                mAsyncMqttClientPtr->connect(mConnectOptions)->wait();
-                mAsyncMqttClientPtr->subscribe(subTopics, qos)->wait();
-            }
-            if(mAsyncMqttClientPtr->try_consume_message(&msg) && msg != nullptr){
-                std::string payload = msg->to_string();
-                qDebug() << "[Subscribe]Received Message From " << msg->get_topic();
-                // 解析mavlink消息
-                std::vector<uint8_t> buffer(payload.begin(), payload.end());
-                mavlink_status_t status_t;
-                mavlink_message_t message_t;
-                for (int i = 0; i < buffer.size(); i++){
-                    if (mavlink_parse_char(MAVLINK_COMM_0, buffer[i], &message_t, &status_t)){
-                        emit receivedMessage(message_t);
-                    }
-                }
-            }
-            QThread::msleep(500);
-        }
-    } catch (const std::exception& ex) {
-        qCritical() << "MQTT Subscribe Error:" << ex.what();
-    }
+void UGC::MqttLink::start(){
+    mAsyncMqttClientPtr->set_callback(*mMqttLinkCallback);
+    mAsyncMqttClientPtr->connect(mConnectOptions, nullptr, *mMqttLinkCallback);
 }

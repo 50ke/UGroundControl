@@ -19,13 +19,13 @@ public:
     explicit LinkManager(UGCApplication *app);
     ~LinkManager();
     void start();
-    void sendMessage(int targetSystemId, const mavlink_message_t &message);
+    void sendMessage(int targetSystemId, const UsvLink::MessagePacket &message);
 
 public slots:
-    void handleReceivedMessage(const mavlink_message_t &message);
+    void handleReceivedMessage(const UsvLink::MessagePacket &message);
 
 signals:
-    void receivedMessage(const mavlink_message_t &message);
+    void receivedMessage(const UsvLink::MessagePacket &message);
 
 private:
     QThread mMqttLinkWorkThread;

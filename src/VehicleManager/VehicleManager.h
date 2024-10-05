@@ -10,7 +10,7 @@
 
 #include <UGCContext.h>
 #include <UGCApplication.h>
-#include <common/mavlink.h>
+#include <link_protocol.pb.h>
 
 namespace UGC {
 
@@ -52,7 +52,7 @@ public:
     explicit VehicleManager(UGCApplication *app);
 
 public slots:
-    void handleMessage(const mavlink_message_t &message);
+    void handleMessage(const UsvLink::MessagePacket &message);
     Q_INVOKABLE void connectVehicle(int systemId);
     Q_INVOKABLE void disconnectVehicle(int systemId);
     Q_INVOKABLE void getVehicles();

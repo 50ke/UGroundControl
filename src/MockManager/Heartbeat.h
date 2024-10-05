@@ -8,8 +8,7 @@
 #include <QTimer>
 #include <QRandomGenerator>
 
-
-#include <common/mavlink.h>
+#include <link_protocol.pb.h>
 
 namespace UGC {
 
@@ -21,12 +20,13 @@ class Heartbeat : public QObject
     Q_OBJECT
 public:
     explicit Heartbeat(MqttLink *mqttLink);
-    void updateConnectedUsvSystemId(int systemId);
+    void updateConnection(int gcsSystemId, int usvSystemId);
 public slots:
-    void publishSystemInfo();
+    void publishHeartbeat();
 
 private:
-    int mconnectedUsvSystemId{0};
+    int mConnectedGcsSystemId{0};
+    int mConnectedUsvSystemId{0};
     MqttLink *mVehicleMqttLink = nullptr;
 };
 

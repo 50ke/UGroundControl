@@ -14,17 +14,17 @@ UGC::LinkManager::~LinkManager(){
 
 void UGC::LinkManager::start(){
     mMqttLink->moveToThread(&mMqttLinkWorkThread);
-    connect(&mMqttLinkWorkThread, &QThread::started, mMqttLink, &MqttLink::subscribe);
+    connect(&mMqttLinkWorkThread, &QThread::started, mMqttLink, &MqttLink::start);
     connect(&mMqttLinkWorkThread, &QThread::finished, mMqttLink, &QObject::deleteLater);
     connect(mMqttLink, &MqttLink::receivedMessage, this, &LinkManager::handleReceivedMessage);
     mMqttLinkWorkThread.start();
 }
 
-void UGC::LinkManager::sendMessage(int targetSystemId, const mavlink_message_t &message){
+void UGC::LinkManager::sendMessage(int targetSystemId, const UsvLink::MessagePacket &message){
     mMqttLink->publish(targetSystemId, message);
 }
 
-void UGC::LinkManager::handleReceivedMessage(const mavlink_message_t &message){
-    qDebug() << "LinkManager Received Msg ID: " << message.msgid << "From System ID: " << message.sysid;
+void UGC::LinkManager::handleReceivedMessage(const UsvLink::MessagePacket &message){
+    qDebug() << "LinkManager Received Msg ID: " << message.msg_id() << "From System ID: " << message.system_id();
     emit receivedMessage(message);
 }

@@ -9,7 +9,7 @@ target_link_libraries(MockManager
         Qt6::Core
         Boost::json
         Common
-        MavlinkProtocol
+        LinkProtocol
         LinkManager
         SettingManager
 )

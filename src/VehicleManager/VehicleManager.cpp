@@ -6,17 +6,16 @@ UGC::VehicleManager::VehicleManager(UGCApplication *app) : UGCContext{app}{
     connect(this->mApp->linkManager(), &LinkManager::receivedMessage, this, &VehicleManager::handleMessage);
 }
 
-void UGC::VehicleManager::handleMessage(const mavlink_message_t &message){
-    if(message.msgid == MAVLINK_MSG_ID_USV_SYSTEM_INFORMATION){
+void UGC::VehicleManager::handleMessage(const UsvLink::MessagePacket &message){
+    if(message.msg_id() == UsvLink::MsgId::MSG_ID_HEARTBEAT){
         // 解析消息
-        qDebug() << QString("[MAVLINK_MSG_ID_USV_SYSTEM_INFORMATION]sysid=%1").arg(message.sysid);
-        mavlink_usv_system_information_t system_information;
-        mavlink_msg_usv_system_information_decode(&message, &system_information);
-        int vehicleSystemId = message.sysid;
-        QString name = QString::fromStdString(system_information.name);
-        float longitude = system_information.lon;
-        float latitude = system_information.lat;
-        bool connected = system_information.connected;
+        qDebug() << QString("[MSG_ID_HEARTBEAT]sysid=%1").arg(message.system_id());
+        UsvLink::Heartbeat heartbeat = message.heartbeat();
+        int vehicleSystemId = message.system_id();
+        QString name = QString::fromStdString(heartbeat.name());
+        float longitude = heartbeat.longitude();
+        float latitude = heartbeat.latitude();
+        bool connected = heartbeat.connect_status();
         bool owner = (vehicleSystemId == mOwnerVehicleSystemId);
         // 更新无人船列表
         Vehicle vehicle{vehicleSystemId, name, longitude, latitude, UGC::VehicleType::survey, connected, owner};
@@ -27,7 +26,7 @@ void UGC::VehicleManager::handleMessage(const mavlink_message_t &message){
         for (int i = 0; i < list.size(); ++i) {
             res.append(list.value(i).toQVariantMap());
         }
-        if(message.sysid == mOwnerVehicleSystemId){
+        if(message.system_id() == mOwnerVehicleSystemId){
             mOwnerVehicleTrajectory.append(QGeoCoordinate(latitude, longitude));
             if(mOwnerVehicleTrajectory.size() > 50){
                 mOwnerVehicleTrajectory.removeFirst();
@@ -35,53 +34,73 @@ void UGC::VehicleManager::handleMessage(const mavlink_message_t &message){
             emit vehicleTrajectoryChanged(QGeoCoordinate(latitude, longitude));
         }
         emit vehiclesChanged(res);
-    }else if(message.msgid == MAVLINK_MSG_ID_USV_CONNECT_RESPONSE){
-        qDebug() << QString("[MAVLINK_MSG_ID_USV_CONNECT_RESPONSE]sysid=%1").arg(message.sysid);
-        mavlink_usv_connect_response_t connect_response;
-        mavlink_msg_usv_connect_response_decode(&message, &connect_response);
+    }else if(message.msg_id() == UsvLink::MsgId::MSG_ID_CONNECT_RESPONSE){
+        qDebug() << QString("[MSG_ID_CONNECT_RESPONSE]sysid=%1").arg(message.system_id());
+        UsvLink::ConnectResponse connectResponse = message.connect_response();
         int gcsSystemId = this->mApp->settingManager()->systemId();
-        if(connect_response.target_system != gcsSystemId){
-            qDebug() << "GCS System ID Not Match: " << connect_response.target_system;
+        if(message.target_system_id() != gcsSystemId){
+            qDebug() << "GCS System ID Not Match: " << message.target_system_id();
             return;
         }
-        if(connect_response.ack == 1){
-            qDebug() << "Connect Vehicle Succeed: " << message.sysid;
-            mOwnerVehicleSystemId = message.sysid;
+        if(connectResponse.ack() == 1){
+            qDebug() << "Connect Vehicle Succeed: " << message.system_id();
+            mOwnerVehicleSystemId = message.system_id();
         }else{
-            qDebug() << "Connect Vehicle Failed: " << message.sysid;
+            qDebug() << "Connect Vehicle Failed: " << message.system_id();
         }
-        emit connectVehicleCompleted(message.sysid, connect_response.ack);
-    }else if(message.msgid == MAVLINK_MSG_ID_USV_DISCONNECT_RESPONSE){
-        qDebug() << QString("[MAVLINK_MSG_ID_USV_DISCONNECT_RESPONSE]sysid=%1").arg(message.sysid);
-        mavlink_usv_disconnect_response_t disconnect_response;
-        mavlink_msg_usv_disconnect_response_decode(&message, &disconnect_response);
+        emit connectVehicleCompleted(message.system_id(), connectResponse.ack());
+    }else if(message.msg_id() == UsvLink::MsgId::MSG_ID_DISCONNECT_RESPONSE){
+        qDebug() << QString("[MSG_ID_DISCONNECT_RESPONSE]sysid=%1").arg(message.system_id());
+        UsvLink::DisconnectResponse disconnectResponse = message.disconnect_response();
         int gcsSystemId = this->mApp->settingManager()->systemId();
-        if(disconnect_response.target_system != gcsSystemId){
-            qDebug() << "GCS System ID Not Match: " << disconnect_response.target_system;
+        if(message.target_system_id() != gcsSystemId){
+            qDebug() << "GCS System ID Not Match: " << message.target_system_id();
             return;
         }
-        if(disconnect_response.ack == 1){
-            qDebug() << "Disconnect Vehicle Succeed: " << message.sysid;
+        if(disconnectResponse.ack() == 1){
+            qDebug() << "Disconnect Vehicle Succeed: " << message.system_id();
             mOwnerVehicleSystemId = 0;
         }else{
-            qDebug() << "Disconnect Vehicle Failed: " << message.sysid;
+            qDebug() << "Disconnect Vehicle Failed: " << message.system_id();
         }
-        emit disconnectVehicleCompleted(message.sysid, disconnect_response.ack == 1);
+        emit disconnectVehicleCompleted(message.system_id(), disconnectResponse.ack() == 1);
     }
 }
 
 void UGC::VehicleManager::connectVehicle(int systemId){
     qDebug() << "Connecting Vehicle: " << systemId;
-    mavlink_message_t message;
-    mavlink_msg_usv_connect_request_pack_chan(this->mApp->settingManager()->systemId(), 0, MAVLINK_COMM_0, &message, systemId);
-    this->mApp->linkManager()->sendMessage(systemId, message);
+    UsvLink::ConnectRequest connectRequest;
+
+    UsvLink::MessagePacket packet;
+    packet.set_msg_id(UsvLink::MsgId::MSG_ID_CONNECT_REQUEST);
+    packet.set_system_id(this->mApp->settingManager()->systemId());
+    packet.set_component_id(0);
+    packet.set_target_system_id(systemId);
+    packet.set_target_component_id(0);
+    packet.set_time_ms(QDateTime::currentMSecsSinceEpoch());
+    packet.set_msg_src(UsvLink::MsgSrc::MSG_SRC_GCS);
+    packet.set_msg_link(UsvLink::MsgLink::MSG_LINK_MQTT);
+    packet.set_allocated_connect_request(&connectRequest);
+
+    this->mApp->linkManager()->sendMessage(systemId, packet);
 }
 
 void UGC::VehicleManager::disconnectVehicle(int systemId){
     qDebug() << "Disconnecting Vehicle: " << systemId;
-    mavlink_message_t message;
-    mavlink_msg_usv_disconnect_request_pack_chan(this->mApp->settingManager()->systemId(), 0, MAVLINK_COMM_0, &message, systemId);
-    this->mApp->linkManager()->sendMessage(systemId, message);
+    UsvLink::DisconnectRequest disconnectRequest;
+
+    UsvLink::MessagePacket packet;
+    packet.set_msg_id(UsvLink::MsgId::MSG_ID_DISCONNECT_REQUEST);
+    packet.set_system_id(this->mApp->settingManager()->systemId());
+    packet.set_component_id(0);
+    packet.set_target_system_id(systemId);
+    packet.set_target_component_id(0);
+    packet.set_time_ms(QDateTime::currentMSecsSinceEpoch());
+    packet.set_msg_src(UsvLink::MsgSrc::MSG_SRC_GCS);
+    packet.set_msg_link(UsvLink::MsgLink::MSG_LINK_MQTT);
+    packet.set_allocated_disconnect_request(&disconnectRequest);
+
+    this->mApp->linkManager()->sendMessage(systemId, packet);
 }
 
 void UGC::VehicleManager::getVehicles(){

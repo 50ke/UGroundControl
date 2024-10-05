@@ -6,9 +6,11 @@
 #include <UGCContext.h>
 #include <UGCApplication.h>
 #include <QTimer>
+#include <QDateTime>
 #include "Heartbeat.h"
 
-#include <common/mavlink.h>
+#include <link_protocol.pb.h>
+#include <msg_enum.pb.h>
 
 namespace UGC {
 
@@ -23,8 +25,7 @@ public:
     ~MockManager();
     void start();
 public slots:
-    void handleReceivedMessage(const mavlink_message_t &message);
-    void publishSystemInfo();
+    void handleReceivedMessage(const UsvLink::MessagePacket &message);
 
 private:
     int mVehicleSystemId{2};
