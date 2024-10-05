@@ -25,6 +25,11 @@ void UGC::LinkManager::sendMessage(int targetSystemId, const UsvLink::MessagePac
 }
 
 void UGC::LinkManager::handleReceivedMessage(const UsvLink::MessagePacket &message){
-    qDebug() << "LinkManager Received Message: " << message.SerializeAsString();
+    qDebug().noquote() << QString("[LinkManager]Received Message, SrcSystemID=%1, TargetSystemID=%2, MsgID=%3, MsgSrc=%4, MsgLink=%5")
+                    .arg(message.system_id())
+                    .arg(message.target_system_id())
+                    .arg(QString::fromStdString(UsvLink::MsgId_Name(message.msg_id())))
+                    .arg(QString::fromStdString(UsvLink::MsgSrc_Name(message.msg_src())))
+                    .arg(QString::fromStdString(UsvLink::MsgLink_Name(message.msg_link())));
     emit receivedMessage(message);
 }

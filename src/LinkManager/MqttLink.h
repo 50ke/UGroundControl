@@ -10,6 +10,7 @@
 #include <QThread>
 #include <mqtt/async_client.h>
 #include <link_protocol.pb.h>
+#include <msg_enum.pb.h>
 
 namespace UGC {
 

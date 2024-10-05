@@ -30,15 +30,16 @@ void UGC::MockManager::start(){
 }
 
 void UGC::MockManager::handleReceivedMessage(const UsvLink::MessagePacket &message){
+    qDebug() << "[MockManager]USV Received Message ID" << message.system_id();
     if(message.msg_id() == UsvLink::MsgId::MSG_ID_CONNECT_REQUEST){
         if(mGcsSystemId == 0){
             mGcsSystemId = message.system_id();
             mHeartbeat->updateConnection(message.system_id(), mVehicleSystemId);
         }
 
-        UsvLink::ConnectResponse connectResponse;
-        connectResponse.set_ack(mGcsSystemId == message.system_id() ? 1 : 0);
-        connectResponse.set_allocated_err_msg(mGcsSystemId == message.system_id() ? new std::string("success") : new std::string("failed"));
+        UsvLink::ConnectResponse *connectResponse = new UsvLink::ConnectResponse;
+        connectResponse->set_ack(mGcsSystemId == message.system_id() ? 1 : 0);
+        connectResponse->set_allocated_err_msg(mGcsSystemId == message.system_id() ? new std::string("success") : new std::string("failed"));
 
         UsvLink::MessagePacket packet;
         packet.set_msg_id(UsvLink::MsgId::MSG_ID_CONNECT_RESPONSE);
@@ -49,7 +50,7 @@ void UGC::MockManager::handleReceivedMessage(const UsvLink::MessagePacket &messa
         packet.set_time_ms(QDateTime::currentMSecsSinceEpoch());
         packet.set_msg_src(UsvLink::MsgSrc::MSG_SRC_USV);
         packet.set_msg_link(UsvLink::MsgLink::MSG_LINK_MQTT);
-        packet.set_allocated_connect_response(&connectResponse);
+        packet.set_allocated_connect_response(connectResponse);
         mVehicleMqttLink->publish("GCS/" + QString::number(message.system_id()), packet);
 
     }else if(message.msg_id() == UsvLink::MsgId::MSG_ID_DISCONNECT_REQUEST){
@@ -58,9 +59,9 @@ void UGC::MockManager::handleReceivedMessage(const UsvLink::MessagePacket &messa
             mHeartbeat->updateConnection(0, 0);
         }
 
-        UsvLink::DisconnectResponse disconnectResponse;
-        disconnectResponse.set_ack(mGcsSystemId == 0 ? 1 : 0);
-        disconnectResponse.set_allocated_err_msg(mGcsSystemId == 0 ? new std::string("success") : new std::string("failed"));
+        UsvLink::DisconnectResponse *disconnectResponse = new UsvLink::DisconnectResponse();
+        disconnectResponse->set_ack(mGcsSystemId == 0 ? 1 : 0);
+        disconnectResponse->set_allocated_err_msg(mGcsSystemId == 0 ? new std::string("success") : new std::string("failed"));
 
         UsvLink::MessagePacket packet;
         packet.set_msg_id(UsvLink::MsgId::MSG_ID_CONNECT_RESPONSE);
@@ -71,8 +72,7 @@ void UGC::MockManager::handleReceivedMessage(const UsvLink::MessagePacket &messa
         packet.set_time_ms(QDateTime::currentMSecsSinceEpoch());
         packet.set_msg_src(UsvLink::MsgSrc::MSG_SRC_USV);
         packet.set_msg_link(UsvLink::MsgLink::MSG_LINK_MQTT);
-        packet.set_allocated_disconnect_response(&disconnectResponse);
+        packet.set_allocated_disconnect_response(disconnectResponse);
         mVehicleMqttLink->publish("GCS/" + QString::number(message.system_id()), packet);
     }
-    qDebug() << "USV received msg id: " << message.system_id();
 }
