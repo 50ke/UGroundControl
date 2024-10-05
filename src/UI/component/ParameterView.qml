@@ -25,68 +25,7 @@ Rectangle {
             focus: true
             clip: true
             spacing: 10
-            model: ListModel {
-                ListElement{
-                    paramId: "PARAM_01"
-                    paramValue: "1"
-                }
-                ListElement{
-                    paramId: "PARAM_01"
-                    paramValue: "1"
-                }
-                ListElement{
-                    paramId: "PARAM_01"
-                    paramValue: "1"
-                }
-                ListElement{
-                    paramId: "PARAM_01"
-                    paramValue: "2"
-                }
-                ListElement{
-                    paramId: "PARAM_01"
-                    paramValue: "1"
-                }
-                ListElement{
-                    paramId: "PARAM_01"
-                    paramValue: "1"
-                }
-                ListElement{
-                    paramId: "PARAM_01"
-                    paramValue: "1"
-                }
-                ListElement{
-                    paramId: "PARAM_01"
-                    paramValue: "1"
-                }
-                ListElement{
-                    paramId: "PARAM_01"
-                    paramValue: "1"
-                }
-                ListElement{
-                    paramId: "PARAM_01"
-                    paramValue: "1"
-                }
-                ListElement{
-                    paramId: "PARAM_01"
-                    paramValue: "1"
-                }
-                ListElement{
-                    paramId: "PARAM_01"
-                    paramValue: "1"
-                }
-                ListElement{
-                    paramId: "PARAM_01"
-                    paramValue: "1"
-                }
-                ListElement{
-                    paramId: "PARAM_01"
-                    paramValue: "1"
-                }
-                ListElement{
-                    paramId: "PARAM_01"
-                    paramValue: "1"
-                }
-            }
+            model: ListModel {}
             delegate: Rectangle{
                 width: parent.width
                 height: 30
@@ -101,6 +40,30 @@ Rectangle {
         ToolSeparator {
             width: parent.width
             orientation: Qt.Horizontal
+        }
+    }
+
+    Connections {
+        target: vehicleManager
+        function onReadVehicleParamsCompleted(params) {
+            listViewId.model.clear()
+            for (var i = 0; i < params.length; i++) {
+                listViewId.model.append({
+                    "paramId": params[i].paramId,
+                    "paramValue": params[i].paramValue
+                })
+            }
+        }
+    }
+
+    Component.onCompleted: {
+        var params = vehicleManager.readVehicleParams()
+        listViewId.model.clear()
+        for (var i = 0; i < params.length; i++) {
+            listViewId.model.append({
+                "paramId": params[i].paramId,
+                "paramValue": params[i].paramValue
+            })
         }
     }
 }
