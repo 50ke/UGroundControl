@@ -65,6 +65,7 @@ qt_add_qml_module(appUGroundControl
     QML_FILES src/UI/Component/VehicleList.qml
     QML_FILES src/UI/Component/MissionBoxBar.qml
     QML_FILES src/UI/Component/ParameterView.qml
+    QML_FILES src/UI/Component/MissionItemEdit.qml
 
     QML_FILES src/QmlControls/UGCText.qml
     QML_FILES src/QmlControls/UGCButton.qml

@@ -11,6 +11,7 @@
         <file>resources/icons/connection.svg</file>
         <file>resources/icons/download-fill.svg</file>
         <file>resources/icons/download.svg</file>
+        <file>resources/icons/edit.svg</file>
         <file>resources/icons/export.svg</file>
         <file>resources/icons/import.svg</file>
         <file>resources/icons/lidar.svg</file>
@@ -44,9 +45,11 @@
         <file>src/QmlControls/UGCPadding.qml</file>
         <file>src/QmlControls/UGCParamSetBox.qml</file>
         <file>src/QmlControls/UGCText.qml</file>
+        <file>src/QmlControls/UGCTextInput.qml</file>
         <file>src/QmlControls/qmldir</file>
         <file>src/UI/Component/LidarView.qml</file>
         <file>src/UI/Component/MissionBoxBar.qml</file>
+        <file>src/UI/Component/MissionItemEdit.qml</file>
         <file>src/UI/Component/OfflineMapView.qml</file>
         <file>src/UI/Component/OnlineMapView.qml</file>
         <file>src/UI/Component/ParameterView.qml</file>

@@ -150,6 +150,18 @@ Rectangle {
                             height: parent.height
                             orientation: Qt.Vertical
                         }
+                        Image {
+                            height: 16
+                            width: 16
+                            anchors.verticalCenter: parent.verticalCenter
+                            source: "qrc:/resources/icons/edit.svg"
+                            MouseArea {
+                                anchors.fill: parent
+                                onClicked: {
+                                    Qt.createComponent("qrc:/src/UI/Component/MissionItemEdit.qml").createObject(parent, { name: "qqq"});
+                                }
+                            }
+                        }
                     }
                 }
             }

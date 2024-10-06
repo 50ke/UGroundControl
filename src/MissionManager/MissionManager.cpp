@@ -7,6 +7,35 @@ UGC::MissionManager::MissionManager(UGCApplication *app) : UGCContext{app}{
 
 }
 
+void UGC::MissionManager::handleMessage(const UsvLink::MessagePacket &message){
+    if(this->mApp->vehicleManager()->ownVehicleSystemId() == 0 || message.system_id() != this->mApp->vehicleManager()->ownVehicleSystemId()){
+        qDebug() << "[MissionManager]Vehicle System ID Cannot Match";
+    }
+    if(message.msg_id() == UsvLink::MsgId::MSG_ID_MISSION_CURRENT && message.mission_current().mission_id() == mCurrentMissionId){
+        mCurrentMissionItemSeq = message.mission_current().mission_item().seq();
+        emit currentMissionItemChanged(mCurrentMissionItemSeq);
+    }else if(message.msg_id() == UsvLink::MsgId::MSG_ID_MISSION_CLEAR_RESPONSE && message.mission_clear_response().ack()){
+        mCurrentMissionId = 0;
+        emit clearMissionCompleted();
+    }else if(message.msg_id() == UsvLink::MsgId::MSG_ID_MISSION_UPLOAD_RESPONSE && message.mission_upload_response().ack()){
+        mCurrentMissionId = message.mission_upload_response().opaque_id();
+        emit uploadMissionCompleted();
+    }else if(message.msg_id() == UsvLink::MsgId::MSG_ID_MISSION_DOWNLOAD_RESPONSE && message.mission_download_response().ack()){
+        mCurrentMissionItems.clear();
+        for (UsvLink::MissionItem item: message.mission_download_response().mission_items()) {
+            QVariantMap temp = {
+                {"seq", item.seq()},
+                {"latitude", item.x()},
+                {"longitude", item.y()},
+                {"command", "起锚"},
+            };
+            mCurrentMissionItems.append(temp);
+        }
+        emit downloadMissionCompleted(mCurrentMissionItems);
+    }
+
+}
+
 void UGC::MissionManager::clearMission(){
     qDebug() << "[MissionManager]Requesting to clear mission";
     if(this->mApp->vehicleManager()->ownVehicleSystemId() == 0){

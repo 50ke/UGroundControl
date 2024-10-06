@@ -23,6 +23,7 @@ class MissionManager : public UGCContext
     Q_OBJECT
 public:
     explicit MissionManager(UGCApplication *app);
+    void handleMessage(const UsvLink::MessagePacket &message);
     Q_INVOKABLE void clearMission();
     Q_INVOKABLE void uploadMission();
     Q_INVOKABLE void downloadMission();
@@ -35,7 +36,9 @@ public:
 signals:
     void clearMissionCompleted();
     void uploadMissionCompleted();
-    void downloadMissionCompleted();
+    void downloadMissionCompleted(QList<QVariantMap> missionItems);
+    void currentMissionItemChanged(int currentMissionItemSeq);
+
     void waypointAdded(QGeoCoordinate waypoint);
     void waypointUpdated(int index, QGeoCoordinate waypoint);
     void waypointRemoved(int index);
@@ -43,7 +46,8 @@ signals:
 
 private:
     int mCurrentMissionId{0};
-
+    int mCurrentMissionItemSeq;
+    QList<QVariantMap> mCurrentMissionItems;
 };
 
 }
