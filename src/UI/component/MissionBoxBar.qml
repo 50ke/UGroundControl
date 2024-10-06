@@ -27,7 +27,6 @@ Rectangle {
                 anchors.fill: parent
                 focus: true
                 clip: true
-                spacing: 1
                 model: ListModel {
                     ListElement{
                         latitude: "12.122"
@@ -68,12 +67,13 @@ Rectangle {
                     color: "#606266"
                     Row {
                         anchors.fill: parent
-                        spacing: 10
+                        spacing: 5
                         leftPadding: 5
                         anchors.verticalCenter: parent.verticalCenter
                         UGCText {
                             anchors.verticalCenter: parent.verticalCenter
                             oText: model.index
+                            oTextFont.pointSize: 10
                         }
                         ToolSeparator {
                             height: parent.height
@@ -82,6 +82,7 @@ Rectangle {
                         UGCText {
                             anchors.verticalCenter: parent.verticalCenter
                             oText: latitude
+                            oTextFont.pointSize: 10
                         }
                         ToolSeparator {
                             height: parent.height
@@ -90,6 +91,7 @@ Rectangle {
                         UGCText {
                             anchors.verticalCenter: parent.verticalCenter
                             oText: longitude
+                            oTextFont.pointSize: 10
                         }
                     }
                 }
@@ -111,7 +113,6 @@ Rectangle {
                 anchors.fill: parent
                 focus: true
                 clip: true
-                spacing: 1
                 model: ListModel {}
                 delegate: Rectangle {
                     width: createListViewId.width
@@ -119,12 +120,13 @@ Rectangle {
                     color: "#606266"
                     Row {
                         anchors.fill: parent
-                        spacing: 10
+                        spacing: 5
                         leftPadding: 5
                         anchors.verticalCenter: parent.verticalCenter
                         UGCText {
                             anchors.verticalCenter: parent.verticalCenter
                             oText: model.index
+                            oTextFont.pointSize: 10
                         }
                         ToolSeparator {
                             height: parent.height
@@ -133,6 +135,7 @@ Rectangle {
                         UGCText {
                             anchors.verticalCenter: parent.verticalCenter
                             oText: latitude
+                            oTextFont.pointSize: 10
                         }
                         ToolSeparator {
                             height: parent.height
@@ -141,6 +144,11 @@ Rectangle {
                         UGCText {
                             anchors.verticalCenter: parent.verticalCenter
                             oText: longitude
+                            oTextFont.pointSize: 10
+                        }
+                        ToolSeparator {
+                            height: parent.height
+                            orientation: Qt.Vertical
                         }
                     }
                 }
