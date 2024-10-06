@@ -163,9 +163,7 @@ Item {
                         MouseArea {
                             anchors.fill: parent
                             onDoubleClicked: {
-                                missionRouteItemId.path.splice(model.index, 1)
-                                missionPointItemId.model.remove(model.index, 1)
-                                missionManager.removeWaypoint(model.index)
+                                removeWaypoint(model.index)
                             }
                         }
                     }
@@ -175,10 +173,7 @@ Item {
                         onGrabChanged: (transition, eventPoint) => {
                             if (transition === 2) {
                                 var selectedPoint = mapViewId.map.toCoordinate(eventPoint.position)
-                                console.log("拖拽地图获取坐标点经度: %1, 纬度: %2, 事件：%3".arg(selectedPoint.longitude).arg(selectedPoint.latitude).arg(transition))
-                                missionPointItemId.model.set(model.index, {"latitude": selectedPoint.latitude,"longitude": selectedPoint.longitude})
-                                missionRouteItemId.path[model.index] = selectedPoint
-                                missionManager.updateWaypoint(model.index, selectedPoint)
+                                updateWaypoint(model.index, selectedPoint)
                             }
                         }
                     }
@@ -201,29 +196,48 @@ Item {
             onSingleTapped: (eventPoint, button) => {
                                 if (button === Qt.LeftButton) {
                                     var selectedPoint = mapViewId.map.toCoordinate(tapHandlerId.point.position)
-                                    console.log("点击地图获取坐标点经度: %1, 纬度: %2".arg(selectedPoint.longitude).arg(selectedPoint.latitude))
-                                    missionPointItemId.model.append({"latitude": selectedPoint.latitude,"longitude": selectedPoint.longitude})
-                                    missionRouteItemId.addCoordinate(selectedPoint)
-                                    missionManager.addWaypoint(selectedPoint)
+                                    addWaypoint(selectedPoint)
                                 }
                             }
             onDoubleTapped: (eventPoint, button) => {
                                 if (button === Qt.RightButton) {
-                                    missionPointItemId.model.clear()
-                                    missionRouteItemId.path = []
-                                    missionManager.clearWaypoint()
+                                    clearWaypoint()
                                 }
                             }
         }
+    }
 
-
-        Connections{
-            target: toolBoxBarId
-            function onPlanView(enabled){
-                console.log("任务规划=========================" + enabled)
+    property bool enabledPlanView: false
+    function addWaypoint(selectedPoint){
+        console.log("点击地图获取坐标点经度: %1, 纬度: %2".arg(selectedPoint.longitude).arg(selectedPoint.latitude))
+        if(enabledPlanView){
+            missionPointItemId.model.append({"latitude": selectedPoint.latitude,"longitude": selectedPoint.longitude})
+            missionRouteItemId.addCoordinate(selectedPoint)
+            missionManager.addWaypoint(selectedPoint)
+        }
+    }
+    function updateWaypoint(index, selectedPoint){
+        missionPointItemId.model.set(index, {"latitude": selectedPoint.latitude,"longitude": selectedPoint.longitude})
+        missionRouteItemId.path[index] = selectedPoint
+        missionManager.updateWaypoint(index, selectedPoint)
+    }
+    function removeWaypoint(index){
+        missionRouteItemId.path.splice(index, 1)
+        missionPointItemId.model.remove(index, 1)
+        missionManager.removeWaypoint(index)
+    }
+    function clearWaypoint(){
+        missionPointItemId.model.clear()
+        missionRouteItemId.path = []
+        missionManager.clearWaypoint()
+    }
+    Connections{
+        target: toolBoxBarId
+        function onPlanView(enabled){
+            enabledPlanView = enabled
+            if(!enabled){
+                clearWaypoint()
             }
         }
-
-
     }
 }
