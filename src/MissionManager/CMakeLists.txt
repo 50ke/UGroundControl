@@ -11,6 +11,7 @@ target_link_libraries(MissionManager
         LinkManager
         SettingManager
         LinkProtocol
+        VehicleManager
 )
 
 target_include_directories(MissionManager PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})

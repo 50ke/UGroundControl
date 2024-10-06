@@ -14,12 +14,16 @@
 
 namespace UGC {
 
+class LinkManager;
+class SettingManager;
+class VehicleManager;
+
 class MissionManager : public UGCContext
 {
     Q_OBJECT
 public:
     explicit MissionManager(UGCApplication *app);
-    Q_INVOKABLE void clearCurrentMission();
+    Q_INVOKABLE void clearMission();
     Q_INVOKABLE void uploadMission();
     Q_INVOKABLE void downloadMission();
     // 地图操作
@@ -29,7 +33,7 @@ public:
     Q_INVOKABLE void clearWaypoint();
 
 signals:
-    void clearCurrentMissionCompleted();
+    void clearMissionCompleted();
     void uploadMissionCompleted();
     void downloadMissionCompleted();
     void waypointAdded(QGeoCoordinate waypoint);
