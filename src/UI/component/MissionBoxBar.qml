@@ -158,7 +158,12 @@ Rectangle {
                             MouseArea {
                                 anchors.fill: parent
                                 onClicked: {
-                                    Qt.createComponent("qrc:/src/UI/Component/MissionItemEdit.qml").createObject(parent, { name: "qqq"});
+                                    Qt.createComponent("qrc:/src/UI/Component/MissionItemEdit.qml")
+                                    .createObject(parent, {
+                                        seq: model.index,
+                                        latitude: latitude,
+                                        longitude: longitude
+                                    });
                                 }
                             }
                         }

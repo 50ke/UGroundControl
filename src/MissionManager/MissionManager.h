@@ -24,6 +24,7 @@ class MissionManager : public UGCContext
 public:
     explicit MissionManager(UGCApplication *app);
     void handleMessage(const UsvLink::MessagePacket &message);
+    Q_INVOKABLE QList<QVariantMap> loadMissionMetadata();
     Q_INVOKABLE void clearMission();
     Q_INVOKABLE void uploadMission();
     Q_INVOKABLE void downloadMission();

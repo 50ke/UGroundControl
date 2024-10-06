@@ -9,6 +9,8 @@ Item {
     property string oTitleText: "title"
     property var oSelectList: ["#1", "#2"]
 
+    signal selectItemChanged(string item)
+
     height: parent.height
     width: parent.width
     Row {
@@ -23,10 +25,14 @@ Item {
             oTextFont.pointSize: 10
         }
         UGCComboBox{
+            id: comId
             height: parent.height
             width: parent.width
             anchors.verticalCenter: parent.verticalCenter
             oModel: oSelectList
+            onActivated: {
+                selectItemChanged(comId.displayText)
+            }
         }
     }
 }

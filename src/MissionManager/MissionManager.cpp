@@ -36,6 +36,86 @@ void UGC::MissionManager::handleMessage(const UsvLink::MessagePacket &message){
 
 }
 
+QList<QVariantMap> UGC::MissionManager::loadMissionMetadata(){
+    QList<QVariantMap> data;
+    data.append({
+        {"cmdId", 0},
+        {"cmdName", "导航"},
+        {"paramDesc1", "停留时间(秒)"},
+        {"paramValue1", 0},
+        {"paramEditable1", true},
+        {"paramDesc2", "到达半径(米)"},
+        {"paramValue2", 1},
+        {"paramEditable2", true},
+        {"paramDesc3", "穿越半径(米)"},
+        {"paramValue3", 0.5},
+        {"paramEditable3", true},
+        {"paramDesc4", "偏航角(度)"},
+        {"paramValue4", 0},
+        {"paramEditable4", true},
+        {"paramDesc5", "空"},
+        {"paramValue5", 0},
+        {"paramEditable5", false},
+        {"paramDesc6", "空"},
+        {"paramValue6", 0},
+        {"paramEditable6", false},
+        {"paramDesc7", "空"},
+        {"paramValue7", 0},
+        {"paramEditable7", false}
+    });
+    data.append({
+        {"cmdId", 1},
+        {"cmdName", "起锚"},
+        {"paramValue1", -1},
+        {"paramDesc1", "起锚长度(m)，-1表示收回全部锚链"},
+        {"paramEditable1", true},
+        {"paramValue2", 0},
+        {"paramDesc2", "空"},
+        {"paramEditable2", false},
+        {"paramValue3", 0},
+        {"paramDesc3", "空"},
+        {"paramEditable3", false},
+        {"paramValue4", 0},
+        {"paramDesc4", "空"},
+        {"paramEditable4", false},
+        {"paramValue5", 0},
+        {"paramDesc5", "空"},
+        {"paramEditable5", false},
+        {"paramValue6", 0},
+        {"paramDesc6", "空"},
+        {"paramEditable6", false},
+        {"paramValue7", 0},
+        {"paramDesc7", "空"},
+        {"paramEditable7", false},
+    });
+    data.append({
+                 {"cmdId", 2},
+                 {"cmdName", "抛锚"},
+                 {"paramValue1", -1},
+                 {"paramDesc1", "抛锚长度(m)，-1表示抛出全部锚链"},
+                 {"paramEditable1", true},
+                 {"paramValue2", 0},
+                 {"paramDesc2", "空"},
+                 {"paramEditable2", false},
+                 {"paramValue3", 0},
+                 {"paramDesc3", "空"},
+                 {"paramEditable3", false},
+                 {"paramValue4", 0},
+                 {"paramDesc4", "空"},
+                 {"paramEditable4", false},
+                 {"paramValue5", 0},
+                 {"paramDesc5", "空"},
+                 {"paramEditable5", false},
+                 {"paramValue6", 0},
+                 {"paramDesc6", "空"},
+                 {"paramEditable6", false},
+                 {"paramValue7", 0},
+                 {"paramDesc7", "空"},
+                 {"paramEditable7", false},
+                 });
+    return data;
+}
+
 void UGC::MissionManager::clearMission(){
     qDebug() << "[MissionManager]Requesting to clear mission";
     if(this->mApp->vehicleManager()->ownVehicleSystemId() == 0){

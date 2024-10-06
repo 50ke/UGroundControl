@@ -8,6 +8,7 @@ import QmlControls 1.0
 Item {
     property bool oEnabled: true
     property string oTitleText: "title"
+    property string oTipText: ""
     property string oPlaceholderText: ""
     property string oText: ""
 
@@ -39,6 +40,11 @@ Item {
                 implicitHeight: parent.height
                 border.color: control.focus ? "#409eff" : (control.hovered ? "#c0c4cc" : "#dcdfe6")
             }
+        }
+        UGCText {
+            oText: oTipText
+            oTextFont.pointSize: 8
+            anchors.verticalCenter: parent.verticalCenter
         }
     }
 
