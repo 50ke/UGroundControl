@@ -16,6 +16,7 @@ target_link_libraries(Common
         MockManager
         LogManager
         LinkProtocol
+        MissionManager
 )
 
 target_include_directories(Common PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})

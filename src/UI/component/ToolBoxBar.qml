@@ -6,6 +6,8 @@ import QtQuick.Layouts
 import QmlControls 1.0
 
 Rectangle {
+    signal planView(bool enabled);
+
     width: parent.width
     height: parent.height
     color: "#303133"
@@ -28,6 +30,7 @@ Rectangle {
             oIconSource: "qrc:/resources/icons/plan.svg"
             onClicked: {
                 loaderId.source = (loaderId.source == "qrc:/src/UI/Component/MissionBoxBar.qml") ? "" : "qrc:/src/UI/Component/MissionBoxBar.qml"
+                planView(loaderId.source == "qrc:/src/UI/Component/MissionBoxBar.qml")
             }
         }
         UGCButton{
@@ -58,6 +61,7 @@ Rectangle {
             oIconSource: "qrc:/resources/icons/config.svg"
             onClicked: {
                 loaderId.source = (loaderId.source == "qrc:/src/UI/Component/ParameterView.qml") ? "" : "qrc:/src/UI/Component/ParameterView.qml"
+                planView(false)
             }
         }
         UGCButton{
@@ -69,6 +73,7 @@ Rectangle {
             oIconSource: "qrc:/resources/icons/boats.svg"
             onClicked: {
                 loaderId.source = (loaderId.source == "qrc:/src/UI/Component/VehicleList.qml") ? "" : "qrc:/src/UI/Component/VehicleList.qml"
+                planView(false)
             }
         }
         UGCButton{

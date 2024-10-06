@@ -12,7 +12,7 @@ Rectangle {
         anchors.fill: parent
         anchors.margins: 5
         UGCText{
-            oText: "创建任务"
+            oText: "任务"
         }
         ToolSeparator {
             width: parent.width
@@ -20,10 +20,10 @@ Rectangle {
         }
         Rectangle {
             width: parent.width
-            height: parent.height / 3
+            height: parent.height / 4
             color: "#303133"
             ListView {
-                id: listViewId
+                id: missionListViewId
                 anchors.fill: parent
                 focus: true
                 clip: true
@@ -49,10 +49,21 @@ Rectangle {
                         latitude: "12.124442"
                         longitude: "12.122"
                     }
+                    ListElement{
+                        latitude: "12.124442"
+                        longitude: "12.122"
+                    }
+                    ListElement{
+                        latitude: "12.124442"
+                        longitude: "12.122"
+                    }
+                    ListElement{
+                        latitude: "12.124442"
+                        longitude: "12.122"
+                    }
                 }
                 delegate: Rectangle {
-                    id: itemId
-                    width: listViewId.width
+                    width: missionListViewId.width
                     height: 20
                     color: "#606266"
                     Row {
@@ -84,9 +95,177 @@ Rectangle {
                 }
             }
         }
+        UGCText{
+            oText: "新建"
+        }
         ToolSeparator {
             width: parent.width
             orientation: Qt.Horizontal
+        }
+        Rectangle {
+            width: parent.width
+            height: parent.height / 4
+            color: "#303133"
+            ListView {
+                id: createListViewId
+                anchors.fill: parent
+                focus: true
+                clip: true
+                spacing: 1
+                model: ListModel {}
+                delegate: Rectangle {
+                    width: createListViewId.width
+                    height: 20
+                    color: "#606266"
+                    Row {
+                        anchors.fill: parent
+                        spacing: 10
+                        leftPadding: 5
+                        anchors.verticalCenter: parent.verticalCenter
+                        UGCText {
+                            anchors.verticalCenter: parent.verticalCenter
+                            oText: model.index
+                        }
+                        ToolSeparator {
+                            height: parent.height
+                            orientation: Qt.Vertical
+                        }
+                        UGCText {
+                            anchors.verticalCenter: parent.verticalCenter
+                            oText: latitude
+                        }
+                        ToolSeparator {
+                            height: parent.height
+                            orientation: Qt.Vertical
+                        }
+                        UGCText {
+                            anchors.verticalCenter: parent.verticalCenter
+                            oText: longitude
+                        }
+                    }
+                }
+            }
+        }
+
+        UGCText{
+            oText: "存储"
+        }
+        ToolSeparator {
+            width: parent.width
+            orientation: Qt.Horizontal
+        }
+        Row {
+            spacing: 5
+            width: parent.width
+            height: 25
+            UGCButton{
+                oText: "导入"
+                width: 50
+                height: parent.height
+                oTextFont.pointSize: 10
+                display: AbstractButton.TextOnly
+                oNormalTextColor: "#ffffff"
+                oPressedTextColor: "#ffffff"
+                oHoveredTextColor: "#ffffff"
+                oNormalBackgroundColor: "#606266"
+                oPressedBackgroundColor: "#73767a"
+                oHoveredBackgroundColor: "#b1b3b8"
+                oNormalBorderColor: "#606266"
+                oPressedBorderColor: "#73767a"
+                oHoveredBorderColor: "#b1b3b8"
+            }
+            UGCButton{
+                oText: "导出"
+                width: 50
+                height: parent.height
+                oTextFont.pointSize: 10
+                display: AbstractButton.TextOnly
+                oNormalTextColor: "#ffffff"
+                oPressedTextColor: "#ffffff"
+                oHoveredTextColor: "#ffffff"
+                oNormalBackgroundColor: "#606266"
+                oPressedBackgroundColor: "#73767a"
+                oHoveredBackgroundColor: "#b1b3b8"
+                oNormalBorderColor: "#606266"
+                oPressedBorderColor: "#73767a"
+                oHoveredBorderColor: "#b1b3b8"
+            }
+        }
+        UGCText{
+            oText: "操作"
+        }
+        ToolSeparator {
+            width: parent.width
+            orientation: Qt.Horizontal
+        }
+        Row {
+            spacing: 5
+            width: parent.width
+            height: 25
+            UGCButton{
+                oText: "上传"
+                width: 50
+                height: parent.height
+                oTextFont.pointSize: 10
+                display: AbstractButton.TextOnly
+                oNormalTextColor: "#ffffff"
+                oPressedTextColor: "#ffffff"
+                oHoveredTextColor: "#ffffff"
+                oNormalBackgroundColor: "#606266"
+                oPressedBackgroundColor: "#73767a"
+                oHoveredBackgroundColor: "#b1b3b8"
+                oNormalBorderColor: "#606266"
+                oPressedBorderColor: "#73767a"
+                oHoveredBorderColor: "#b1b3b8"
+            }
+            UGCButton{
+                oText: "下载"
+                width: 50
+                height: parent.height
+                oTextFont.pointSize: 10
+                display: AbstractButton.TextOnly
+                oNormalTextColor: "#ffffff"
+                oPressedTextColor: "#ffffff"
+                oHoveredTextColor: "#ffffff"
+                oNormalBackgroundColor: "#606266"
+                oPressedBackgroundColor: "#73767a"
+                oHoveredBackgroundColor: "#b1b3b8"
+                oNormalBorderColor: "#606266"
+                oPressedBorderColor: "#73767a"
+                oHoveredBorderColor: "#b1b3b8"
+            }
+            UGCButton{
+                oText: "清除"
+                width: 50
+                height: parent.height
+                oTextFont.pointSize: 10
+                display: AbstractButton.TextOnly
+                oNormalTextColor: "#ffffff"
+                oPressedTextColor: "#ffffff"
+                oHoveredTextColor: "#ffffff"
+                oNormalBackgroundColor: "#606266"
+                oPressedBackgroundColor: "#73767a"
+                oHoveredBackgroundColor: "#b1b3b8"
+                oNormalBorderColor: "#606266"
+                oPressedBorderColor: "#73767a"
+                oHoveredBorderColor: "#b1b3b8"
+            }
+        }
+    }
+
+    Connections{
+        target: missionManager
+        function onWaypointAdded(waypoint){
+            createListViewId.model.append({"latitude": waypoint.latitude.toFixed(7),"longitude": waypoint.longitude.toFixed(7)})
+        }
+        function onWaypointUpdated(index, waypoint){
+            createListViewId.model.set(index, {"latitude": waypoint.latitude.toFixed(7),"longitude": waypoint.longitude.toFixed(7)})
+        }
+        function onWaypointRemoved(index){
+            createListViewId.model.remove(index, 1)
+        }
+        function onWaypointCleared(){
+            createListViewId.model.clear()
         }
     }
 }

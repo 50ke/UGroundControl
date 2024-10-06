@@ -38,6 +38,7 @@ Item {
         }
 
         ToolBoxBar {
+            id: toolBoxBarId
             anchors.left: parent.left
             anchors.leftMargin: 20
             anchors.top: parent.top
@@ -66,7 +67,7 @@ Item {
             }
         }
 
-        //---------------------地图相关----------------------//
+        //---------------------地图覆盖物----------------------//
         // 添加无人船到地图
         MapItemView {
             id: vehiclesItemId
@@ -133,6 +134,8 @@ Item {
                 }
             }
         }
+
+        //---------------------任务规划----------------------//
         // 添加航点到地图
         MapItemGroup {
             id: missionItemId
@@ -162,7 +165,7 @@ Item {
                             onDoubleClicked: {
                                 missionRouteItemId.path.splice(model.index, 1)
                                 missionPointItemId.model.remove(model.index, 1)
-
+                                missionManager.removeWaypoint(model.index)
                             }
                         }
                     }
@@ -175,6 +178,7 @@ Item {
                                 console.log("拖拽地图获取坐标点经度: %1, 纬度: %2, 事件：%3".arg(selectedPoint.longitude).arg(selectedPoint.latitude).arg(transition))
                                 missionPointItemId.model.set(model.index, {"latitude": selectedPoint.latitude,"longitude": selectedPoint.longitude})
                                 missionRouteItemId.path[model.index] = selectedPoint
+                                missionManager.updateWaypoint(model.index, selectedPoint)
                             }
                         }
                     }
@@ -196,28 +200,30 @@ Item {
             acceptedButtons: Qt.LeftButton | Qt.RightButton
             onSingleTapped: (eventPoint, button) => {
                                 if (button === Qt.LeftButton) {
-                                    var selectedPoint = mapViewId.map.toCoordinate(
-                                        tapHandlerId.point.position)
-                                    console.log(
-                                        "点击地图获取坐标点经度: %1, 纬度: %2".arg(
-                                            selectedPoint.longitude).arg(
-                                            selectedPoint.latitude))
-                                    missionPointItemId.model.append({
-                                                                        "latitude": selectedPoint.latitude,
-                                                                        "longitude": selectedPoint.longitude
-                                                                    })
-                                    missionRouteItemId.addCoordinate(
-                                        selectedPoint)
+                                    var selectedPoint = mapViewId.map.toCoordinate(tapHandlerId.point.position)
+                                    console.log("点击地图获取坐标点经度: %1, 纬度: %2".arg(selectedPoint.longitude).arg(selectedPoint.latitude))
+                                    missionPointItemId.model.append({"latitude": selectedPoint.latitude,"longitude": selectedPoint.longitude})
+                                    missionRouteItemId.addCoordinate(selectedPoint)
+                                    missionManager.addWaypoint(selectedPoint)
                                 }
                             }
             onDoubleTapped: (eventPoint, button) => {
                                 if (button === Qt.RightButton) {
                                     missionPointItemId.model.clear()
                                     missionRouteItemId.path = []
+                                    missionManager.clearWaypoint()
                                 }
                             }
         }
 
-        Component.onCompleted: {}
+
+        Connections{
+            target: toolBoxBarId
+            function onPlanView(enabled){
+                console.log("任务规划=========================" + enabled)
+            }
+        }
+
+
     }
 }

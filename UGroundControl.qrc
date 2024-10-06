@@ -9,6 +9,8 @@
         <file>resources/icons/cancel.svg</file>
         <file>resources/icons/config.svg</file>
         <file>resources/icons/connection.svg</file>
+        <file>resources/icons/download-fill.svg</file>
+        <file>resources/icons/download.svg</file>
         <file>resources/icons/export.svg</file>
         <file>resources/icons/import.svg</file>
         <file>resources/icons/lidar.svg</file>
@@ -30,6 +32,8 @@
         <file>resources/icons/ugc.png</file>
         <file>resources/icons/unlink.svg</file>
         <file>resources/icons/unlock.svg</file>
+        <file>resources/icons/upload-fill.svg</file>
+        <file>resources/icons/upload.svg</file>
         <file>resources/icons/usv.svg</file>
         <file>src/QmlControls/UGCButton.qml</file>
         <file>src/QmlControls/UGCComboBox.qml</file>
@@ -52,9 +56,5 @@
         <file>src/UI/Component/VideoView.qml</file>
         <file>src/UI/MainWindow.qml</file>
         <file>src/UI/SettingWindow.qml</file>
-        <file>resources/icons/download-fill.svg</file>
-        <file>resources/icons/upload-fill.svg</file>
-        <file>resources/icons/download.svg</file>
-        <file>resources/icons/upload.svg</file>
     </qresource>
 </RCC>

@@ -8,7 +8,9 @@ target_link_libraries(MissionManager
         Qt6::Quick
         Qt6::Core
         Boost::json
-        Common
+        LinkManager
+        SettingManager
+        LinkProtocol
 )
 
 target_include_directories(MissionManager PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})

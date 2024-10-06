@@ -4,6 +4,7 @@
 #include <VehicleManager.h>
 #include <MockManager.h>
 #include <LogManager.h>
+#include <MissionManager.h>
 
 #include <link_protocol.pb.h>
 #include <msg_connect_response.pb.h>
@@ -13,6 +14,7 @@ UGC::UGCApplication::UGCApplication(){
     mSettingManagerPtr = new UGC::SettingManager(this);
     mLinkManagerPtr = new UGC::LinkManager(this);
     mVehicleManagerPtr = new UGC::VehicleManager(this);
+    mMissionManagerPtr = new UGC::MissionManager(this);
     mMockManagerPtr = new UGC::MockManager(this);
 
     // MessagePacket packet;
@@ -42,6 +44,7 @@ UGC::UGCApplication::UGCApplication(){
 void UGC::UGCApplication::init(QQmlContext *context){
     context->setContextProperty("settingManager", mSettingManagerPtr);
     context->setContextProperty("vehicleManager", mVehicleManagerPtr);
+    context->setContextProperty("missionManager", mMissionManagerPtr);
     mLinkManagerPtr->start();
     mMockManagerPtr->start();
 }
