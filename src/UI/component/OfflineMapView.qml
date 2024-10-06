@@ -85,7 +85,7 @@ Item {
                     radius: 16
                     color: "transparent"
                     border.width: 3
-                    border.color: owner ? "#F56C6C" : "#67C23A"
+                    border.color: own ? "#F56C6C" : "#67C23A"
                     Image {
                         anchors.centerIn: parent
                         width: 16
@@ -96,7 +96,7 @@ Item {
                         id: vehicleNameId
                         anchors.bottom: parent.top
                         oText: name
-                        color: owner ? "#F56C6C" : "#67C23A"
+                        color: own ? "#F56C6C" : "#67C23A"
                     }
                 }
             }
@@ -113,7 +113,7 @@ Item {
                                                         "latitude": vehicles[i].latitude,
                                                         "type": vehicles[i].type,
                                                         "connected": vehicles[i].connected,
-                                                        "owner": vehicles[i].owner
+                                                        "own": vehicles[i].own
                                                     })
                     }
                 }

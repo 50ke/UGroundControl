@@ -9,7 +9,7 @@ UGC::MissionManager::MissionManager(UGCApplication *app) : UGCContext{app}{
 
 void UGC::MissionManager::clearMission(){
     qDebug() << "[MissionManager]Requesting to clear mission";
-    if(this->mApp->vehicleManager()->ownerVehicleSystemId() == 0){
+    if(this->mApp->vehicleManager()->ownVehicleSystemId() == 0){
         return;
     }
 
@@ -19,13 +19,13 @@ void UGC::MissionManager::clearMission(){
     packet.set_msg_id(UsvLink::MsgId::MSG_ID_MISSION_CLEAR_REQUEST);
     packet.set_system_id(this->mApp->settingManager()->systemId());
     packet.set_component_id(0);
-    packet.set_target_system_id(this->mApp->vehicleManager()->ownerVehicleSystemId());
+    packet.set_target_system_id(this->mApp->vehicleManager()->ownVehicleSystemId());
     packet.set_target_component_id(0);
     packet.set_time_ms(QDateTime::currentMSecsSinceEpoch());
     packet.set_msg_src(UsvLink::MsgSrc::MSG_SRC_GCS);
     packet.set_msg_link(UsvLink::MsgLink::MSG_LINK_MQTT);
     packet.set_allocated_mission_clear_request(payload);
-    this->mApp->linkManager()->sendMessage(this->mApp->vehicleManager()->ownerVehicleSystemId(), packet);
+    this->mApp->linkManager()->sendMessage(this->mApp->vehicleManager()->ownVehicleSystemId(), packet);
 }
 
 void UGC::MissionManager::uploadMission(){

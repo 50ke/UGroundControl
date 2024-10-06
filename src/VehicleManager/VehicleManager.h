@@ -30,7 +30,7 @@ struct Vehicle
     float latitude;
     VehicleType type;
     bool connected;
-    bool owner;
+    bool own;
 
     QVariantMap toQVariantMap(){
         QVariantMap data;
@@ -40,7 +40,7 @@ struct Vehicle
         data["latitude"] = this->latitude;
         data["type"] = static_cast<int>(this->type);
         data["connected"] = this->connected;
-        data["owner"] = this->owner;
+        data["own"] = this->own;
         return data;
     }
 };
@@ -55,7 +55,7 @@ public slots:
     void handleMessage(const UsvLink::MessagePacket &message);
     void clear();
     void requestVehicleParams();
-    int ownerVehicleSystemId() { return mOwnerVehicleSystemId; }
+    int ownVehicleSystemId() { return mOwnVehicleSystemId; }
     Q_INVOKABLE void connectVehicle(int systemId);
     Q_INVOKABLE void disconnectVehicle(int systemId);
     Q_INVOKABLE void getVehicles();
@@ -72,9 +72,9 @@ signals:
 
 private:
     QMap<int, Vehicle> mVehicles;
-    int mOwnerVehicleSystemId{0};
-    QMap<QString, QVariantMap> mOwnerVehicleParams;
-    QList<QGeoCoordinate> mOwnerVehicleTrajectory;
+    int mOwnVehicleSystemId{0};
+    QMap<QString, QVariantMap> mOwnVehicleParams;
+    QList<QGeoCoordinate> mOwnVehicleTrajectory;
 };
 
 }

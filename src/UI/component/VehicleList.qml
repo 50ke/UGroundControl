@@ -44,7 +44,7 @@ Rectangle {
                     height: 16
                     width: 16
                     anchors.verticalCenter: parent.verticalCenter
-                    source: owner ? "qrc:/resources/icons/unlink.svg" : "qrc:/resources/icons/link.svg"
+                    source: own ? "qrc:/resources/icons/unlink.svg" : "qrc:/resources/icons/link.svg"
                 }
             }
 
@@ -53,7 +53,7 @@ Rectangle {
                 onClicked: {
                     selectedSystemId = systemId
                     selectedName = name
-                    selectedOwner = owner
+                    selectedOwn = own
                     confirmationDialogId.open()
                 }
                 hoverEnabled: true
@@ -66,13 +66,13 @@ Rectangle {
     // 操作确认弹窗
     property int selectedSystemId: 0
     property string selectedName: ""
-    property bool selectedOwner: false
+    property bool selectedOwn: false
     MessageDialog {
            id: confirmationDialogId
-           text: selectedOwner ? "确认是否断开%1".arg(selectedName) : "确认是否连接%1".arg(selectedName)
+           text: selectedOwn ? "确认是否断开%1".arg(selectedName) : "确认是否连接%1".arg(selectedName)
            buttons: MessageDialog.Ok | MessageDialog.Cancel
            onAccepted: {
-               if(selectedOwner){
+               if(selectedOwn){
                    vehicleManager.disconnectVehicle(selectedSystemId)
                }else{
                    vehicleManager.connectVehicle(selectedSystemId)
@@ -93,7 +93,7 @@ Rectangle {
                                             "latitude": vehicles[i].latitude,
                                             "type": vehicles[i].type,
                                             "connected": vehicles[i].connected,
-                                            "owner": vehicles[i].owner
+                                            "own": vehicles[i].own
                                         })
             }
         }
