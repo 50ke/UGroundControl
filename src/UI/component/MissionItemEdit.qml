@@ -5,7 +5,7 @@ import QtQuick.Layouts
 
 import QmlControls 1.0
 
-Window {
+ApplicationWindow {
     property int seq: 0
     property real latitude: 1.1
     property real longitude: 0.0
@@ -17,6 +17,19 @@ Window {
     visible: true
     title: "编辑任务项-" + seq
     color: "#303133"
+    onClosing: {
+        var data = {
+            "cmdName": missionTypeId.getSelectedItem(),
+            "paramValue1": parseFloat(paramId1.getText()),
+            "paramValue2": parseFloat(paramId2.getText()),
+            "paramValue3": parseFloat(paramId3.getText()),
+            "paramValue4": parseFloat(paramId4.getText()),
+            "paramValue5": parseFloat(paramId5.getText()),
+            "paramValue6": parseFloat(paramId6.getText()),
+            "paramValue7": parseFloat(paramId7.getText()),
+        }
+        missionManager.editMissionItem(seq, data)
+    }
 
     ScrollView {
         anchors.fill: parent

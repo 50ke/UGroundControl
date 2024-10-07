@@ -5,6 +5,9 @@ import QtQuick.Dialogs
 import QmlControls 1.0
 
 Rectangle {
+
+    property var createMissionItems: []
+
     width: parent.width
     height: parent.height
     color: "#303133"
@@ -242,6 +245,9 @@ Rectangle {
                 oNormalBorderColor: "#606266"
                 oPressedBorderColor: "#73767a"
                 oHoveredBorderColor: "#b1b3b8"
+                onClicked: {
+                    missionManager.uploadMission(createMissionItems)
+                }
             }
             UGCButton{
                 oText: "下载"
@@ -282,15 +288,34 @@ Rectangle {
         target: missionManager
         function onWaypointAdded(waypoint){
             createListViewId.model.append({"latitude": waypoint.latitude.toFixed(7),"longitude": waypoint.longitude.toFixed(7)})
+            var defaultMissionItem = missionManager.getDefaultMissionItem()
+            defaultMissionItem["latitude"] = waypoint.latitude.toFixed(7)
+            defaultMissionItem["longitude"] = waypoint.longitude.toFixed(7)
+            createMissionItems.push(defaultMissionItem)
         }
         function onWaypointUpdated(index, waypoint){
             createListViewId.model.set(index, {"latitude": waypoint.latitude.toFixed(7),"longitude": waypoint.longitude.toFixed(7)})
+            createMissionItems[index]["latitude"] = waypoint.latitude.toFixed(7)
+            createMissionItems[index]["longitude"] = waypoint.longitude.toFixed(7)
         }
         function onWaypointRemoved(index){
             createListViewId.model.remove(index, 1)
+            createMissionItems.splice(index, 1)
         }
         function onWaypointCleared(){
             createListViewId.model.clear()
+            createMissionItems = []
+        }
+        function onMissionItemEdited(index, missionItem){
+            createMissionItems[index]["cmdId"] = missionManager.getMissionTypeIdByName(missionItem["cmdName"])
+            createMissionItems[index]["cmdName"] = missionItem["cmdName"]
+            createMissionItems[index]["paramValue1"] = missionItem["paramValue1"]
+            createMissionItems[index]["paramValue2"] = missionItem["paramValue2"]
+            createMissionItems[index]["paramValue3"] = missionItem["paramValue3"]
+            createMissionItems[index]["paramValue4"] = missionItem["paramValue4"]
+            createMissionItems[index]["paramValue5"] = missionItem["paramValue5"]
+            createMissionItems[index]["paramValue6"] = missionItem["paramValue6"]
+            createMissionItems[index]["paramValue7"] = missionItem["paramValue7"]
         }
     }
 }

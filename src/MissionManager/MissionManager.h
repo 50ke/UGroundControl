@@ -25,14 +25,18 @@ public:
     explicit MissionManager(UGCApplication *app);
     void handleMessage(const UsvLink::MessagePacket &message);
     Q_INVOKABLE QList<QVariantMap> loadMissionMetadata();
+    Q_INVOKABLE QVariantMap getDefaultMissionItem();
+    Q_INVOKABLE int getMissionTypeIdByName(QString name);
+
     Q_INVOKABLE void clearMission();
-    Q_INVOKABLE void uploadMission();
+    Q_INVOKABLE void uploadMission(const QList<QVariantMap> &missionItems);
     Q_INVOKABLE void downloadMission();
     // 地图操作
     Q_INVOKABLE void addWaypoint(QGeoCoordinate waypoint);
     Q_INVOKABLE void updateWaypoint(int index, QGeoCoordinate waypoint);
     Q_INVOKABLE void removeWaypoint(int index);
     Q_INVOKABLE void clearWaypoint();
+    Q_INVOKABLE void editMissionItem(int index, QVariantMap missionItem);
 
 signals:
     void clearMissionCompleted();
@@ -44,6 +48,7 @@ signals:
     void waypointUpdated(int index, QGeoCoordinate waypoint);
     void waypointRemoved(int index);
     void waypointCleared();
+    void missionItemEdited(int index, QVariantMap missionItem);
 
 private:
     int mCurrentMissionId{0};

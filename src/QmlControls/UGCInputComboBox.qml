@@ -35,4 +35,8 @@ Item {
             }
         }
     }
+
+    function getSelectedItem(){
+        return comId.displayText
+    }
 }

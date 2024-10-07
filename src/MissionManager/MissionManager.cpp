@@ -116,6 +116,32 @@ QList<QVariantMap> UGC::MissionManager::loadMissionMetadata(){
     return data;
 }
 
+QVariantMap UGC::MissionManager::getDefaultMissionItem(){
+    return {
+            {"cmdId", 0},
+            {"cmdName", "导航"},
+            {"paramValue1", 0},
+            {"paramValue2", 1},
+            {"paramValue3", 0.5},
+            {"paramValue4", 0},
+            {"paramValue5", 0},
+            {"paramValue6", 0},
+            {"paramValue7", 0},
+    };
+}
+
+int UGC::MissionManager::getMissionTypeIdByName(QString name){
+    if(name == "导航"){
+        return 0;
+    }else if(name == "起锚"){
+        return 1;
+    }else if(name == "抛锚"){
+        return 2;
+    }else{
+        return -1;
+    }
+}
+
 void UGC::MissionManager::clearMission(){
     qDebug() << "[MissionManager]Requesting to clear mission";
     if(this->mApp->vehicleManager()->ownVehicleSystemId() == 0){
@@ -137,8 +163,11 @@ void UGC::MissionManager::clearMission(){
     this->mApp->linkManager()->sendMessage(this->mApp->vehicleManager()->ownVehicleSystemId(), packet);
 }
 
-void UGC::MissionManager::uploadMission(){
-
+void UGC::MissionManager::uploadMission(const QList<QVariantMap> &missionItems){
+    for (QVariantMap item: missionItems) {
+        float longitude = item["longitude"].toFloat();
+        qDebug() << "===================uploadMission";
+    }
 }
 
 void UGC::MissionManager::downloadMission(){
@@ -161,4 +190,8 @@ void UGC::MissionManager::removeWaypoint(int index){
 
 void UGC::MissionManager::clearWaypoint(){
     emit waypointCleared();
+}
+
+void UGC::MissionManager::editMissionItem(int index, QVariantMap missionItem){
+    emit missionItemEdited(index, missionItem);
 }
