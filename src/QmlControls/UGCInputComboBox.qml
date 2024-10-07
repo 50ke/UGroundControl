@@ -39,4 +39,8 @@ Item {
     function getSelectedItem(){
         return comId.displayText
     }
+
+    function setSelectedItem(index){
+        comId.currentIndex = index
+    }
 }

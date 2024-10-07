@@ -7,8 +7,7 @@ import QmlControls 1.0
 
 ApplicationWindow {
     property int seq: 0
-    property real latitude: 1.1
-    property real longitude: 0.0
+    property var item: null
 
     width: 350
     height: 350
@@ -109,35 +108,51 @@ ApplicationWindow {
     }
 
     Component.onCompleted: {
+        console.log("----------------------====" + item["latitude"])
+        console.log("----------------------====" + item["longitude"])
+        console.log("----------------------====" + item["cmdId"])
+        console.log("----------------------====" + item["cmdName"])
+        console.log("----------------------====" + item["paramValue1"])
+        console.log("----------------------====" + item["paramValue2"])
+        console.log("----------------------====" + item["paramValue3"])
+        console.log("----------------------====" + item["paramValue4"])
+        console.log("----------------------====" + item["paramValue5"])
+        console.log("----------------------====" + item["paramValue6"])
+        console.log("----------------------====" + item["paramValue7"])
+
         var missionMetadata= missionManager.loadMissionMetadata()
         var types = []
+        var currentIndex = 0
+
         for (var i = 0; i < missionMetadata.length; i++) {
             types.push(missionMetadata[i].cmdName)
+            if(missionMetadata[i].cmdName === item["cmdName"]){
+                currentIndex = i
+                paramId1.oEnabled = missionMetadata[i].paramEditable1
+                paramId1.oText = item["paramValue1"]
+                paramId1.oTipText = missionMetadata[i].paramDesc1
+                paramId2.oEnabled = missionMetadata[i].paramEditable2
+                paramId2.oText = item["paramValue2"]
+                paramId2.oTipText = missionMetadata[i].paramDesc2
+                paramId3.oEnabled = missionMetadata[i].paramEditable3
+                paramId3.oText = item["paramValue3"]
+                paramId3.oTipText = missionMetadata[i].paramDesc3
+                paramId4.oEnabled = missionMetadata[i].paramEditable4
+                paramId4.oText = item["paramValue4"]
+                paramId4.oTipText = missionMetadata[i].paramDesc4
+                paramId5.oEnabled = missionMetadata[i].paramEditable5
+                paramId5.oText = item["paramValue5"]
+                paramId5.oTipText = missionMetadata[i].paramDesc5
+                paramId6.oEnabled = missionMetadata[i].paramEditable6
+                paramId6.oText = item["paramValue6"]
+                paramId6.oTipText = missionMetadata[i].paramDesc6
+                paramId7.oEnabled = missionMetadata[i].paramEditable7
+                paramId7.oText = item["paramValue7"]
+                paramId7.oTipText = missionMetadata[i].paramDesc7
+            }
         }
-        if(missionMetadata.length > 0){
-            missionTypeId.oSelectList = types
-            paramId1.oEnabled = missionMetadata[0].paramEditable1
-            paramId1.oText = missionMetadata[0].paramValue1
-            paramId1.oTipText = missionMetadata[0].paramDesc1
-            paramId2.oEnabled = missionMetadata[0].paramEditable2
-            paramId2.oText = missionMetadata[0].paramValue2
-            paramId2.oTipText = missionMetadata[0].paramDesc2
-            paramId3.oEnabled = missionMetadata[0].paramEditable3
-            paramId3.oText = missionMetadata[0].paramValue3
-            paramId3.oTipText = missionMetadata[0].paramDesc3
-            paramId4.oEnabled = missionMetadata[0].paramEditable4
-            paramId4.oText = missionMetadata[0].paramValue4
-            paramId4.oTipText = missionMetadata[0].paramDesc4
-            paramId5.oEnabled = missionMetadata[0].paramEditable5
-            paramId5.oText = missionMetadata[0].paramValue5
-            paramId5.oTipText = missionMetadata[0].paramDesc5
-            paramId6.oEnabled = missionMetadata[0].paramEditable6
-            paramId6.oText = missionMetadata[0].paramValue6
-            paramId6.oTipText = missionMetadata[0].paramDesc6
-            paramId7.oEnabled = missionMetadata[0].paramEditable7
-            paramId7.oText = missionMetadata[0].paramValue7
-            paramId7.oTipText = missionMetadata[0].paramDesc7
-        }
+        missionTypeId.oSelectList = types
+        missionTypeId.setSelectedItem(currentIndex)
     }
 
     Connections{

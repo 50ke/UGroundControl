@@ -123,7 +123,7 @@ Rectangle {
                     color: "#606266"
                     Row {
                         anchors.fill: parent
-                        spacing: 5
+                        spacing: 2
                         leftPadding: 5
                         anchors.verticalCenter: parent.verticalCenter
                         UGCText {
@@ -153,6 +153,15 @@ Rectangle {
                             height: parent.height
                             orientation: Qt.Vertical
                         }
+                        UGCText {
+                            anchors.verticalCenter: parent.verticalCenter
+                            oText: cmdName
+                            oTextFont.pointSize: 10
+                        }
+                        ToolSeparator {
+                            height: parent.height
+                            orientation: Qt.Vertical
+                        }
                         Image {
                             height: 16
                             width: 16
@@ -164,8 +173,7 @@ Rectangle {
                                     Qt.createComponent("qrc:/src/UI/Component/MissionItemEdit.qml")
                                     .createObject(parent, {
                                         seq: model.index,
-                                        latitude: latitude,
-                                        longitude: longitude
+                                        item: createMissionItems[model.index]
                                     });
                                 }
                             }
@@ -287,11 +295,11 @@ Rectangle {
     Connections{
         target: missionManager
         function onWaypointAdded(waypoint){
-            createListViewId.model.append({"latitude": waypoint.latitude.toFixed(7),"longitude": waypoint.longitude.toFixed(7)})
             var defaultMissionItem = missionManager.getDefaultMissionItem()
             defaultMissionItem["latitude"] = waypoint.latitude.toFixed(7)
             defaultMissionItem["longitude"] = waypoint.longitude.toFixed(7)
             createMissionItems.push(defaultMissionItem)
+            createListViewId.model.append({"cmdName":defaultMissionItem["cmdName"], "latitude": waypoint.latitude.toFixed(7),"longitude": waypoint.longitude.toFixed(7)})
         }
         function onWaypointUpdated(index, waypoint){
             createListViewId.model.set(index, {"latitude": waypoint.latitude.toFixed(7),"longitude": waypoint.longitude.toFixed(7)})
@@ -316,6 +324,20 @@ Rectangle {
             createMissionItems[index]["paramValue5"] = missionItem["paramValue5"]
             createMissionItems[index]["paramValue6"] = missionItem["paramValue6"]
             createMissionItems[index]["paramValue7"] = missionItem["paramValue7"]
+
+            createListViewId.model.setProperty(index, "cmdName", missionItem["cmdName"])
+
+            console.log("----------------------" + createMissionItems[index]["latitude"])
+            console.log("----------------------" + createMissionItems[index]["longitude"])
+            console.log("----------------------" + createMissionItems[index]["cmdId"])
+            console.log("----------------------" + createMissionItems[index]["cmdName"])
+            console.log("----------------------" + createMissionItems[index]["paramValue1"])
+            console.log("----------------------" + createMissionItems[index]["paramValue2"])
+            console.log("----------------------" + createMissionItems[index]["paramValue3"])
+            console.log("----------------------" + createMissionItems[index]["paramValue4"])
+            console.log("----------------------" + createMissionItems[index]["paramValue5"])
+            console.log("----------------------" + createMissionItems[index]["paramValue6"])
+            console.log("----------------------" + createMissionItems[index]["paramValue7"])
         }
     }
 }
