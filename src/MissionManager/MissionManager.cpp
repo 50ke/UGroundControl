@@ -164,14 +164,69 @@ void UGC::MissionManager::clearMission(){
 }
 
 void UGC::MissionManager::uploadMission(const QList<QVariantMap> &missionItems){
-    for (QVariantMap item: missionItems) {
-        float longitude = item["longitude"].toFloat();
-        qDebug() << "===================uploadMission";
+    qDebug() << "[MissionManager]Requesting to upload mission";
+    if(this->mApp->vehicleManager()->ownVehicleSystemId() == 0){
+        return;
     }
+    UsvLink::MissionUploadRequest *payload  = new UsvLink::MissionUploadRequest();
+    for (int i = 0; i < missionItems.size(); ++i) {
+        QVariantMap map = missionItems[i];
+        UsvLink::MissionItem missionItem;
+
+        missionItem.set_seq(i);
+        missionItem.set_frame(UsvLink::Frame::FRAME_GLOBAL);
+        missionItem.set_current(i == 0);
+        missionItem.set_auto_continue(true);
+        missionItem.set_x(map["latitude"].toFloat());
+        missionItem.set_y(map["longitude"].toFloat());
+        missionItem.set_z(0.0);
+
+        UsvLink::Command *cmd = new UsvLink::Command();
+        cmd->set_cmd_id(static_cast<UsvLink::CmdId>(map["cmdId"].toInt()));
+        cmd->set_param1(map["paramValue1"].toFloat());
+        cmd->set_param2(map["paramValue2"].toFloat());
+        cmd->set_param3(map["paramValue3"].toFloat());
+        cmd->set_param4(map["paramValue4"].toFloat());
+        cmd->set_param5(map["paramValue5"].toFloat());
+        cmd->set_param6(map["paramValue6"].toFloat());
+        cmd->set_param7(map["paramValue7"].toFloat());
+        missionItem.set_allocated_command(cmd);
+
+        payload->add_mission_items()->CopyFrom(missionItem);
+    }
+
+    UsvLink::MessagePacket packet;
+    packet.set_msg_id(UsvLink::MsgId::MSG_ID_MISSION_UPLOAD_REQUEST);
+    packet.set_system_id(this->mApp->settingManager()->systemId());
+    packet.set_component_id(0);
+    packet.set_target_system_id(this->mApp->vehicleManager()->ownVehicleSystemId());
+    packet.set_target_component_id(0);
+    packet.set_time_ms(QDateTime::currentMSecsSinceEpoch());
+    packet.set_msg_src(UsvLink::MsgSrc::MSG_SRC_GCS);
+    packet.set_msg_link(UsvLink::MsgLink::MSG_LINK_MQTT);
+    packet.set_allocated_mission_upload_request(payload);
+    this->mApp->linkManager()->sendMessage(this->mApp->vehicleManager()->ownVehicleSystemId(), packet);
 }
 
 void UGC::MissionManager::downloadMission(){
+    qDebug() << "[MissionManager]Requesting to download mission";
+    if(this->mApp->vehicleManager()->ownVehicleSystemId() == 0){
+        return;
+    }
 
+    UsvLink::MissionDownloadRequest *payload  = new UsvLink::MissionDownloadRequest();
+
+    UsvLink::MessagePacket packet;
+    packet.set_msg_id(UsvLink::MsgId::MSG_ID_MISSION_DOWNLOAD_REQUEST);
+    packet.set_system_id(this->mApp->settingManager()->systemId());
+    packet.set_component_id(0);
+    packet.set_target_system_id(this->mApp->vehicleManager()->ownVehicleSystemId());
+    packet.set_target_component_id(0);
+    packet.set_time_ms(QDateTime::currentMSecsSinceEpoch());
+    packet.set_msg_src(UsvLink::MsgSrc::MSG_SRC_GCS);
+    packet.set_msg_link(UsvLink::MsgLink::MSG_LINK_MQTT);
+    packet.set_allocated_mission_download_request(payload);
+    this->mApp->linkManager()->sendMessage(this->mApp->vehicleManager()->ownVehicleSystemId(), packet);
 }
 
 

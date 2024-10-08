@@ -254,7 +254,7 @@ Rectangle {
                 oPressedBorderColor: "#73767a"
                 oHoveredBorderColor: "#b1b3b8"
                 onClicked: {
-                    missionManager.uploadMission(createMissionItems)
+                    uploadMissionDialogId.open()
                 }
             }
             UGCButton{
@@ -272,6 +272,9 @@ Rectangle {
                 oNormalBorderColor: "#606266"
                 oPressedBorderColor: "#73767a"
                 oHoveredBorderColor: "#b1b3b8"
+                onClicked: {
+                    downloadMissionDialogId.open()
+                }
             }
             UGCButton{
                 oText: "清除"
@@ -288,8 +291,41 @@ Rectangle {
                 oNormalBorderColor: "#606266"
                 oPressedBorderColor: "#73767a"
                 oHoveredBorderColor: "#b1b3b8"
+                onClicked: {
+                    clearMissionDialogId.open()
+                }
             }
         }
+    }
+
+    MessageDialog {
+           id: clearMissionDialogId
+           text: "确认是否清除当前任务？"
+           buttons: MessageDialog.Ok | MessageDialog.Cancel
+           onAccepted: {
+               missionManager.clearMission()
+           }
+           onRejected: {}
+    }
+
+    MessageDialog {
+           id: downloadMissionDialogId
+           text: "确认是否下载当前任务？"
+           buttons: MessageDialog.Ok | MessageDialog.Cancel
+           onAccepted: {
+               missionManager.downloadMission()
+           }
+           onRejected: {}
+    }
+
+    MessageDialog {
+           id: uploadMissionDialogId
+           text: "确认是否创建新任务？"
+           buttons: MessageDialog.Ok | MessageDialog.Cancel
+           onAccepted: {
+               missionManager.uploadMission(createMissionItems)
+           }
+           onRejected: {}
     }
 
     Connections{
