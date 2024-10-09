@@ -10,3 +10,4 @@ UGCInputMixBox 1.0 UGCInputMixBox.qml
 UGCPadding 1.0 UGCPadding.qml
 UGCParamSetBox 1.0 UGCParamSetBox.qml
 UGCTextInput 1.0 UGCTextInput.qml
+UGCMessageBox 1.0 UGCMessageBox.qml

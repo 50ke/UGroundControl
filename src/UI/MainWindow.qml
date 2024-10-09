@@ -5,8 +5,10 @@ import QtQuick.Layouts
 import QtLocation
 import QtPositioning
 import "./Component"
+import QmlControls 1.0
 
 Window {
+    id: root
     width: 1000
     height: 640
     visible: true
@@ -26,5 +28,36 @@ Window {
             height: parent.height - headerId.height
             source: "qrc:/src/UI/Component/OfflineMapView.qml"
         }
+    }
+
+    UGCMessageBox{
+        id: messageBoxId
+        width: 100
+        height: 30
+        visible: false
+        anchors.top: parent.top
+        anchors.topMargin: 60
+        anchors.horizontalCenter: parent.horizontalCenter
+    }
+
+    Timer {
+        id: messageBoxTimerId
+        interval: 3000
+        onTriggered: {
+            messageBoxId.visible = false
+        }
+    }
+
+    function showInfo(content, type){
+        if(!messageBoxId.visible){
+            messageBoxId.visible = true
+        }
+        messageBoxId.show(content, type)
+        messageBoxTimerId.start()
+    }
+
+    Component.onCompleted: {
+        showInfo("任务上传成功", "success")
+        showInfo("任务上传失败", "error")
     }
 }

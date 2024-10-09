@@ -42,6 +42,7 @@
         <file>src/QmlControls/UGCInputBox.qml</file>
         <file>src/QmlControls/UGCInputComboBox.qml</file>
         <file>src/QmlControls/UGCInputMixBox.qml</file>
+        <file>src/QmlControls/UGCMessageBox.qml</file>
         <file>src/QmlControls/UGCPadding.qml</file>
         <file>src/QmlControls/UGCParamSetBox.qml</file>
         <file>src/QmlControls/UGCText.qml</file>
