@@ -209,6 +209,12 @@ Item {
 
     property bool enabledPlanView: false
     function addWaypoint(selectedPoint){
+
+        var p1 = mapViewId.map.toCoordinate(Qt.point(0, 0))
+        var p2 = mapViewId.map.toCoordinate(Qt.point(mapViewId.width, mapViewId.height))
+        console.log("=====================经度: %1, 纬度: %2".arg(p1["latitude"]).arg(p1["longitude"]))
+        console.log("=====================经度: %1, 纬度: %2".arg(p2["latitude"]).arg(p2["longitude"]))
+
         console.log("点击地图获取坐标点经度: %1, 纬度: %2".arg(selectedPoint.longitude).arg(selectedPoint.latitude))
         if(enabledPlanView){
             missionPointItemId.model.append({"latitude": selectedPoint.latitude,"longitude": selectedPoint.longitude})
