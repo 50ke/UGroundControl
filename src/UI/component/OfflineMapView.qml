@@ -47,6 +47,34 @@ Item {
             width: 50
         }
 
+        // 仪表盘
+        Rectangle{
+            width: 300
+            height: 140
+            anchors.right: parent.right
+            anchors.rightMargin: 20
+            anchors.top: parent.top
+            anchors.topMargin: 20
+            color: "#303133"
+            radius: 70
+            Row{
+                width: parent.width
+                height: parent.height
+                spacing: 20
+                UGCAttitudeIndicator {
+                    id: attitudeIndicatorId
+                    radius: 70
+                    roll: 0
+                    pitch: 0
+                }
+                UGCAirspeedIndicator {
+                    id: airspeedIndicatorId
+                    radius: 70
+                    airspeed: 0
+                }
+            }
+        }
+
         // 版权信息
         Rectangle {
             id: copyrightId
