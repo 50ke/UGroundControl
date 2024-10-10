@@ -47,17 +47,11 @@ Window {
             messageBoxId.visible = false
         }
     }
-
     function showInfo(content, type){
         if(!messageBoxId.visible){
             messageBoxId.visible = true
         }
         messageBoxId.show(content, type)
         messageBoxTimerId.start()
-    }
-
-    Component.onCompleted: {
-        showInfo("任务上传成功", "success")
-        showInfo("任务上传失败", "error")
     }
 }
