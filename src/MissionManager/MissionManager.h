@@ -27,6 +27,7 @@ public:
     Q_INVOKABLE QList<QVariantMap> loadMissionMetadata();
     Q_INVOKABLE QVariantMap getDefaultMissionItem();
     Q_INVOKABLE int getMissionTypeIdByName(QString name);
+    Q_INVOKABLE QString getMissionTypeNameById(int id);
 
     Q_INVOKABLE void clearMission();
     Q_INVOKABLE void uploadMission(const QList<QVariantMap> &missionItems);

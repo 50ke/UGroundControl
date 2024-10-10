@@ -27,7 +27,15 @@ void UGC::MissionManager::handleMessage(const UsvLink::MessagePacket &message){
                 {"seq", item.seq()},
                 {"latitude", item.x()},
                 {"longitude", item.y()},
-                {"command", "起锚"},
+                {"cmdId", static_cast<int>(item.command().cmd_id())},
+                {"cmdName", getMissionTypeNameById(static_cast<int>(item.command().cmd_id()))},
+                {"paramValue1", item.command().param1()},
+                {"paramValue2", item.command().param2()},
+                {"paramValue3", item.command().param3()},
+                {"paramValue4", item.command().param4()},
+                {"paramValue5", item.command().param5()},
+                {"paramValue6", item.command().param6()},
+                {"paramValue7", item.command().param7()},
             };
             mCurrentMissionItems.append(temp);
         }
@@ -139,6 +147,18 @@ int UGC::MissionManager::getMissionTypeIdByName(QString name){
         return 2;
     }else{
         return -1;
+    }
+}
+
+QString UGC::MissionManager::getMissionTypeNameById(int id){
+    if(id == 0){
+        return "导航";
+    }else if(id == 1){
+        return "起锚";
+    }else if(id == 2){
+        return "抛锚";
+    }else{
+        return "N/A";
     }
 }
 
