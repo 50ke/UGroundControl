@@ -1,9 +1,16 @@
 <RCC>
     <qresource prefix="/">
         <file>UGroundControl.json</file>
+        <file>resources/icons/ai_back.svg</file>
+        <file>resources/icons/ai_case.svg</file>
+        <file>resources/icons/ai_face.svg</file>
+        <file>resources/icons/ai_ring.svg</file>
         <file>resources/icons/angle-down.svg</file>
         <file>resources/icons/angle-up.svg</file>
         <file>resources/icons/arrow.svg</file>
+        <file>resources/icons/asi_case.svg</file>
+        <file>resources/icons/asi_face.svg</file>
+        <file>resources/icons/asi_hand.svg</file>
         <file>resources/icons/battery.svg</file>
         <file>resources/icons/boats.svg</file>
         <file>resources/icons/cancel.svg</file>
@@ -36,6 +43,8 @@
         <file>resources/icons/upload-fill.svg</file>
         <file>resources/icons/upload.svg</file>
         <file>resources/icons/usv.svg</file>
+        <file>src/QmlControls/UGCAirspeedIndicator.qml</file>
+        <file>src/QmlControls/UGCAttitudeIndicator.qml</file>
         <file>src/QmlControls/UGCButton.qml</file>
         <file>src/QmlControls/UGCComboBox.qml</file>
         <file>src/QmlControls/UGCImportFileBox.qml</file>

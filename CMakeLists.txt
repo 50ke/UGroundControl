@@ -77,6 +77,8 @@ qt_add_qml_module(appUGroundControl
     QML_FILES src/QmlControls/UGCPadding.qml
     QML_FILES src/QmlControls/UGCParamSetBox.qml
     QML_FILES src/QmlControls/UGCMessageBox.qml
+    QML_FILES src/QmlControls/UGCAirspeedIndicator.qml
+    QML_FILES src/QmlControls/UGCAttitudeIndicator.qml
     RESOURCES UGroundControl.qrc
 )
 
